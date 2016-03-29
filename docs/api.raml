@@ -6,10 +6,16 @@ protocols: [HTTP, HTTPS]
 
 /search:
     description: Queries the Question table for questions like the term entered.
-    /{term}{prettify}:
+    /{term}:
         displayName: Search Term
-        description: The search term used in the SQL query to get questions like {term}
         get:
+          queryParameters:
+              pretty:
+                default: false
+                required: false
+                displayName: Prettify
+                description: prettifies JSON output.
+                type: boolean
           responses:
             200:
               body:
@@ -27,17 +33,39 @@ protocols: [HTTP, HTTPS]
                       "SubjectTitle": "Computing"
                     }
         uriParameters:
-          prettify:
-            default: false
-            example: true
-            required: false
-            displayName: pretty
-            description: prettifies JSON output.
-            type: boolean
+            term:
+                default: ''
+                required: true
+                type: string
+                displayName: Search Term
+                description: The search term used in the SQL query to get questions like {term}
+
+
+
+
 /result:
   description: Fetches result based upon an ID parsed.
   /{id}:
-
+      displayName: Search Term
+      get:
+        queryParameters:
+            pretty:
+              default: false
+              required: false
+              displayName: Prettify
+              description: prettifies JSON output.
+              type: boolean
+        responses:
+          200:
+            body:
+              application/json:
+      uriParameters:
+          id:
+              default: ''
+              required: true
+              type: integer
+              displayName: Result ID
+              description: The ID used SQL query to get a question
 /image:
   /{id}:
 

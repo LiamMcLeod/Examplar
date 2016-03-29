@@ -10,10 +10,10 @@ protocols: [HTTP, HTTPS]
         displayName: Search Term
         get:
           queryParameters:
-              pretty:
+              prettyify:
                 default: false
                 required: false
-                displayName: Prettify
+                displayName: pretty
                 description: prettifies JSON output.
                 type: boolean
           responses:
@@ -49,16 +49,36 @@ protocols: [HTTP, HTTPS]
       displayName: Search Term
       get:
         queryParameters:
-            pretty:
+            prettify:
               default: false
               required: false
-              displayName: Prettify
+              displayName: pretty
               description: prettifies JSON output.
               type: boolean
         responses:
           200:
             body:
               application/json:
+                  example: |
+                      {
+                          "QuestionId":1,
+                          "ExaminerId":1,
+                          "ExamPaperId":1,
+                          "TopicId":1,
+                          "QuestionNumber":1,
+                          "QuestionText":"If the bit pattern in <strong>Figure 1</strong> is an <strong>unsigned binary integer</strong>, what is the denary\r\nequivalent of this bit pattern?",
+                          "QuestionMarks":1,
+                          "QuestionMarkText":"182;",
+                          "ExamPaperUnit":"COMP1",
+                          "ExamPaperSeason":"Summer",
+                          "ExamPaperDate":"2014-06-02T00:00:00.000Z",
+                          "ExamBoardName":"AQA",
+                          "LevelTitle":"AS",
+                          "SubjectTitle":"Computing","TopicTitle":"Data Representation",
+                          "ExaminerNote":"The topics covered by this question were generally well-understood. Most students were able to answer parts 1-2 and 5-6 well, though a number of students gave an answer of 74 instead of -74 as the answer for part 2. For part 3, most students were not able to state the correct range with the most common wrong answer being an upper limit of 128 (rather than 127). Many students did not read the question carefully for part 4 and assumed that four bits were being used before the binary point when the question said three bits before the binary point. A number of students also did not read the question carefully for part 7 and gave answers involving the use of binary addition.",
+                          "QuestionImageData":"base64img",
+                          "QuestionImageId":1
+                      }
       uriParameters:
           id:
               default: ''
@@ -66,8 +86,6 @@ protocols: [HTTP, HTTPS]
               type: integer
               displayName: Result ID
               description: The ID used SQL query to get a question
-/image:
-  /{id}:
 
 /more:
   /{id}:
@@ -82,3 +100,6 @@ protocols: [HTTP, HTTPS]
   /level:
   /examboard:
   /subject:
+
+/image:
+    /{id}:

@@ -28,9 +28,9 @@ A Web app for searching exam papers, questions and content.
 
 Documentation
 ========================================
-
 API Routes
 ----------
+[HTML Version](http://www.dual1ty.me/api)
 
 ### Examplar API
 **version**: 0.0.1
@@ -41,7 +41,7 @@ API Routes
 
 Queries the Question table for questions like the term entered.
 
-#### get /search/{term}{prettify}
+#### get /search/{term}
 
 Returns JSON object based upon SQL query to get questions like {term}
 
@@ -50,6 +50,7 @@ Returns JSON object based upon SQL query to get questions like {term}
 
     The term used to fetch questions.
 
+### Query Parameters
 -   **pretty**: *(boolean)*
 
     prettifies JSON output.
@@ -93,7 +94,7 @@ HTTP status code [200](http://httpstatus.es/200)
 
 Fetches result based upon an ID parsed.
 
-#### get /result/{id}{prettify}
+#### get /result/{id}
 
 Returns JSON object based upon the id parsed.
 
@@ -102,6 +103,7 @@ Returns JSON object based upon the id parsed.
 
     ID for the result
 
+### Query Parameters
 -   **pretty**: *(boolean)*
 
     prettifies JSON output.

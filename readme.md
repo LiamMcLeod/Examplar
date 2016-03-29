@@ -181,7 +181,7 @@ ExamPaper
 QuestionImage
 
     QuestionImageId*
-    QuestionImateData
+    QuestionImageData
 
 --------
 Examiner

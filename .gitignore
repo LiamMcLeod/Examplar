@@ -1,0 +1,10 @@
+#ignore dirs
+.idea/*
+notes/*
+redundant/*
+npm-debug.log
+.env
+ToDo.txt
+routes/*
+app/models/*
+note.js

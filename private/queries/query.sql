@@ -1,0 +1,11 @@
+﻿SELECT "QuestionNumber", "QuestionText", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate", "ExamBoardName", "LevelTitle", "SubjectTitle" FROM "Question" 
+INNER JOIN "ExamPaper"
+ON "Question"."ExamPaperId" = "ExamPaper"."ExamPaperId"
+INNER JOIN "ExamBoard"
+ON "ExamPaper"."ExamBoardId" = "ExamBoard"."ExamBoardId"
+INNER JOIN "Level"
+ON "ExamPaper"."LevelId" = "Level"."LevelId"
+INNER JOIN "Subject"
+ON "ExamPaper"."SubjectId" = "Subject"."SubjectId"
+WHERE "QuestionText" ~* 'figure'
+ORDER BY "QuestionNumber"

@@ -1,0 +1,94 @@
+main.bg-light
+    .container-fluid
+        .searchContainer.text-center
+            //ToDo Test GET remove .prevent
+            //v-on:submit.prevent
+            form(method='get', action='/index' v-on:submit.prevent)
+                ////v-on:submit.prevent
+                input#searchBar.bar-search.input-lg(type='text', v-model="searchTerm" title='search', name='q', size='', maxlength='120' autofocus)
+                button.btn-lg.fa.fa-search.btn-search(type="" v-on:click="search('')")
+        .contentHeader
+            .navbar-header
+                span
+                    strong Search Results: {{noOfResults}}
+                    //{{noOfResults}}
+            .search-term.pull-left.no-mobile.no-tablet
+                    span.text-danger(v-if="error != ''") {{{error}}}
+                    span(v-else) Search: {{searchTerm}}
+            .combo.pull-right
+                a(onclick="toggleOptions('#filter')")
+                    i.fa.fa-filter &nbsp;
+                    span Filter
+                span &nbsp;
+                a(onclick="toggleOptions('#sort')")
+                    i.fa.fa-sort &nbsp;
+                    span Order
+                span &nbsp;
+        .contentOptions.row.hide
+            //TODO SOrt doesn't refresh result list
+            #filter.col-xs-8.optionlist.pull-left.hide
+                .col-xs-3
+                    span.fa.fa-filter
+                    select(v-model= "filterBy" v-on:click="resetCheck()")
+                        option(v-for="option in filterOptions" v-bind:value="option.value") {{option.text}}
+                .col-xs-2(v-if="filterBy===''")
+                    span Select option
+                .col-xs-2(v-else)
+                    label Type: &nbsp;
+                    input(type="checkbox" v-model="filterFlag" v-if="filterBy!='ExamPaperUnit'" v-on:click="fetchFilter(filterBy)")
+                    label(v-else) &nbsp;N/A
+                .col-xs-4
+                    div(v-if="filterFlag===true && filterBy!=ExamPaperUnit")
+                        label Select:&nbsp;
+                        select.filterSelect(v-model="filterTerm")
+                            option(v-for="option in filterTermOptions" v-bind:value="option.option") {{option.option}}
+                    div(v-else)
+                        //TODO CheckFilterFlag method
+                        label &nbsp; Term: &nbsp;
+                        input(v-model="filterTerm")
+                .col-xs-1
+                    button(v-on:click="clearOptions()") Reset
+            #sort.col-xs-4.optionlist.pull-right.hide
+                .col-xs-5
+                    label Sort:&nbsp;
+                    select.sortSelect(v-model="sortBy")
+                        option(v-for="option in sortOptions" v-bind:value="option.value") {{option.text}}
+                .col-xs-5
+                    span By:&nbsp;
+                    select(v-model="sortType")
+                        option(v-for="option in sortOrder" v-bind:value="option.value") {{option.text}}
+                .col-xs-2
+                    button(v-on:click="clearOptions()") Reset
+        .contentContainer.text-left
+           .test-ad
+                //ToDo Placeholders
+                .col-sm-12.wide-only
+                    img(src="https://storage.googleapis.com/support-kms-prod/SNP_59D432450939ECC60A21BEDBEE985B1817B1_3094744_en_v2")
+                .col-sm-offset-2.col-sm-6.desktop-only
+                    img(src="https://storage.googleapis.com/support-kms-prod/SNP_4FF3B90F1F322E328CE191157454F07699AB_2922296_en_v3")
+                .col-sm-12.wire.no-desktop.no-wide
+                    span iPhone Ad
+            .noSearch(v-if="searchFlag===false")
+                h1.text-center Search
+            .notFound(v-if="noOfResults === 0 && searchFlag===true")
+                h1.text-center No Results.
+            .searchResult(v-if="filterTerm===''" v-for="result in results | limitBy displayResults | orderBy sortBy sortType")
+                div
+                    h4
+                        a(href="/result?id={{result.QuestionId}}") {{result.ExamBoardName}} - {{result.SubjectTitle}} - {{result.LevelTitle}} - {{result.ExamPaperUnit}} - {{result.ExamPaperDate}} - {{result.ExamPaperSeason}} - Question {{result.QuestionNumber}}
+                p {{{ result.QuestionText }}}
+            .searchResult(v-if="filterTerm!=''" v-for="result in results | limitBy displayResults | orderBy sortBy sortType | filterBy filterTerm in filterBy")
+                div
+                    h4
+                       a(href="/result?id={{result.QuestionId}}") {{result.ExamBoardName}} - {{result.SubjectTitle}} - {{result.LevelTitle}} - {{result.ExamPaperUnit}} - {{result.ExamPaperDate}} - {{result.ExamPaperSeason}} - Question {{result.QuestionNumber}}
+                p {{{ result.QuestionText }}}
+            .text-center.nav-numbers
+                ul.nav.text-center
+                    li(v-if="noOfResults > displayResults && searchFlag===true")
+                        a(v-on:click="seeMore()") More
+                            span.caret
+#betaWarning.navbar-fixed-bottom.no-mobile(onclick="toggleHide(this)")
+    h1.fa.fa-times.fa-pull-right
+    br
+    //TODO Replace Later
+    h3.text-center This application is in very early alpha, and therefore some functionality may not yet have been implemented.

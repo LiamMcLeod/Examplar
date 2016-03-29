@@ -1,0 +1,145 @@
+doctype html
+html#index(lang='en-GB')
+    head
+        // TODO Cookie Warning
+        title Examplar
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        link(rel='icon', href='/public/favicon.ico')
+        link(rel='stylesheet', href='/public/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/public/css/bootstrap-social.css')
+        link(rel='stylesheet', href='/public/css/font-awesome.min.css')
+        link(href='https://fonts.googleapis.com/css?family=Roboto', rel='stylesheet', type='text/css')
+        link(rel='stylesheet', href='/public/css/styles.css')
+    body#page-top
+        #wrapper
+            nav.navbar.navbar-fixed-alt.navbar-trans
+                .container-fluid
+                    // Header
+                    .navbar-header
+                        a.no-tablet.no-mobile.navbar-brand.pull-left(href='#')
+                            span.no-tablet.no-mobile Examplar
+                        a.navbar-brand.pull-left.no-desktop.no-wide(href='#' onClick="toggleMenu()")
+                            span.no-wide.no-desktop.hamburger.menu-trigger ≡
+                    .collapse.navbar-collapse.no-mobile.no-tablet
+                        ul.nav.navbar-nav.navbar-right.no-mobile.no-tablet
+                            li.dropdown
+                                a.dropdown-toggle(data-toggle='dropdown', href='#')
+                                    span.caret
+                                ul.dropdown-menu
+                                    li
+                                        a(href='#')
+                                            span.glyphicon.glyphicon-user
+                                            |  Sign Up
+                                    li
+                                        a(href='#')
+                                            span.glyphicon.glyphicon-log-in
+                                            |  Login
+                        ul.nav.navbar-nav.navbar-right.nav-list
+                            li
+                                a.active(href='#') Search
+                            li
+                                a(href='#') About
+                            li.dropdown.no-tablet
+                                a.dropdown-toggle(data-toggle='dropdown', href='#')
+                                    | Contact
+                                    span.caret
+                                ul.dropdown-menu
+                                    li
+                                        a(href='mailto:l_mcleod95@hotmail.com?Subject=WebDev')
+                                            span.fa.fa-mail-forward
+                                            |  Email
+                                    li
+                                        a(href='#page-address')
+                                            span.fa.fa-home
+                                            |  Address
+                                            // Maybe bootstrap a dropdown menu for edit
+            header.bg-grey
+                .container-fluid.text-center
+                    .row
+                        h1 Examplar
+                        h6.tagline Exam Papers Search Tool
+                    #navTrigger.clearfix.js-element.no-mobile.no-tablet
+            main.bg-light
+                .container-fluid
+                    .searchContainer.text-center
+                        form#searchBar(method='get', action='http://www.google.com')
+                            input.bar-search.input-lg(type='text', title='search', name='q', size='', maxlength='120')
+                            button.btn-lg.fa.fa-search.btn-search
+                    .contentHeader
+                        .navbar-header
+                            span
+                                strong Search Results:
+                        .search-results.pull-left.no-mobile.no-tablet
+                            ul.nav.navbar-nav
+                                li Items Matched [x]
+                                li More Statisitics [x]
+                        .dropdown.pull-right
+                            a.dropdown-toggle(data-toggle='dropdown', href='#')
+                                | Order  
+                                span.fa.fa-sort
+                            ul.dropdown-menu.grey
+                                li
+                                    a(href='#')
+                                        span.fa.fa-sort-alpha-asc
+                                        |  Alphabet
+                                li
+                                    a(href='#')
+                                        span.fa.fa-sort-numeric-asc
+                                        |  Recency
+                    .contentContainer.text-left
+                        span
+                            | Search Results Here
+                            // ToDo Remove later
+            .test-ad.wire
+                .col-sm-6.wire.no-mobile
+                    span Ad Space 1
+                .col-sm-6.wire.no-mobile
+                    span Ad Space 2
+                .col-sm-12.wire.no-desktop.no-wide
+                    span iPhone Ad
+            footer.no-mobile.no-tablet
+                .container-fluid
+                    // Social buttons
+                    .row.footer-above
+                        a.btn.btn-twitter
+                            span.fa.fa-twitter
+                        a.btn.btn-github
+                            span.fa.fa-github
+                        a.btn.btn-linkedin
+                            span.fa.fa-linkedin
+                    // Actual Footer with &copy;
+                    .row.footer-below.three-col
+                        #page-address.col-sm-4.col-footer
+                            span.center-block Bexhill College
+                            span.center-block Penland Rd
+                            span.center-block TN40 2JG
+                            span.center-block East Sussex
+                        .col-sm-4.col-footer
+                            span
+                        .col-sm-4.col-copyright
+                            span  Copyright Liam McLeod © 2016
+        #mobileMenu.no-desktop.no-wide.hide
+            ul.nav.navbar-nav
+                li.active
+                    a(href='#') Search
+                li
+                    a(href='#') About
+                li.dropdown
+                    a.dropdown-toggle(href='#', data-toggle='dropdown')
+                        | Contact
+                        b.caret
+                    ul.dropdown-menu.linear
+                        li
+                            a(href='#') Email
+            script(src='/public/js/libs/jquery-2.2.1.min.js')
+            script(src='/public/js/libs/bootstrap.min.js')
+            script.
+                var toggleOnOff = false;
+                if (screen.width <= 768) {
+                    function toggleMenu() {
+                        $('#mobileMenu').toggleClass('hide');
+                    }
+                }
+
+            script(src='/public/js/plugins.js')

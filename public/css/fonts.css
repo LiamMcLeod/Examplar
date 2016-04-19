@@ -1,9 +1,0 @@
-@font-face {
-    font-family:NotCourierSans;
-    src:url('/public/fonts/NotCourierSans.otf')format("opentype");
-}
-
-@font-face {
-    font-family: NotCourierSansBold;
-    src:url('/public/fonts/NotCourierSans-Bold.otf')format("opentype");
-}

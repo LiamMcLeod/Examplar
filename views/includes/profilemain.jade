@@ -10,15 +10,18 @@ main.bg-light
                 .col-sm-12.wire.no-desktop.no-wide
                     span iPhone Ad
             .user
-                if !loggedIn
-                    h1 You are not authorised to access
-                else
-                    img(src="http://1.gravatar.com/avatar/{{User.Digest}}?size=128")
-                    h1 {{User.Username}}
-                    p  {{User.Title}}
-                    p  {{User.FirstName}}
-                    p  {{User.LstName}}
-                    p  {{User.EmailAddress}}
-                    p  {{User.DateOfBirth}}
-                    p  {{User.Created}}
-                    p  {{User.Role}}
+                .row(v-if="exists===true")
+                    if !loggedIn
+                        h1 You are not authorised to access
+                    else
+                        img(src="http://1.gravatar.com/avatar/{{User.Digest}}?size=128")
+                        h1 {{User.Username}}
+                        p  {{User.Title}}
+                        p  {{User.FirstName}}
+                        p  {{User.LstName}}
+                        p  {{User.EmailAddress}}
+                        p  {{User.DateOfBirth}}
+                        p  {{User.Created}}
+                        p  {{User.Role}}
+                .row(v-else)
+                     h1 User not found

@@ -89,7 +89,7 @@ prof = new Vue({
 
 var router = new VueRouter();
 router.map({});
-window.vue = vm;
+window.vue = prof;
 Vue.config.debug = true;
 //
 // set("UserId", results.rows[0].UserId);

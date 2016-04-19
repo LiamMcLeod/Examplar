@@ -1,6 +1,8 @@
     String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
     Array.prototype.isEmpty = function(){if(this.length===0) {return true;}else{return false;}};
     Boolean.prototype.toggle = function (x) {return !x;};
+    Object.prototype.isset = function(x) {return ((typeof x) != 'undefined');};
+
 /*
 * embolden a {term} within a {string}
 * @param string String
@@ -80,13 +82,7 @@ function isset(x){
     return ((typeof x) != 'undefined');
 }
 
-/*
-* JS isset equivalent checks if defined.
-* @param variable Type
-*/
-// Function.prototype.isset = function(x) {
-//     return ((typeof x) != 'undefined');
-// };
+
 
 exports.emboldenTerm = emboldenTerm;
 exports.shortenString = shortenString;

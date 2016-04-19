@@ -256,11 +256,53 @@ module.exports = function (express, client) {
      *  TODO Finish or scrap
      *  RESTFUL Profile Generation?
      */
-    apiRouter.get('/user/:id', function (req, res) {
+    apiRouter.get('/user/:user', function (req, res) {
         var results;
-        var name = req.params.id;
-        //TODO RESTIFY
-        mod.returnJSON(res, results, param);
+        var o = {};
+        o.user = req.params.user;
+        var param = {};
+        param.pretty = false;
+
+        if (lib.isset(req.query)) {
+            param.pretty = req.query['pretty'];
+        }
+
+        var user = new User();
+        user.findUser(o, function (err, userData, found) {
+                if (found) {
+                    delete userData.Password;
+                    console.log(user.Digest);
+                    /**
+                     * Trim whitespace
+                     */
+                    for (var key in userData) {
+                        if (lib.isset(userData[key]) && userData[key] != null) {
+                            if (userData[key].trim) {
+                                userData[key] = userData[key].trim();
+                            }
+                        }
+                    }
+                    /**
+                     * Trim time off of date
+                     */
+                    userData.Created = userData.Created.toJSON();
+                    userData.DateOfBirth = userData.DateOfBirth.toJSON();
+                    if (userData.Created.contains('T')) {
+                        userData.Created = userData.Created.substring(0, 10);
+                        // console.log(userData.Created);
+                    }
+                    if (userData.DateOfBirth.contains('T')) {
+                        userData.DateOfBirth = userData.DateOfBirth.substring(0, 10);
+                    }
+                    mod.returnJSON(res, userData, param);
+                    // user.restify(res);
+                }
+                else mod.returnJSON(res, results, param);
+                //TODO GRAVATAR
+                //Hash Email (MD5)
+                //e.g. http://1.gravatar.com/avatar/526ff9079f5c33b8b603abfedc823a0e?size=128
+            }
+        );
     });
 
     /**
@@ -310,7 +352,7 @@ module.exports = function (express, client) {
          * the user returns a boolean for if existing.
          * Populating the model.
          */
-        user.findUser(o, function (err, found, userData) {
+        user.findUser(o, function (err, userData, found) {
             if (err) throw err;
             if (found) {
                 /**

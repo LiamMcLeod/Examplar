@@ -70,28 +70,13 @@ module.exports = function (express) {
         var o = {};
         o.user = req.params.id;
         var $ = req.session;
+        var file = "profile";
 
-        if (o.user && $.loggedIn) {
-            var user = new User();
-            user.findUser(o, function (err, user) {
-                delete user.password;
-                req.session.profile = user;
-                mod.renderProfile(req, res);
-            });
-        }
-        else if (!o.user && $.loggedIn) {
-            req.session.profile = req.session.user;
-            mod.renderProfile(req, res);
+        if ($.loggedIn) {
+            mod.renderLoggedIn(req, res, file);
         }
         else {
-            res.render('profile', {
-                bg: lib.rnd(),
-                status: $.status,
-                loggedIn: $.loggedIn
-            }, function (err, result) {
-                if (err) mod.error(req, res, err);
-                else res.send(result)
-            });
+            mod.renderLoggedOut(req, res, file);
         }
     });
 

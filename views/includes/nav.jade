@@ -26,7 +26,9 @@ nav.navbar.navbar-fixed-alt.navbar-trans
                                     |  Login
                         else
                             li
-                                a(href='/u/#{username}') #{username}
+                                a(href='/u/#{username}')
+                                    span.fa.fa-user
+                                    |   #{username}
                             li
                                 a(href='/user')
                                     span.fa.fa-cog

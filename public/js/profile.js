@@ -33,6 +33,10 @@ function escapeSquare(x) {
     x = x.replace(new RegExp('\\]'), '\\]');
     return x;
 }
+function isset(x){
+    return ((typeof x) != 'undefined');
+}
+
 
 var prof;
 prof = new Vue({
@@ -59,13 +63,15 @@ prof = new Vue({
     },
 
     methods: {
-        fetchUser: function(){
-
+        fetchProfile: function(user){
+            if(isset(user)){
+                
+            }
         },
         /************************
          *        Results Page    *
          ************************/
-        fetchProfile: function (id) {
+        fetchResult: function (id) {
             // TODO IF ID NOT INT
             if (!isInt(id)) {
                 return

@@ -13,5 +13,13 @@ main.bg-light
                 if !loggedIn
                     h1 You are not authorised to access
                 else
-                    h1 Hello #{username}
-                    img(src="http://1.gravatar.com/avatar/"+variable+"?size=128")
+                    h1 {{username}}
+                    span {{title}}
+                    span {{firstName}}
+                    span {{lastName}}
+                    span {{email}}
+                    span {{doB}}
+                    span {{created}}
+                    span {{role}}
+                    img(src="http://1.gravatar.com/avatar/{{digest}}?size=128")
+

@@ -8,6 +8,14 @@ Array.prototype.isEmpty = function () {
         return false;
     }
 };
+Object.prototype.isEmpty = function () {
+    if (this.length === 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 function updateString(input, term) {
     return input.replace(new RegExp('(^|\)(' + term + ')(\|$)', 'ig'), '$1<strong>$2</strong>$3');
 }

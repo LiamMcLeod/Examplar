@@ -86,7 +86,7 @@ function checkParams(req, res) {
  * @param param Object
  */
 function returnJSON(res, results, param) {
-    if (lib.isset(results)) {
+    if (!lib.isset(results)) {
         return res.status(404).json({message: "Error: Not Found."});
     }
     if (lib.isset(param)) {
@@ -95,6 +95,7 @@ function returnJSON(res, results, param) {
         }
         else return res.json(results);
     }
+    else return res.json(results);
 }
 
 

@@ -30,7 +30,7 @@ module.exports = function (express, client) {
         var param = {};
         param.pretty = false;
 
-        if (req.query != null) {
+        if (lib.isset(req.query)) {
             param.pretty = req.query['pretty'];
         }
 

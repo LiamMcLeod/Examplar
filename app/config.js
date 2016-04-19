@@ -43,7 +43,7 @@ if (process.env.NODE_ENV) {
     config.db.user  =   'postgres';
     config.db.pass  =   ''; // "", root, toor.
     config.db.base  =   'examDB';
-    config.db.dbms+config.db.user+':'+config.db.pass+'@'+config.db.host+':'+config.db.port+'/'+config.db.base;
+    config.db.url   =   config.db.dbms+config.db.user+':'+config.db.pass+'@'+config.db.host+':'+config.db.port+'/'+config.db.base;
   }
 
     config.port = {};

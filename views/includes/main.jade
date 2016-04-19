@@ -26,7 +26,7 @@ main.bg-light
                 span &nbsp;
         .contentOptions.row.hide
             //TODO SOrt doesn't refresh result list
-            #filter.col-xs-8.optionlist.pull-left.hide
+            #filter.col-sm-8.optionlist.pull-left.hide
                 .col-xs-3
                     span.fa.fa-filter
                     select(v-model= "filterBy" v-on:click="resetCheck()")
@@ -48,7 +48,7 @@ main.bg-light
                         input(v-model="filterTerm")
                 .col-xs-1
                     button(v-on:click="clearOptions()") Reset
-            #sort.col-xs-4.optionlist.pull-right.hide
+            #sort.col-sm-4.optionlist.pull-right.hide
                 .col-xs-5
                     label Sort:&nbsp;
                     select.sortSelect(v-model="sortBy")

@@ -1,4 +1,22 @@
-$( document ).ready(function() {
+$(document).ready(function () {
+    //
+    // function toggleMenu() {
+    //     $('#mobileWrapper').toggleClass('hide');
+    // }
+    //
+    // function toggleHide(id) {
+    //     $(id).toggleClass('hide');
+    // }
+    //
+    // function toggleOptions(id) {
+    //     if ($('.contentOptions').hasClass('hide')) {
+    //         toggleHide('.contentOptions');
+    //     }
+    //     toggleHide(id);
+    //     if ($('#sort').hasClass('hide') && $('#filter').hasClass('hide')) {
+    //         $('.contentOptions').toggleClass('hide')
+    //     }
+    // }
 
     var searchPos, navPos;
 
@@ -9,8 +27,7 @@ $( document ).ready(function() {
     }
 
 
-
-    function searchBarFix(){
+    function searchBarFix() {
         searchPos = $('.contentHeader').offset();
         $(window).scroll(function () {
             if ($(window).scrollTop() > searchPos.top) {
@@ -23,7 +40,7 @@ $( document ).ready(function() {
         })
     }
 
-    function invertNavbar(){
+    function invertNavbar() {
         navPos = $('#navTrigger').offset();
         $(window).scroll(function () {
             if ($(window).scrollTop() > navPos.top) {
@@ -38,7 +55,7 @@ $( document ).ready(function() {
         });
         // iPad
         $('body').on({
-            'touchmove': function(e) {
+            'touchmove': function (e) {
                 if ($(window).scrollTop() > navPos.top) {
                     //$('nav').addClass("navbar-inverse");
                     $('nav').removeClass("navbar-trans");

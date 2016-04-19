@@ -66,9 +66,8 @@ module.exports = function (express) {
      * User profile page
      * //TODO generate from restful api
      */
-    appRouter.get('/u/:id', function (req, res) {
-        var o = {};
-        o.user = req.params.id;
+    appRouter.get('/u/:user', function (req, res) {
+         req.params.user;
         var $ = req.session;
         var file = "profile";
 

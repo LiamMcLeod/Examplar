@@ -256,9 +256,10 @@ module.exports = function (express, client) {
      *  TODO Finish or scrap
      *  RESTFUL Profile Generation?
      */
-    apiRouter.get('/user', function (req, res) {
+    apiRouter.get('/user/:id', function (req, res) {
         var results;
-        var param = mod.checkParams(req, res);
+        var name = req.params.id;
+        //TODO RESTIFY
         mod.returnJSON(res, results, param);
     });
 

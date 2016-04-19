@@ -14,3 +14,11 @@ html(lang="en-GB" id="index")
             include includes/betawarning
             include includes/footer
             include includes/js
+            script.
+                console.log('#{getReg}');
+                var parsedVar = '#{getReq}'
+                if (parsedVar!=undefined && parsedVar != null && parsedVar != '') {
+                    var text = $('#searchBar')
+                    text.val(parsedVar);
+                    this.vm.search(parsedVar);
+                }

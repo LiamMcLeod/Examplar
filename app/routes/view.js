@@ -13,10 +13,24 @@ module.exports = function (express) {
      */
     appRouter.get('/', function (req, res) {
         var $ = req.session;
-        // var getReq = req.query['q'];
-        if (!lib.isEmpty(req.query)) {
-            var getReq = req.query['q'];
+
+        var file = "index";
+        if ($.loggedIn) {
+            mod.renderLoggedIn(req, res, file);
         }
+        else {
+            mod.renderLoggedOut(req, res, file);
+        }
+    });
+
+    /*
+     * GET
+     * ''
+     * Deliver's index with random background
+     * TODO Parse session data into index
+     */
+    appRouter.get('', function (req, res) {
+        var $ = req.session;
         var file = "index";
         if ($.loggedIn) {
             mod.renderLoggedIn(req, res, file);

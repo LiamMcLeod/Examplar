@@ -136,7 +136,7 @@ function renderLoggedIn(req, res, file) {
             else res.send(result); // send rendered HTML back to client
         });
     }
-    if (file === "result") {
+    else if (file === "result") {
         idReq = req.query['id'];
         res.render(file, {
             idReq: idReq,
@@ -157,23 +157,25 @@ function renderLoggedIn(req, res, file) {
             else res.send(result); // send rendered HTML back to client
         });
     }
-    res.render(file, {
-        session: $,
-        status: req.flash('status'),
-        loggedIn: $.loggedIn,
-        userId: $.user.UserId,
-        username: $.user.Username,
-        title: $.user.Title,
-        firstName: $.user.FirstName,
-        lastName: $.user.LastName,
-        emailAddress: $.user.EmailAddress,
-        doB: $.user.DateOfBirth,
-        created: $.user.Created,
-        role: $.user.Role
-    }, function (err, result) {
-        if (err) error(req, res, err);
-        else res.send(result)
-    });
+    else {
+        res.render(file, {
+            session: $,
+            status: req.flash('status'),
+            loggedIn: $.loggedIn,
+            userId: $.user.UserId,
+            username: $.user.Username,
+            title: $.user.Title,
+            firstName: $.user.FirstName,
+            lastName: $.user.LastName,
+            emailAddress: $.user.EmailAddress,
+            doB: $.user.DateOfBirth,
+            created: $.user.Created,
+            role: $.user.Role
+        }, function (err, result) {
+            if (err) error(req, res, err);
+            else res.send(result)
+        });
+    }
 }
 
 /**
@@ -186,13 +188,12 @@ function renderLoggedOut(req, res, file) {
     var $ = req.session;
     var getReq;
     var idReq;
-
-    if (file === "home" || file === "Home" || file == "index" || file === "index") {
+    file=file.toLowerCase();
+    if (file === "home" || file ==="index") {
         file = "index";
-        if (!lib.isset(req.query)) {
+        if (lib.isset(req.query)) {
             getReq = req.query['q'];
         }
-        console.log(getReq);
         res.render(file, {
             getReq: getReq,
             session: $,
@@ -203,8 +204,10 @@ function renderLoggedOut(req, res, file) {
             else res.send(result); // send rendered HTML back to client
         });
     }
-    if (file === "result") {
-        idReq = req.query['id'];
+    else if (file === "result") {
+        if (lib.isset(req.query)) {
+            idReq = req.query['id'];
+        }
         res.render(file, {
             idReq: idReq,
             session: $,

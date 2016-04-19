@@ -1,6 +1,6 @@
 var lib = require('./lib');
 
-/*
+/**
  * Return for query {query} results {results} as {res} JSON (REST)
  * @param query PG.CLIENT
  * @param results Object
@@ -16,7 +16,7 @@ function getResults(res, query, param) {
     });
 }
 
-/*
+/**
  * Error function for generating error page
  * using {err}
  * @param req Express Request Object
@@ -59,7 +59,7 @@ function error(req, res, err) {
 
 }
 
-/*
+/**
  * Check if query parameter has been provided
  * @param req Express Request Object
  * @param res Express Response Object
@@ -78,7 +78,7 @@ function checkParams(req, res) {
     return param;
 }
 
-/*
+/**
  * Return {res} JSON Variant for when a
  * query parameter {param} has been provided
  * @param res Express Response Object
@@ -99,7 +99,7 @@ function returnJSON(res, results, param) {
 }
 
 
-/*
+/**
  * {res} Render {file} providing session
  * and user data in {req}
  * @param req Express Request Object
@@ -176,7 +176,7 @@ function renderLoggedIn(req, res, file) {
     });
 }
 
-/*
+/**
  * {res} Render {file} no user data available
  * @param req Express Request Object
  * @param res Express Response Object
@@ -184,53 +184,49 @@ function renderLoggedIn(req, res, file) {
  */
 function renderLoggedOut(req, res, file) {
     var $ = req.session;
+    var getReq;
+    var idReq;
 
-    res.render(file, {
-        status: req.flash('status'),
-        loggedIn: $.loggedIn
-    }, function (err, result) {
-        if (err) error(req, res, err);
-        else res.send(result)
-    });
-}
-/*
- * {res} Render user profile page
- * and user data in {req}
- * @param req Express Request Object
- * @param res Express Response Object
- */
-function renderProfile(req, res) {
-    //TODO FIX No Vars rendering
-    var $ = req.session;
-    res.render('profile', {
-        bg: lib.rnd(),
-        session: $,
-        status: req.flash('status'),
-        loggedIn: $.loggedIn,
-        userId: $.user.UserId,
-        username: $.user.Username,
-        title: $.user.Title,
-        firstName: $.user.FirstName,
-        lastName: $.user.LastName,
-        emailAddress: $.user.EmailAddress,
-        doB: $.user.DateOfBirth,
-        created: $.user.Created,
-        role: $.user.Role,
-        pUsername: $.profile.User,
-        pTitle: $.profile.Title,
-        pFirstName: $.profile.FirstName,
-        pLastName: $.profile.LastName,
-        pEmailAddress: $.profile.EmailAddress,
-        pDoB: $.profile.DateOfBirth,
-        pCreated: $.profile.Created,
-        pRole: $.profile.Role
-    }, function (err, result) {
-        if (err) error(req, res, err);
-        else res.send(result)
-    });
+    if (file === "home" || file === "Home" || file == "index" || file === "index") {
+        file = "index";
+        if (!lib.isset(req.query)) {
+            getReq = req.query['q'];
+        }
+        console.log(getReq);
+        res.render(file, {
+            getReq: getReq,
+            session: $,
+            status: req.flash('status'),
+            loggedIn: $.loggedIn
+        }, function (err, result) {
+            if (err) error(req, res, err);
+            else res.send(result); // send rendered HTML back to client
+        });
+    }
+    if (file === "result") {
+        idReq = req.query['id'];
+        res.render(file, {
+            idReq: idReq,
+            session: $,
+            status: req.flash('status'),
+            loggedIn: $.loggedIn
+        }, function (err, result) {
+            if (err) error(req, res, err);
+            else res.send(result); // send rendered HTML back to client
+        });
+    }
+    else {
+        res.render(file, {
+            status: req.flash('status'),
+            loggedIn: $.loggedIn
+        }, function (err, result) {
+            if (err) error(req, res, err);
+            else res.send(result)
+        });
+    }
 }
 
-/*
+/**
  * {res} Render user profile page
  * and user data in {req}
  * @param req Express Request Object
@@ -252,5 +248,43 @@ exports.returnJSON = returnJSON;
 exports.error = error;
 exports.renderLoggedOut = renderLoggedOut;
 exports.renderLoggedIn = renderLoggedIn;
-exports.renderProfile = renderProfile;
 exports.renderFile = renderFile;
+// exports.renderProfile = renderProfile;
+
+
+/**
+ * {res} Render user profile page
+ * and user data in {req}
+ * @param req Express Request Object
+ * @param res Express Response Object
+ */
+// function renderProfile(req, res) {
+//     //TODO FIX No Vars rendering
+//     var $ = req.session;
+//     res.render('profile', {
+//         bg: lib.rnd(),
+//         session: $,
+//         status: req.flash('status'),
+//         loggedIn: $.loggedIn,
+//         userId: $.user.UserId,
+//         username: $.user.Username,
+//         title: $.user.Title,
+//         firstName: $.user.FirstName,
+//         lastName: $.user.LastName,
+//         emailAddress: $.user.EmailAddress,
+//         doB: $.user.DateOfBirth,
+//         created: $.user.Created,
+//         role: $.user.Role,
+//         pUsername: $.profile.User,
+//         pTitle: $.profile.Title,
+//         pFirstName: $.profile.FirstName,
+//         pLastName: $.profile.LastName,
+//         pEmailAddress: $.profile.EmailAddress,
+//         pDoB: $.profile.DateOfBirth,
+//         pCreated: $.profile.Created,
+//         pRole: $.profile.Role
+//     }, function (err, result) {
+//         if (err) error(req, res, err);
+//         else res.send(result)
+//     });
+// }

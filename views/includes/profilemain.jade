@@ -13,6 +13,7 @@ main.bg-light
                 if !loggedIn
                     h1 You are not authorised to access
                 else
+                    img(src="http://1.gravatar.com/avatar/{{User.Digest}}?size=128")
                     h1 {{User.Username}}
                     p  {{User.Title}}
                     p  {{User.FirstName}}
@@ -21,5 +22,3 @@ main.bg-light
                     p  {{User.DateOfBirth}}
                     p  {{User.Created}}
                     p  {{User.Role}}
-                    img(src="http://1.gravatar.com/avatar/{{results.Digest}}?size=128")
-

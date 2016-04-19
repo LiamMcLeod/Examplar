@@ -50,7 +50,7 @@ module.exports = function (express, client) {
         var param = {};
         param.pretty = false;
 
-        if (lib.isset(req.query))  {
+        if (lib.isset(req.query)) {
             param.pretty = req.query['pretty'];
         }
 
@@ -303,44 +303,63 @@ module.exports = function (express, client) {
         else {
             o.pass = req.body.password;
         }
-        res.send(o);
-        // user.restUser(res, o);
-        // user.findUser(o, function (err, found, userData) {
-        //     if (err) throw err;
-        //     if (found) {
-        //         user.validate(o, function (valid) {
-        //             if (valid) {
-        //                 var obj = {};
-        //                 for (var key in userData) {
-        //                     if (lib.isset(userData[key]) && userData[key] != null) {
-        //                         if (userData[key].trim) {
-        //                             userData[key] = userData[key].trim();
-        //                         }
-        //                     }
-        //                 }
-        //
-        //                 userData.Created = userData.Created.toString();
-        //                 userData.DateOfBirth = userData.DateOfBirth.toString();
-        //
-        //                 req.session.loggedIn = true;
-        //                 req.session.user = userData;
-        //                 req.flash('status', 'Success!');
-        //                 res.redirect(302, '/user');
-        //             } else {
-        //                 req.session.loggedIn = false;
-        //                 req.flash('status', 'Incorrect password.');
-        //                 res.redirect(303, '/user');
-        //                 // mod.returnJSON(res, {success: false, message: "Password incorrect"})
-        //             }
-        //         })
-        //     }
-        //     else {
-        //         req.session.loggedIn = false;
-        //         req.flash('status', 'Incorrect username.');
-        //         res.redirect(303, '/user');
-        //         // mod.returnJSON(res, {success: false, message: "Username does not exist"})
-        //     }
-        // });
+
+        /**
+         * Calls to User model, providing data posted by
+         * the user returns a boolean for if existing.
+         * Populating the model.
+         */
+        user.findUser(o, function (err, found, userData) {
+            if (err) throw err;
+            if (found) {
+                /**
+                 * Validate password with data posted
+                 * against data in the user model.
+                 */
+                user.validate(o, function (valid) {
+                    if (valid) {
+                        var obj = {};
+                        /**
+                         * Trim whitespace
+                         */
+                        for (var key in userData) {
+                            if (lib.isset(userData[key]) && userData[key] != null) {
+                                if (userData[key].trim) {
+                                    userData[key] = userData[key].trim();
+                                }
+                            }
+                        }
+                        /**
+                         * Trim time off of date
+                         */
+                        userData.Created = userData.Created.toString();
+                        userData.DateOfBirth = userData.DateOfBirth.toString();
+                        /**
+                         * Populate session var
+                         */
+                        req.session.loggedIn = true;
+                        req.session.user = userData;
+                        req.flash('status', 'Success!');
+                        res.redirect(302, '/user');
+                    } else {
+                        /**
+                         * Notify user incorrect password
+                         */
+                        req.session.loggedIn = false;
+                        req.flash('status', 'Incorrect password.');
+                        res.redirect(303, '/user');
+                    }
+                })
+            }
+            else {
+                /**
+                 * Notify user incorrect username
+                 */
+                req.session.loggedIn = false;
+                req.flash('status', 'Incorrect username.');
+                res.redirect(303, '/user');
+            }
+        });
     });
 
     /**

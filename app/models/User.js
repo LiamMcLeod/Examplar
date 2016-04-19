@@ -115,7 +115,7 @@ setResults = function (results) {
     set("Role", results.rows[0].Role);
     set("Username", results.rows[0].Username);
     set("FirstName", results.rows[0].FirstName);
-    if (results.rows[0].PostNominal!='undefined')
+    if (results.rows[0].PostNominal != 'undefined')
         set("PostNominal", results.rows[0].PostNominal);
 };
 
@@ -210,36 +210,10 @@ User.prototype.getUser = function (o) {
     });
 };
 
-User.prototype.restUser = function (res, o) {
+User.prototype.restUser = function (res) {
     var results = [];
-    var query = {
-        text: 'SELECT * from "User" WHERE "Username"=$1 LIMIT 1',
-        values: [o.user]
-    };
-
-    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-        /* if Connection Callback Error */
-        if (err) {
-            console.log(err);
-        }
-        /* Client runs query */
-        var q = client.query(query, function (err, result) {
-            /* Client Q has error */
-            if (err) throw err;
-            else return result;
-        });
-        /* Client Q has row */
-        q.on('row', function (row, result) {
-            results.push(row);
-            result.addRow(row);
-        });
-        /* Client Q has finished */
-        q.on('end', function (result) {
-            done();
-            delete results.password;
-            res.json(results);
-        });
-    });
+    delete User.Password;
+    res.json(User);
 };
 
 module.exports = User;

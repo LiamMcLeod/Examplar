@@ -45,16 +45,17 @@ prof = new Vue({
     el: '#wrapper',
 
     data: {
-        Exists: false,
-        username: '',
-        digest: '',
-        email: '',
-        created: '',
-        firstName: '',
-        lastName: '',
-        title: '',
-        doB: '',
-        role: ''
+        exists: false,
+        User: []
+        // username: '',
+        // digest: '',
+        // email: '',
+        // created: '',
+        // firstName: '',
+        // lastName: '',
+        // title: '',
+        // doB: '',
+        // role: ''
     },
 
     route: {},
@@ -73,7 +74,7 @@ prof = new Vue({
                     if (!res.data.isEmpty()) {
                         this.$set('exists', true)
                     }
-                    this.$set('results', res.data[0])
+                    this.$set('User', res.data[0])
                 })
                 .catch(function (err) {
                     console.log("Error: " + err);

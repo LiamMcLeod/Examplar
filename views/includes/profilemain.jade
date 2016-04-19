@@ -13,13 +13,13 @@ main.bg-light
                 if !loggedIn
                     h1 You are not authorised to access
                 else
-                    h1 {{results.Username}}
-                    p {{results.Title}}
-                    p {{firstName}}
-                    p {{lastName}}
-                    p {{email}}
-                    p {{doB}}
-                    p {{created}}
-                    p {{role}}
-                    img(src="http://1.gravatar.com/avatar/{{digest}}?size=128")
+                    h1 {{User.Username}}
+                    p  {{User.Title}}
+                    p  {{User.FirstName}}
+                    p  {{User.LstName}}
+                    p  {{User.EmailAddress}}
+                    p  {{User.DateOfBirth}}
+                    p  {{User.Created}}
+                    p  {{User.Role}}
+                    img(src="http://1.gravatar.com/avatar/{{results.Digest}}?size=128")
 

@@ -84,7 +84,8 @@ prof = new Vue({
                     if (!res.data.isEmpty()) {
                         this.$set('exists', true)
                     }
-                    this.$set('User', res.data[0])
+                    this.$set('User', res.data[0]);
+                    console.log(res.data[0]);
                 })
                 .catch(function (err) {
                     console.log("Error: " + err);

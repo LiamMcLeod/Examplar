@@ -182,7 +182,7 @@ function get(prop) {
 User.prototype.getUser = function (o) {
     var results = [];
     var query = {
-        text: 'SELECT * from "User" WHERE "Username"=$1 LIMIT 1',
+        text: 'SELECT * from "User" WHERE LOWER("Username")=LOWER($1) LIMIT 1',
         values: [o.user]
     };
 

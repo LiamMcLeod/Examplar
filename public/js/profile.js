@@ -81,7 +81,7 @@ prof = new Vue({
             }
             this.$http.get('/api/user/' + user)
                 .then(function (res) {
-                    if (!res.data.isEmpty()) {
+                    if (res.data.isset()) {
                         this.$set('exists', true)
                     }
                     this.$set('User', res.data[0]);

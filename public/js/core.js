@@ -32,6 +32,8 @@ function escapeSquare(x){
 *TODO CLEAN TODOS
 * //Random Question Function
 * // More questions comes up with itself
+* TODO TAGGING / Categories
+* TODO profile
 */
 var data = {};
 var results = [];

@@ -5,6 +5,7 @@ html(lang="en-GB" id="index")
         include includes/head
         //ToDo Find CC Header Image
         //ToDo LOGIN, Basket,
+        //TODO FIX SEARCH BAR WITH GROUPED
 
     body#page-top
         #wrapper
@@ -13,6 +14,7 @@ html(lang="en-GB" id="index")
             include includes/main
             include includes/betawarning
             include includes/footer
+            script(src='/public/js/core.js')
             include includes/js
             script.
                 console.log('#{getReg}');

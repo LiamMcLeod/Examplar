@@ -25,11 +25,14 @@ var uuid = require('node-uuid');
 
 var flash = require('connect-flash');
 
-//strip html
+// TODO profile page
+// TODO Restify User
+// TODO
+// TODO strip html
 // TODO WHERE CURLY BRACE OMIT FROM SEARCH TEXT
-//Paginate results
-//TODO Finish Filter
-//TODO LOGIN
+// TODO Paginate results
+// TODO Finish Filter
+// TODO LOGIN
 
 if (process.env.NODE_ENV!="college") {
     var env = require('dotenv').config();

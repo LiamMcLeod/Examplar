@@ -1,0 +1,24 @@
+//TODO
+    JS Input Validation
+html(lang="en-GB" id="index")
+    head
+        include includes/framework
+        include includes/head
+        //ToDo Find CC Header Image
+        //ToDo LOGIN, Basket,
+
+    body#page-top
+        #wrapper
+            include includes/nav
+            include includes/title
+            if loggedIn
+                include includes/profilemain
+            else
+                include includes/usermain
+        include includes/footer
+        include includes/betawarning
+        script(src='/public/js/profile.js')
+        include includes/js
+            script.
+                //this.prof.fetchProfile("#{userReq}"); or this
+                prof.fetchProfile("#{userReq}");

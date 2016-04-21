@@ -5,7 +5,7 @@ var User = require('../models/User');
 module.exports = function (express) {
     var appRouter = express.Router();
 
-    /*
+    /**
      * GET
      * '/'
      * Deliver's index with random background
@@ -23,7 +23,7 @@ module.exports = function (express) {
         }
     });
 
-    /*
+    /**
      * GET
      * ''
      * Deliver's index with random background
@@ -40,7 +40,7 @@ module.exports = function (express) {
         }
     });
 
-    /*
+    /**
      * GET
      * '/'
      * Deliver's index with random background
@@ -59,6 +59,26 @@ module.exports = function (express) {
 
     // File Routes
     // File called with no extension
+
+    /**
+     * GET
+     * '/u/'+username
+     * User profile page
+     * //TODO generate from restful api
+     */
+    appRouter.get('/u/:user', function (req, res) {
+         // req.params.user;
+        var $ = req.session;
+        var file = "profile";
+
+        if ($.loggedIn) {
+            mod.renderLoggedIn(req, res, file);
+        }
+        else {
+            mod.renderLoggedOut(req, res, file);
+        }
+    });
+
     appRouter.get('/:file', function (req, res) {
         //TODO q doesn't work on / ONLY index
         var $ = req.session;
@@ -82,37 +102,6 @@ module.exports = function (express) {
             mod.renderLoggedOut(req, res, file);
         }
 
-        // var getReq = '', idReq = '';
-        // if (file === "home" || file === "Home" || file == "index" || file === "index") {
-        //     file = "index";
-        //     if (req.query != []) {
-        //         getReq = req.query['q'];
-        //     }
-        //     res.render(file, {
-        //         getReq: getReq
-        //     }, function (err, result) {
-        //         if (err) mod.error(req, res, err);
-        //         else res.send(result); // send rendered HTML back to client
-        //     });
-        // }
-        // if (file === "result") {
-        //     idReq = req.query['id'];
-        //     res.render(file, {
-        //         idReq: idReq
-        //     }, function (err, result) {
-        //         if (err) mod.error(req, res, err);
-        //         else res.send(result); // send rendered HTML back to client
-        //     });
-        // }
-        // else {
-        //     console.log(file);
-        //     res.render(file, {}, function (err, result) {
-        //         if (err) {
-        //             mod.error(req, res, err);
-        //         }
-        //         else res.send(result); // send rendered HTML back to client
-        //     });
-        // }
     });
 
     return appRouter;

@@ -1,5 +1,6 @@
 var lib = require('./../modules/lib');
 var bcrypt = require('bcrypt-nodejs');
+var md5 = require('md5');
 var pg = require('pg');
 
 /*
@@ -18,10 +19,11 @@ function User() {
     this.Role = '';
     this.PostNominal = '';
     this.Username = '';
+    this.Digest = '';
 }
 
 /*
- * Hash password in pass propery of object {o}
+ * Hash password in pass property of object {o}
  * @param o Object
  */
 User.prototype.hash = function (o) {
@@ -94,7 +96,9 @@ User.prototype.findUser = function (o, callback) {
                 found = true;
             }
             else found = false;
-            callback(error, found, result.rows[0]);
+            // callback(error, result.rows[0], found);
+            result.rows[0].Digest=User.Digest;
+            callback(error, result.rows[0], found);
         });
     });
 };
@@ -106,6 +110,7 @@ User.prototype.findUser = function (o, callback) {
 setResults = function (results) {
     set("UserId", results.rows[0].UserId);
     set("EmailAddress", results.rows[0].EmailAddress);
+    set("Digest", md5(results.rows[0].EmailAddress));
     set("Password", results.rows[0].Password);
     set("Created", results.rows[0].Created);
     set("OtherNames", results.rows[0].OtherName);
@@ -115,8 +120,9 @@ setResults = function (results) {
     set("Role", results.rows[0].Role);
     set("Username", results.rows[0].Username);
     set("FirstName", results.rows[0].FirstName);
-    if (results.rows[0].PostNominal != 'undefined')
+    if (results.rows[0].PostNominal != 'undefined') {
         set("PostNominal", results.rows[0].PostNominal);
+    }
 };
 
 /*
@@ -185,7 +191,7 @@ User.prototype.getUser = function (o) {
         if (err) {
             console.log(err);
         }
-        /* CLient runs query */
+        /* Client runs query */
         var q = client.query(query, function (err, result) {
             /* Client Q has error */
             if (err) throw err;
@@ -200,7 +206,7 @@ User.prototype.getUser = function (o) {
         q.on('end', function (result) {
             done();
             var found = false;
-            if (result.rows[0] != undefined) {
+            if (lib.isset(result.rows[0])) {
                 setResults(result);
                 found = true;
             }
@@ -210,9 +216,11 @@ User.prototype.getUser = function (o) {
     });
 };
 
-User.prototype.restUser = function (res) {
+User.prototype.restify = function (res) {
+    //TODO FIX
     var results = [];
-    delete User.Password;
+    // set('Password', '');
+    // delete User.Password;
     res.json(User);
 };
 

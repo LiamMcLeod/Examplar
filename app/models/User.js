@@ -93,11 +93,11 @@ User.prototype.findUser = function (o, callback) {
             var found = false;
             if (result.rows[0] != undefined) {
                 setResults(result);
+                result.rows[0].Digest=User.Digest;
                 found = true;
             }
             else found = false;
             // callback(error, result.rows[0], found);
-            result.rows[0].Digest=User.Digest;
             callback(error, result.rows[0], found);
         });
     });

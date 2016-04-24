@@ -1,13 +1,19 @@
-nav.navbar.navbar-fixed-alt.navbar-trans
+nav.navbar.navbar-fixed-alt.navbar-trans.no-mobile
     .container-fluid
         // Header
         .navbar-header
             a.no-tablet.no-mobile.navbar-brand.pull-left(href='#')
                 span.no-tablet.no-mobile Examplar
-            a.navbar-brand.pull-left.no-desktop.no-wide(href='#' onClick="toggleMenu()")
-                span.no-wide.no-desktop.hamburger.menu-trigger ≡
-            a.navbar-brand.pull-right.no-desktop.no-wide(href='#page-top')
-                span.no-wide.no-desktop.hamburger.menu-trigger.fa.fa-arrow-up
+            a.navbar-brand.pull-left.tablet-only(href='#' onClick="toggleMenu()")
+                .icon
+                    span
+                    span
+                    span
+                    span
+            a.navbar-brand.right.tablet-only(href='#page-top')
+                //.arrow
+                //    span
+                //    span
         .collapse.navbar-collapse.no-mobile.no-tablet
             ul.nav.navbar-nav.navbar-right.no-mobile.no-tablet
                 li.dropdown.no-mobile.no-tablet
@@ -55,3 +61,15 @@ nav.navbar.navbar-fixed-alt.navbar-trans
                             a(href='#page-address')
                                 span.fa.fa-home
                                 |  Address
+.rounded-box.left.mobile-only
+    a.navbar-brand(onClick="toggleMenu()")
+        .icon
+            span
+            span
+            span
+            span
+.rounded-box.right.mobile-only
+    a.navbar-brand(href="#body-top")
+        .arrow
+            span
+            span

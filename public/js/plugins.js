@@ -44,11 +44,9 @@ $(document).ready(function () {
         navPos = $('#navTrigger').offset();
         $(window).scroll(function () {
             if ($(window).scrollTop() > navPos.top) {
-                //$('nav').addClass("navbar-inverse");
                 $('nav').removeClass("navbar-trans");
                 $('.dropdown-menu').addClass("dark");
             } else {
-                //$('nav').removeClass("navbar-inverse");
                 $('nav').addClass("navbar-trans");
                 $('.dropdown-menu').removeClass("dark");
             }
@@ -57,11 +55,9 @@ $(document).ready(function () {
         $('body').on({
             'touchmove': function (e) {
                 if ($(window).scrollTop() > navPos.top) {
-                    //$('nav').addClass("navbar-inverse");
                     $('nav').removeClass("navbar-trans");
                     $('.dropdown-menu').addClass("dark");
                 } else {
-                    //$('nav').removeClass("navbar-inverse");
                     $('nav').addClass("navbar-trans");
                     $('.dropdown-menu').removeClass("dark");
                 }

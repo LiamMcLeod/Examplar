@@ -90,7 +90,7 @@ body {
     color: #eee; //222 or eee
   }
 
-   .fa.fa-arrow-up {
+  .fa.fa-arrow-up {
     font-size: 2em;
     color: #fff;
   }
@@ -136,6 +136,12 @@ body {
     margin: auto;
     margin-top: 50px;
     width: 50%;
+  }
+  #filterBy{
+    width: 88%;
+  }
+  #filterTerm {
+    width: 60%;
   }
   main .contentHeader {
     margin-top: 10px;

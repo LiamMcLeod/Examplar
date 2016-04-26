@@ -66,7 +66,7 @@ User.prototype.findUser = function (o, callback) {
         }
     } else {
         query = {
-            text: 'SELECT * from "User" WHERE "Username"=$1 LIMIT 1',
+            text: 'SELECT * from "User" WHERE LOWER("Username")=LOWER($1) LIMIT 1',
             values: [o.user]
         };
     }
@@ -93,11 +93,11 @@ User.prototype.findUser = function (o, callback) {
             var found = false;
             if (result.rows[0] != undefined) {
                 setResults(result);
+                result.rows[0].Digest=User.Digest;
                 found = true;
             }
             else found = false;
             // callback(error, result.rows[0], found);
-            result.rows[0].Digest=User.Digest;
             callback(error, result.rows[0], found);
         });
     });
@@ -182,7 +182,7 @@ function get(prop) {
 User.prototype.getUser = function (o) {
     var results = [];
     var query = {
-        text: 'SELECT * from "User" WHERE "Username"=$1 LIMIT 1',
+        text: 'SELECT * from "User" WHERE LOWER("Username")=LOWER($1) LIMIT 1',
         values: [o.user]
     };
 

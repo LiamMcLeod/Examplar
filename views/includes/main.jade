@@ -1,12 +1,11 @@
 main.bg-light
     .container-fluid
         .searchContainer.text-center
-            //ToDo Test GET remove .prevent
-            //v-on:submit.prevent
             form(method='get', action='/index' v-on:submit.prevent)
-                ////v-on:submit.prevent
-                input#searchBar.bar-search.input-lg(type='text', v-model="searchTerm" title='search', name='q', size='', maxlength='120' autofocus)
-                button.btn-lg.fa.fa-search.btn-search(type="" v-on:click="search('')")
+                #searchGroup.input-group.input-group-lg.col-sm-offset-4.col-sm-4
+                    input#searchBar.center-block.form-control.input-lg.wire(type='text', v-model="searchTerm" title='search' name='q' size='' placeholder='Search')
+                    span.input-group-btn
+                        button.btn.btn-lg.fa.fa-search.wire(type='' v-on:click="search('')")
         .contentHeader
             .navbar-header
                 span
@@ -14,7 +13,7 @@ main.bg-light
                     //{{noOfResults}}
             .search-term.pull-left.no-mobile.no-tablet
                     span.text-danger(v-if="error != ''") {{{error}}}
-                    span(v-else) Search: {{searchTerm}}
+                    //span(v-else) Search: {{searchTerm}}
             .combo.pull-right
                 a(onclick="toggleOptions('#filter')")
                     i.fa.fa-filter &nbsp;
@@ -26,18 +25,18 @@ main.bg-light
                 span &nbsp;
         .contentOptions.row.hide
             //TODO SOrt doesn't refresh result list
-            #filter.col-sm-8.optionlist.pull-left.hide
-                .col-xs-3
+            #filter.col-lg-8.optionlist.pull-left.hide
+                .col-sm-3
                     span.fa.fa-filter
-                    select(v-model= "filterBy" v-on:click="resetCheck()")
+                    select#filterBy(v-model= "filterBy" v-on:click="resetCheck()")
                         option(v-for="option in filterOptions" v-bind:value="option.value") {{option.text}}
-                .col-xs-2(v-if="filterBy===''")
-                    span Select option
-                .col-xs-2(v-else)
+                .col-sm-2(v-if="filterBy===''")
+                    span Select
+                .col-sm-2(v-else)
                     label Type: &nbsp;
                     input(type="checkbox" v-model="filterFlag" v-if="filterBy!='ExamPaperUnit'" v-on:click="fetchFilter(filterBy)")
                     label(v-else) &nbsp;N/A
-                .col-xs-4
+                .col-sm-4
                     div(v-if="filterFlag===true && filterBy!=ExamPaperUnit")
                         label Select:&nbsp;
                         select.filterSelect(v-model="filterTerm")
@@ -45,10 +44,10 @@ main.bg-light
                     div(v-else)
                         //TODO CheckFilterFlag method
                         label &nbsp; Term: &nbsp;
-                        input(v-model="filterTerm")
-                .col-xs-1
+                        input#filterTerm(v-model="filterTerm")
+                .col-sm-1
                     button(v-on:click="clearOptions()") Reset
-            #sort.col-sm-4.optionlist.pull-right.hide
+            #sort.col-lg-4.optionlist.pull-right.hide
                 .col-xs-5
                     label Sort:&nbsp;
                     select.sortSelect(v-model="sortBy")

@@ -1,22 +1,4 @@
 $(document).ready(function () {
-    //
-    // function toggleMenu() {
-    //     $('#mobileWrapper').toggleClass('hide');
-    // }
-    //
-    // function toggleHide(id) {
-    //     $(id).toggleClass('hide');
-    // }
-    //
-    // function toggleOptions(id) {
-    //     if ($('.contentOptions').hasClass('hide')) {
-    //         toggleHide('.contentOptions');
-    //     }
-    //     toggleHide(id);
-    //     if ($('#sort').hasClass('hide') && $('#filter').hasClass('hide')) {
-    //         $('.contentOptions').toggleClass('hide')
-    //     }
-    // }
 
     var searchPos, navPos;
 
@@ -64,7 +46,5 @@ $(document).ready(function () {
             }
         });
     }
-
-    //$(".panel-upload").dmUploader();
 
 });

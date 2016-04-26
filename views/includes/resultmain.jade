@@ -1,12 +1,11 @@
 main.bg-light
     .container-fluid
         .searchContainer.text-center
-            //v-on:submit.prevent
-            form(method='get', action='/index' v-on:submit)
-                ////v-on:submit.prevent
-                input#searchBar.bar-search.input-lg(type='text', v-model="searchTerm" title='search', name='q', size='', maxlength='120')
-                //value='{{searchTerm}}'
-                button.btn-lg.fa.fa-search.btn-search(type="" v-on:click="search")
+             form(method='get', action='/index' v-on:submit)
+                .input-group.input-group-lg.col-sm-offset-4.col-sm-4
+                    input.center-block.form-control.input-lg.wire(type='text', v-model="searchTerm" title='search' name='q' size='' placeholder='Search')
+                    span.input-group-btn
+                        button.btn.btn-lg.fa.fa-search.wire(type='' v-on:click="search")
         .contentHeader
             .navbar-header
                 span

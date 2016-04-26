@@ -1,23 +1,6 @@
 script(src='/public/libs/jquery-2.2.1.min.js')
 script(src='/public/libs/bootstrap.min.js')
-script.
-    function toggleMenu() {
-        $('#mobileWrapper').toggleClass('hide');
-        $('.icon').toggleClass('open')
-    }
-    function toggleHide(id) {
-        $(id).toggleClass('hide');
-    }
-    function toggleOptions(id) {
-        if ($('.contentOptions').hasClass('hide')) {
-            toggleHide('.contentOptions');
-        }
-        toggleHide(id);
-        if ($('#sort').hasClass('hide') && $('#filter').hasClass('hide')) {
-            $('.contentOptions').toggleClass('hide')
-        }
-    }
-
+script(src='/public/js/main.js')
 script(src='/public/js/plugins.js')
 script.
     (function (i, s, o, g, r, a, m) {

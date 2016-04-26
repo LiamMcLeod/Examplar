@@ -33,10 +33,10 @@ module.exports = function (express, client) {
         if (lib.isset(req.query)) {
             param.pretty = req.query['pretty'];
         }
-
+        var likeTerm = "%" + searchTerm + "%";
         var query = {
-            text: 'SELECT "QuestionId", "QuestionNumber", "QuestionText", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate", "ExamBoardName", "LevelTitle", "SubjectTitle" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId" = "ExamPaper"."ExamPaperId" INNER JOIN "ExamBoard" ON "ExamPaper"."ExamBoardId" = "ExamBoard"."ExamBoardId" INNER JOIN "Level" ON "ExamPaper"."LevelId" = "Level"."LevelId" INNER JOIN "Subject" ON "ExamPaper"."SubjectId" = "Subject"."SubjectId" WHERE "QuestionText" ~* $1 ORDER BY "QuestionNumber"',
-            values: [searchTerm]
+            text: 'SELECT "QuestionId", "QuestionNumber", "QuestionText", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate", "ExamBoardName", "LevelTitle", "SubjectTitle" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId" = "ExamPaper"."ExamPaperId" INNER JOIN "ExamBoard" ON "ExamPaper"."ExamBoardId" = "ExamBoard"."ExamBoardId" INNER JOIN "Level" ON "ExamPaper"."LevelId" = "Level"."LevelId" INNER JOIN "Subject" ON "ExamPaper"."SubjectId" = "Subject"."SubjectId" WHERE "QuestionText" LIKE $1 ORDER BY "QuestionNumber"',
+            values: [likeTerm]
         };
         var q = client.query(query, function (err, result) {
         });

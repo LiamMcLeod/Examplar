@@ -1,15 +1,8 @@
 main.bg-light
     .container-fluid
         .searchContainer.text-center
-            //ToDo Test GET remove .prevent
-            //v-on:submit.prevent
-            //form(method='get', action='/index' v-on:submit.prevent)
-            //    ////v-on:submit.prevent
-            //    input#searchBar.bar-search.input-lg(type='text', v-model="searchTerm" title='search', name='q', size='', maxlength='120' autofocus)
-            //    button.btn-lg.fa.fa-search.btn-search(type="" v-on:click="search('')")
-                    form.col-lg-12
             form(method='get', action='/index' v-on:submit.prevent)
-                .input-group.input-group-lg.col-sm-offset-4.col-sm-4
+                #searchGroup.input-group.input-group-lg.col-sm-offset-4.col-sm-4
                     input#searchBar.center-block.form-control.input-lg.wire(type='text', v-model="searchTerm" title='search' name='q' size='' placeholder='Search')
                     span.input-group-btn
                         button.btn.btn-lg.fa.fa-search.wire(type='' v-on:click="search('')")
@@ -20,7 +13,7 @@ main.bg-light
                     //{{noOfResults}}
             .search-term.pull-left.no-mobile.no-tablet
                     span.text-danger(v-if="error != ''") {{{error}}}
-                    span(v-else) Search: {{searchTerm}}
+                    //span(v-else) Search: {{searchTerm}}
             .combo.pull-right
                 a(onclick="toggleOptions('#filter')")
                     i.fa.fa-filter &nbsp;

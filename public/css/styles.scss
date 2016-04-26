@@ -69,6 +69,7 @@ body {
   }
   .navbar-fixed-alt {
     position: fixed;
+    border-radius: 0;
     bottom: 0;
     left: 0;
     right: 0;
@@ -400,7 +401,7 @@ body {
     font-size: 2em;
   }
   #mobileMenu {
-  margin-bottom: 50px;
+    margin-bottom: 50px;
   }
 
   // === Nav === //
@@ -531,7 +532,7 @@ body {
   }
   .decreaseScale {
     margin: 0 auto;
-    width: 80%
+    width: 20%;
   }
   main .contentHeader {
     margin: 30px auto 20px auto;

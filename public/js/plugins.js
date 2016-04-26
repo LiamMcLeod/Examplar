@@ -4,20 +4,24 @@ $(document).ready(function () {
 
     if (screen.width >= 960) {
         invertNavbar();
-        //searchBarFix();
+        searchBarFix();
         //ToDo sort the searchbar out
     }
 
 
     function searchBarFix() {
-        searchPos = $('.contentHeader').offset();
+        searchPos = $('main').offset();
         $(window).scroll(function () {
             if ($(window).scrollTop() > searchPos.top) {
-                $('.searchContainer').addClass("decreaseScale");
                 $('.searchContainer').addClass("navbar-fixed-top");
+                $('#searchGroup').removeClass("input-group-lg");
+                $('#searchGroup').addClass("input-group-sm");
+                $('#searchGroup').addClass("decreaseScale");
             } else {
                 $('.searchContainer').removeClass("navbar-fixed-top");
-                $('.searchContainer').removeClass("decreaseScale");
+                $('#searchGroup').removeClass("input-group-sm");
+                $('#searchGroup').addClass("input-group-lg");
+                $('#searchGroup').removeClass("decreaseScale");
             }
         })
     }

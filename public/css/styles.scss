@@ -130,6 +130,11 @@ body {
     padding-top: 5px;
     margin-left: -.9%;
   }
+  .decreaseScale {
+    margin: auto;
+    margin-top: 50px;
+    width: 50%;
+  }
   main .contentHeader {
     margin-top: 10px;
   }
@@ -145,7 +150,6 @@ body {
     margin-top: 10px;
     height: 100%;
   }
-
   main .nav-numbers {
     position: relative;
     bottom: -0px;
@@ -438,7 +442,7 @@ body {
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 900px) {
 
   // === Nav === //
   nav {
@@ -487,6 +491,7 @@ body {
   }
   main .searchContainer {
     margin-top: 10px;
+    height: 40px;
   }
   main .searchContainer form {
 
@@ -531,7 +536,7 @@ body {
     font-size: 1em;
   }
   .decreaseScale {
-    margin: 0 auto;
+    margin: 10px auto;
     width: 20%;
   }
   main .contentHeader {

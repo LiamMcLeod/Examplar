@@ -6,7 +6,6 @@ var authRouter = express.Router();
 module.exports = authRouter;
 
 var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
 
 var methodOverride = require('method-override');
 var favicon = require('serve-favicon');
@@ -18,9 +17,11 @@ var pg = require('pg');
 var path = require('path');
 var fs = require('fs');
 
-if (!process.env.NODE_ENV) {
-    var env = require('dotenv').config();
-}
+//Uncomment when not a college
+//if (!process.env.NODE_ENV) {
+//    var env = require('dotenv').config();
+//}
+
 
 //  ===================== Config =====================                           // Import Configs for easy editing.
 // Application Root for absolute paths
@@ -51,12 +52,31 @@ app.use(morgan('dev'));                                             // Log HTTP 
 app.set('view engine', 'jade');
 app.use('/public', express.static(config.dir.public));
 
-// ====================== Routes ======================
+// ====================== Routes ======================#
 var mod = require('./app/modules/routeModules');
+var lib = require('./app/modules/lib');
 app.get('/:file', function (req, res) {
     var file = req.params.file;
     mod.renderFile(req, res, file);
-  });
+});
+app.get('/api/search/:term', function (req, res) {
+    var searchTerm = req.params.term;
+    var param = {};
+    param.pretty = false;
+
+    if (lib.isset(req.query)) {
+        param.pretty = req.query['pretty'];
+    }
+    var likeTerm = "%" + searchTerm + "%";
+
+    var query = {
+        text: 'SELECT * FROM search WHERE "QuestionText" ~* \'(?!<[^>]*?>)($1)(?![^<]*?>)\' OR "ExamBoardName" ILIKE \'%$2%\' OR "ExamPaperUnit" ILIKE \'%$2%\' OR "LevelTitle"  ILIKE \'%$2%\' OR "SubjectTitle"  ILIKE \'%$2%\' ORDER BY "QuestionNumber"',
+        values: [searchTerm, likeTerm]
+    };
+    var q = client.query(query, function (err, result) {
+    });
+    mod.getResults(res, q, param);
+});
 // ====================== Listen ======================
 console.log('Express listening on ' + config.port.default);
 app.listen(config.port.default).on('error', function (err) {

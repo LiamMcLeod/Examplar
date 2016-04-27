@@ -34,7 +34,7 @@ var flash = require('connect-flash');
 // TODO Finish Filter
 // TODO LOGIN
 
-if (process.env.NODE_ENV!="college") {
+if (process.env.NODE_ENV != "college") {
     var env = require('dotenv').config();
 }
 

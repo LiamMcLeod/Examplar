@@ -324,14 +324,6 @@ vm = new Vue({
                         res.data[i].ExamPaperDate = y;
                         res.data[i].QuestionText = x;
                         this.$set('results[' + i + ']', res.data[i]);
-                                // if (!res.data[i].QuestionText.match(RegExp('(?!<[^>]*?>)('+searchTerm+')(?![^<]*?>)','ig'))) {
-                                // }
-                                // else {
-                                //     res.data[i].ExamPaperDate = y;
-                                //     res.data[i].QuestionText = x;
-                                //     this.$set('results[' + j + ']', res.data[i]);
-                                //     j++;
-                                // }
                     }
                     this.$set('noOfResults', this.results.length);
                 })

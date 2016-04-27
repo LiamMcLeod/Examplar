@@ -27,16 +27,14 @@ module.exports = function (express, client) {
      ************************/
     apiRouter.get('/search/:term', function (req, res) {
         var searchTerm = req.params.term;
+        var likeTerm = "%" + searchTerm + "%";
+        var regexTerm = "(?!<[^>]*?>)(" + searchTerm + ")(?![^<]*?>)";
         var param = {};
         param.pretty = false;
 
         if (lib.isset(req.query)) {
             param.pretty = req.query['pretty'];
         }
-        var likeTerm = "%" + searchTerm + "%";
-        var regexTerm = "(?!<[^>]*?>)(" + searchTerm + ")(?![^<]*?>)";
-        // text: 'SELECT * FROM search WHERE "QuestionText" ~* \'(?!<[^>]*?>)($1)(?![^<]*?>)\' OR "ExamBoardName" ILIKE \'%$2%\' OR "ExamPaperUnit" ILIKE \'%$2%\' OR "LevelTitle"  ILIKE \'%$2%\' OR "SubjectTitle"  ILIKE \'%$2%\' ORDER BY "QuestionNumber"',
-
 
         var query = {
             text: 'SELECT * FROM search WHERE "QuestionText" ~* $1 OR "ExamBoardName" ILIKE $2 OR "ExamPaperUnit" ILIKE $2 OR "LevelTitle"  ILIKE $2 OR "SubjectTitle"  ILIKE $2 ORDER BY "QuestionNumber"',

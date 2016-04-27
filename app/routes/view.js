@@ -79,6 +79,11 @@ module.exports = function (express) {
         }
     });
 
+    appRouter.get('/sitemap.xml', function (req, res){
+		 res.header('Content-Type', 'application/xml');
+	  	 res.sendFile(appRoot+'/views/sitemap.xml');
+    });
+
     appRouter.get('/:file', function (req, res) {
         //TODO q doesn't work on / ONLY index
         var $ = req.session;

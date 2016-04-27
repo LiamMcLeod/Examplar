@@ -52,10 +52,18 @@ module.exports = function (express, client) {
         * TODO
         * FIX PROBLEM IN CORE THAT IS FILTERING RESULTS WHERE NOT CONTAINED IN QUESTIONTEXT
         * EMBOLDEN HYPERLINK {IF} THAT COLUMN HAS BEEN SEARCHED
+        *
+        * SELECT * FROM search WHERE
+        * "QuestionText" ~* '(?!<[^>]*?>)($1)(?![^<]*?>)'
+        * OR "ExamBoardName" ILIKE '%$1%'
+        * OR   "ExamPaperUnit" ILIKE '%$1%'
+        * OR "LevelTitle"  ILIKE '%$1%'
+        * OR "SubjectTitle"  ILIKE '%$1%'
+        * ORDER BY "QuestionNumber"
         */
         var query = {
-            text: 'SELECT * FROM search WHERE "QuestionText" ILIKE $1 OR "ExamBoardName" ILIKE $1 OR   "ExamPaperUnit" ILIKE $1 OR "LevelTitle"  ILIKE $1 OR "SubjectTitle"  ILIKE $1 ORDER BY "QuestionNumber"',
-            values: [likeTerm]
+            text: 'SELECT * FROM search WHERE "QuestionText" ~* \'(?!<[^>]*?>)($1)(?![^<]*?>)\' OR "ExamBoardName" ILIKE \'%$2%\' OR "ExamPaperUnit" ILIKE \'%$2%\' OR "LevelTitle"  ILIKE \'%$2%\' OR "SubjectTitle"  ILIKE \'%$2%\' ORDER BY "QuestionNumber"',
+            values: [searchTerm, likeTerm]
         };
         var q = client.query(query, function (err, result) {
         });

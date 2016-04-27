@@ -35,32 +35,32 @@ module.exports = function (express, client) {
         }
         var likeTerm = "%" + searchTerm + "%";
         /*
-        *TODO LOOK INTO FULL TEXT SEARCH SOLUTION
-        * http://rachbelaid.com/postgres-full-text-search-is-good-enough/
-        * http://shisaa.jp/postset/postgresql-full-text-search-part-1.html
-        * https://www.google.co.uk/search?q=postgres+full+text+search+tutorial&oq=postgres+full+text+search+&aqs=chrome.2.69i57j69i60j0l4.7364j0j4&sourceid=chrome&ie=UTF-8
-        *
-        * OLD VERSION
-        * SELECT * FROM search WHERE "QuestionText" ILIKE $1
-        *
-        * TEMP VERSION
-        * text: 'SELECT * FROM search WHERE "QuestionText" ILIKE $1 OR "ExamBoardName" ILIKE $1 OR   "ExamPaperUnit" ILIKE $1 OR "LevelTitle"  ILIKE $1 OR "SubjectTitle"  ILIKE $1 ORDER BY "QuestionNumber"',
-        *
-        * NEW VERSION
-        *
-        *
-        * TODO
-        * FIX PROBLEM IN CORE THAT IS FILTERING RESULTS WHERE NOT CONTAINED IN QUESTIONTEXT
-        * EMBOLDEN HYPERLINK {IF} THAT COLUMN HAS BEEN SEARCHED
-        *
-        * SELECT * FROM search WHERE
-        * "QuestionText" ~* '(?!<[^>]*?>)($1)(?![^<]*?>)'
-        * OR "ExamBoardName" ILIKE '%$1%'
-        * OR   "ExamPaperUnit" ILIKE '%$1%'
-        * OR "LevelTitle"  ILIKE '%$1%'
-        * OR "SubjectTitle"  ILIKE '%$1%'
-        * ORDER BY "QuestionNumber"
-        */
+         *TODO LOOK INTO FULL TEXT SEARCH SOLUTION
+         * http://rachbelaid.com/postgres-full-text-search-is-good-enough/
+         * http://shisaa.jp/postset/postgresql-full-text-search-part-1.html
+         * https://www.google.co.uk/search?q=postgres+full+text+search+tutorial&oq=postgres+full+text+search+&aqs=chrome.2.69i57j69i60j0l4.7364j0j4&sourceid=chrome&ie=UTF-8
+         *
+         * OLD VERSION
+         * SELECT * FROM search WHERE "QuestionText" ILIKE $1
+         *
+         * TEMP VERSION
+         * text: 'SELECT * FROM search WHERE "QuestionText" ILIKE $1 OR "ExamBoardName" ILIKE $1 OR   "ExamPaperUnit" ILIKE $1 OR "LevelTitle"  ILIKE $1 OR "SubjectTitle"  ILIKE $1 ORDER BY "QuestionNumber"',
+         *
+         * NEW VERSION
+         *
+         *
+         * TODO
+         * FIX PROBLEM IN CORE THAT IS FILTERING RESULTS WHERE NOT CONTAINED IN QUESTIONTEXT
+         * EMBOLDEN HYPERLINK {IF} THAT COLUMN HAS BEEN SEARCHED
+         *
+         * SELECT * FROM search WHERE
+         * "QuestionText" ~* '(?!<[^>]*?>)($1)(?![^<]*?>)'
+         * OR "ExamBoardName" ILIKE '%$1%'
+         * OR   "ExamPaperUnit" ILIKE '%$1%'
+         * OR "LevelTitle"  ILIKE '%$1%'
+         * OR "SubjectTitle"  ILIKE '%$1%'
+         * ORDER BY "QuestionNumber"
+         */
         var query = {
             text: 'SELECT * FROM search WHERE "QuestionText" ~* \'(?!<[^>]*?>)($1)(?![^<]*?>)\' OR "ExamBoardName" ILIKE \'%$2%\' OR "ExamPaperUnit" ILIKE \'%$2%\' OR "LevelTitle"  ILIKE \'%$2%\' OR "SubjectTitle"  ILIKE \'%$2%\' ORDER BY "QuestionNumber"',
             values: [searchTerm, likeTerm]
@@ -70,7 +70,7 @@ module.exports = function (express, client) {
         mod.getResults(res, q, param);
     });
 
-       apiRouter.get('/match/:term', function (req, res) {
+    apiRouter.get('/match/:term', function (req, res) {
         var searchTerm = req.params.term;
         var param = {};
         param.pretty = false;

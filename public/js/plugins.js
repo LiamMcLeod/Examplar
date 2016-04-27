@@ -1,5 +1,19 @@
 $(document).ready(function () {
 
+    console.log(location.pathname);
+    var path = location.pathname;
+    switch(path){
+        case '/':
+        case '/index':
+        case '/home':
+        default:  $('').addClass("active");
+        break
+
+    }
+    if (path=='/'){
+        console.log("boom");
+    }
+
     // var searchPos, navPos;
     //
     // if (screen.width >= 1280) {

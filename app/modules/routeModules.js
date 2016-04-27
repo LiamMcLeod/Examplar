@@ -8,10 +8,11 @@ var lib = require('./lib');
  */
 function getResults(res, query, param) {
     var results = [];
-    query.on('row', function (row) {
+    query.on('row', function (row, result) {
+        result.addRow(row);
         results.push(row);
     });
-    query.on('end', function () {
+    query.on('end', function (result) {
         returnJSON(res, results, param);
     });
 }

@@ -34,8 +34,45 @@ module.exports = function (express, client) {
             param.pretty = req.query['pretty'];
         }
         var likeTerm = "%" + searchTerm + "%";
+        /*
+        *TODO LOOK INTO FULL TEXT SEARCH SOLUTION
+        * http://rachbelaid.com/postgres-full-text-search-is-good-enough/
+        * http://shisaa.jp/postset/postgresql-full-text-search-part-1.html
+        * https://www.google.co.uk/search?q=postgres+full+text+search+tutorial&oq=postgres+full+text+search+&aqs=chrome.2.69i57j69i60j0l4.7364j0j4&sourceid=chrome&ie=UTF-8
+        *
+        * OLD VERSION
+        * SELECT * FROM search WHERE "QuestionText" ILIKE $1
+        *
+        * TEMP VERSION
+        * text: 'SELECT * FROM search WHERE "QuestionText" ILIKE $1 OR "ExamBoardName" ILIKE $1 OR   "ExamPaperUnit" ILIKE $1 OR "LevelTitle"  ILIKE $1 OR "SubjectTitle"  ILIKE $1 ORDER BY "QuestionNumber"',
+        *
+        * NEW VERSION
+        *
+        *
+        * TODO
+        * FIX PROBLEM IN CORE THAT IS FILTERING RESULTS WHERE NOT CONTAINED IN QUESTIONTEXT
+        * EMBOLDEN HYPERLINK {IF} THAT COLUMN HAS BEEN SEARCHED
+        */
         var query = {
-            text: 'SELECT "QuestionId", "QuestionNumber", "QuestionText", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate", "ExamBoardName", "LevelTitle", "SubjectTitle" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId" = "ExamPaper"."ExamPaperId" INNER JOIN "ExamBoard" ON "ExamPaper"."ExamBoardId" = "ExamBoard"."ExamBoardId" INNER JOIN "Level" ON "ExamPaper"."LevelId" = "Level"."LevelId" INNER JOIN "Subject" ON "ExamPaper"."SubjectId" = "Subject"."SubjectId" WHERE "QuestionText" LIKE $1 ORDER BY "QuestionNumber"',
+            text: 'SELECT * FROM search WHERE "QuestionText" ILIKE $1 OR "ExamBoardName" ILIKE $1 OR   "ExamPaperUnit" ILIKE $1 OR "LevelTitle"  ILIKE $1 OR "SubjectTitle"  ILIKE $1 ORDER BY "QuestionNumber"',
+            values: [likeTerm]
+        };
+        var q = client.query(query, function (err, result) {
+        });
+        mod.getResults(res, q, param);
+    });
+
+       apiRouter.get('/match/:term', function (req, res) {
+        var searchTerm = req.params.term;
+        var param = {};
+        param.pretty = false;
+
+        if (lib.isset(req.query)) {
+            param.pretty = req.query['pretty'];
+        }
+        var likeTerm = "%" + searchTerm + "%";
+        var query = {
+            text: 'SELECT * FROM search WHERE "QuestionText" @@ $1 ORDER BY "QuestionNumber"',
             values: [likeTerm]
         };
         var q = client.query(query, function (err, result) {

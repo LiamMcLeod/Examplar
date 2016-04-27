@@ -62,7 +62,7 @@ app.use(session({
         secret: config.secret,
         proxy: true,
         resave: true,
-        saveUninitialized: true,
+        saveUninitialized: false, // Set to false for now, so only sessions with added data are saved;
         store: new pgStore(config.db.url),
         cookie: {/*secure:true, */maxAge: 1800000}
     })

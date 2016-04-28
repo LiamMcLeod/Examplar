@@ -93,17 +93,17 @@ app.use('/', appRouter);
 
 // ====================== Listen ======================
 
-//
-// console.log('Express listening on ' + config.port.default);
-// app.listen(config.port.default).on('error', function (err) {
-//     if (err) { // Try Alternate Port
-//         console.log('Error: ' + config.port.default + ' in use.');
-//         app.listen(config.port.alternate).on('error', function (err) {
-//             if (err) throw err;                                          // port 8080 and portAlt 3000 in use
-//         });
-//         console.log('Express listening on ' + config.port.alternate);
-//     }
-// });
+
+console.log('Express listening on ' + config.port.default);
+app.listen(config.port.default).on('error', function (err) {
+    if (err) { // Try Alternate Port
+        console.log('Error: ' + config.port.default + ' in use.');
+        app.listen(config.port.alternate).on('error', function (err) {
+            if (err) throw err;                                          // port 8080 and portAlt 3000 in use
+        });
+        console.log('Express listening on ' + config.port.alternate);
+    }
+});
 console.log("App running in " + process.env.NODE_ENV + " mode");
 exports = module.exports = app;
 //TODO READ INTO 12FactorApp http://12factor.net/config

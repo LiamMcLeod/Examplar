@@ -18,13 +18,14 @@
     "express-session": "^1.13.0",
     "express-subdomain": "^1.0.5",
     "jade": "~1.11.0",
+    "letsencrypt-express": "^1.1.5",
     "md5": "^2.1.0",
     "method-override": "^2.3.5",
     "morgan": "~1.6.1",
     "node-sass-middleware": "0.8.0",
+    "node-uuid": "^1.4.7",
     "pg": "^4.5.1",
     "psql-api": "^0.9.11",
-    "serve-favicon": "~2.3.0",
-    "xml": "^1.0.1"
+    "serve-favicon": "~2.3.0"
   }
 }

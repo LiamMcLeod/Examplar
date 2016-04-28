@@ -92,16 +92,23 @@ var appRouter = require('./app/routes/view')(express, client);
 app.use('/', appRouter);
 
 // ====================== Listen ======================
-console.log('Express listening on ' + config.port.default);
-app.listen(config.port.default).on('error', function (err) {
-    if (err) { // Try Alternate Port
-        console.log('Error: ' + config.port.default + ' in use.');
-        app.listen(config.port.alternate).on('error', function (err) {
-            if (err) throw err;                                          // port 8080 and portAlt 3000 in use
-        });
-        console.log('Express listening on ' + config.port.alternate);
-    }
-});
+var lex = require ('./app/letsEnc');
+lex.onRequest = app;
+    lex.listen([80], [443, 5001], function () {
+        var protocol = ('requestCert' in this) ? 'https' : 'http';
+        console.log("Listening at " + protocol + '://localhost:' + this.address().port);
+    });
+//
+// console.log('Express listening on ' + config.port.default);
+// app.listen(config.port.default).on('error', function (err) {
+//     if (err) { // Try Alternate Port
+//         console.log('Error: ' + config.port.default + ' in use.');
+//         app.listen(config.port.alternate).on('error', function (err) {
+//             if (err) throw err;                                          // port 8080 and portAlt 3000 in use
+//         });
+//         console.log('Express listening on ' + config.port.alternate);
+//     }
+// });
 console.log("App running in " + process.env.NODE_ENV + " mode");
 exports = module.exports = app;
 //TODO READ INTO 12FactorApp http://12factor.net/config

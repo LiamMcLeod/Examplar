@@ -92,12 +92,7 @@ var appRouter = require('./app/routes/view')(express, client);
 app.use('/', appRouter);
 
 // ====================== Listen ======================
-var lex = require ('./app/letsEnc');
-lex.onRequest = app;
-    lex.listen([80], [443, 5001], function () {
-        var protocol = ('requestCert' in this) ? 'https' : 'http';
-        console.log("Listening at " + protocol + '://localhost:' + this.address().port);
-    });
+
 //
 // console.log('Express listening on ' + config.port.default);
 // app.listen(config.port.default).on('error', function (err) {

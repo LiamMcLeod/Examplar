@@ -12,3 +12,13 @@ var lex = LEX.create({
     }
 });
 module.exports = lex;
+
+/*
+Move these into server when needed
+var lex = require ('./app/letsEnc');
+lex.onRequest = app;
+    lex.listen([80], [443, 5001], function () {
+        var protocol = ('requestCert' in this) ? 'https' : 'http';
+        console.log("Listening at " + protocol + '://localhost:' + this.address().port);
+    });
+ */

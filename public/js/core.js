@@ -8,7 +8,6 @@ Array.prototype.isEmpty = function () {
         return false;
     }
 };
-Object.prototype.isset = function(x) {return ((typeof x) != 'undefined');};
 
 function updateString(input, term) {
     return input.replace(new RegExp('(^|\)(' + term + ')(\|$)', 'ig'), '$1<strong>$2</strong>$3');
@@ -35,6 +34,7 @@ function escapeSquare(x) {
     x = x.replace(new RegExp('\\]'), '\\]');
     return x;
 }
+function isset(x){return ((typeof x) != 'undefined');}
 /*
  *TODO Sanitise input
  *TODO Figure hover image
@@ -339,12 +339,12 @@ vm = new Vue({
                 });
         },
         fetchProfile: function (user) {
-            if (user.isset) {
+            if (isset(user)) {
                 return;
             }
             this.$http.get('/api/user/' + user)
                 .then(function (res) {
-                    if (res.data.isset()) {
+                    if (isset(res.data)) {
                         this.$set('exists', true)
                     }
                     this.$set('User', res.data[0]);

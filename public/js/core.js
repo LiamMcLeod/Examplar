@@ -339,16 +339,19 @@ vm = new Vue({
                     throw err;
                 });
         },
+        /************************
+         *        Fetch Profile    *
+         ************************/
         fetchProfile: function (user) {
             if (!isset(user)) {
                 return;
             }
             this.$http.get('/api/user/' + user)
                 .then(function (res) {
+                    console.log(res.data[0]);
                     if (isset(res.data)) {
                         this.$set('exists', true);
                         this.$set('user', res.data[0]);
-                        console.log(res.data[0]);
                     }
                 })
                 .catch(function (err) {

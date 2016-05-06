@@ -96,7 +96,11 @@ vm = new Vue({
         noOfPages: 1,
         //https://yuche.github.io/vue-strap/#modal
         // Error
-        error: ''
+        error: '',
+
+        // User
+        exists: false,
+        user: []
 
     },
 
@@ -331,7 +335,25 @@ vm = new Vue({
                     console.log("Error: " + err);
                     throw err;
                 });
+        },
+        fetchProfile: function (user) {
+            if (!isset(user)) {
+                return;
+            }
+            this.$http.get('/api/user/' + user)
+                .then(function (res) {
+                    if (res.data.isset()) {
+                        this.$set('exists', true)
+                    }
+                    this.$set('User', res.data[0]);
+                    console.log(res.data[0]);
+                })
+                .catch(function (err) {
+                    console.log("Error: " + err);
+                    throw err;
+                });
         }
+
     }
 });
 

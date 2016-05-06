@@ -337,7 +337,7 @@ vm = new Vue({
                 });
         },
         fetchProfile: function (user) {
-            if (!isset(user)) {
+            if (user === "") {
                 return;
             }
             this.$http.get('/api/user/' + user)

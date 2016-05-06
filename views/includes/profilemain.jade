@@ -15,6 +15,7 @@ main.bg-light
                         h1 You are not authorised to access
                     else
                         img(src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
+                        img(v-bind:src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
                         h1 {{user.Username}}
                         p  {{user.Title}}
                         p  {{user.FirstName}}

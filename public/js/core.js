@@ -8,6 +8,8 @@ Array.prototype.isEmpty = function () {
         return false;
     }
 };
+Object.prototype.isset = function(x) {return ((typeof x) != 'undefined');};
+
 function updateString(input, term) {
     return input.replace(new RegExp('(^|\)(' + term + ')(\|$)', 'ig'), '$1<strong>$2</strong>$3');
 }
@@ -337,7 +339,7 @@ vm = new Vue({
                 });
         },
         fetchProfile: function (user) {
-            if (user === "") {
+            if (user.isset) {
                 return;
             }
             this.$http.get('/api/user/' + user)

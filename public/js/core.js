@@ -103,7 +103,6 @@ vm = new Vue({
 
         // User
         exists: false,
-        User: [],
         user: []
 
     },
@@ -353,8 +352,7 @@ vm = new Vue({
                     //console.log(res.data[0]);
                     if (isset(res.data)) {
                         this.$set('exists', true);
-                        this.$set('User', res.data);
-                        this.$set('user', res.data[0]);
+                        this.$set('user', res.data);
                     }
                 })
                 .catch(function (err) {

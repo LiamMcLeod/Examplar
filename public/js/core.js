@@ -46,6 +46,7 @@ function isset(x){return ((typeof x) != 'undefined');}
  */
 var data = {};
 var results = [];
+var user = []
 var examId, topicId;
 var filterOptions = [
     {text: '', value: ''},
@@ -345,10 +346,10 @@ vm = new Vue({
             this.$http.get('/api/user/' + user)
                 .then(function (res) {
                     if (isset(res.data)) {
-                        this.$set('exists', true)
+                        this.$set('exists', true);
+                        this.$set('user', res.data[0]);
+                        console.log(res.data[0]);
                     }
-                    this.$set('User', res.data[0]);
-                    console.log(res.data[0]);
                 })
                 .catch(function (err) {
                     console.log("Error: " + err);

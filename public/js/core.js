@@ -348,8 +348,6 @@ vm = new Vue({
             }
             this.$http.get('/api/user/' + user)
                 .then(function (res) {
-                    console.log("isset!");
-                    //console.log(res.data[0]);
                     if (isset(res.data)) {
                         this.$set('exists', true);
                         this.$set('user', res.data);

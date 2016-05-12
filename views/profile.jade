@@ -17,8 +17,7 @@ html(lang="en-GB" id="index")
                 include includes/usermain
         include includes/footer
         include includes/betawarning
-        script(src='/public/js/profile.js')
+        script(src='/public/js/core.js')
         include includes/js
             script.
-                this.prof.fetchProfile("#{userReq}");       //or this
-                //prof.fetchProfile("#{userReq}");
+                this.vm.fetchProfile("#{userReq}");

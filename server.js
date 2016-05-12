@@ -33,6 +33,7 @@ var flash = require('connect-flash');
 // TODO Paginate results
 // TODO Finish Filter
 // TODO LOGIN
+//TODO Option to generate exam paper
 
 if (process.env.NODE_ENV != "college") {
     var env = require('dotenv').config();

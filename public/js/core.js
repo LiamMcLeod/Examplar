@@ -8,6 +8,7 @@ Array.prototype.isEmpty = function () {
         return false;
     }
 };
+
 function updateString(input, term) {
     return input.replace(new RegExp('(^|\)(' + term + ')(\|$)', 'ig'), '$1<strong>$2</strong>$3');
 }
@@ -33,6 +34,7 @@ function escapeSquare(x) {
     x = x.replace(new RegExp('\\]'), '\\]');
     return x;
 }
+function isset(x){return ((typeof x) != 'undefined');}
 /*
  *TODO Sanitise input
  *TODO Figure hover image
@@ -44,6 +46,7 @@ function escapeSquare(x) {
  */
 var data = {};
 var results = [];
+var user = []
 var examId, topicId;
 var filterOptions = [
     {text: '', value: ''},
@@ -96,7 +99,11 @@ vm = new Vue({
         noOfPages: 1,
         //https://yuche.github.io/vue-strap/#modal
         // Error
-        error: ''
+        error: '',
+
+        // User
+        exists: false,
+        user: []
 
     },
 
@@ -331,7 +338,27 @@ vm = new Vue({
                     console.log("Error: " + err);
                     throw err;
                 });
+        },
+        /************************
+         *        Fetch Profile    *
+         ************************/
+        fetchProfile: function (user) {
+            if (!isset(user)) {
+                return;
+            }
+            this.$http.get('/api/user/' + user)
+                .then(function (res) {
+                    if (isset(res.data)) {
+                        this.$set('exists', true);
+                        this.$set('user', res.data);
+                    }
+                })
+                .catch(function (err) {
+                    console.log("Error: " + err);
+                    throw err;
+                });
         }
+
     }
 });
 

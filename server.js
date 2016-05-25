@@ -25,14 +25,10 @@ var uuid = require('node-uuid');
 
 var flash = require('connect-flash');
 
-// TODO profile page
-// TODO Restify User
 // TODO
-// TODO strip html
 // TODO WHERE CURLY BRACE OMIT FROM SEARCH TEXT
 // TODO Paginate results
 // TODO Finish Filter
-// TODO LOGIN
 //TODO Option to generate exam paper
 
 if (process.env.NODE_ENV != "college") {

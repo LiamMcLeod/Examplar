@@ -34,4 +34,51 @@ main.bg-light
                                     .col-xs-6.text-right
                                         input.btn.btn-default(type="submit" value="Submit")
                 else
-                    h1 Hello #{username}
+                    if status != 'Success!'
+                        .row
+                    else
+                        #login-status.row.jumbotron.text-success.alert-success.border-success.text-center(onclick="toggleHide(this)")
+                            h2.text-success #{status}
+                    .row.text-left
+                        .col-sm-12
+                            span To your&nbsp;
+                                a(href="u/#{username}") profile
+                    .row
+                        form#edit-user(action="/api/edit/user" method="POST" )
+                            .col-xs-3.user-label
+                                .row
+                                    label Title:&nbsp;
+                                .row
+                                    label First Name:
+                                .row
+                                    label Last Name:
+                                .row
+                                    label DoB:
+                                .row
+                                    label Username:
+                                .row
+                                    label Email Address
+                                .row
+                                    label Privileges:
+                                .row
+                                    label Created:
+                            .col-xs-9.user-info
+                                .row
+                                    input.norm-toggle(type="text" value="#{title}" disabled required)
+                                .row
+                                    input.norm-toggle(type="text" value="#{firstName}" disabled required)
+                                .row
+                                    input.norm-toggle(type="text" value="#{lastName}" disabled required)
+                                .row
+                                    input.norm-toggle(value="#{doB}" disabled required)
+                                .row
+                                    input.norm-toggle(type="text" value="#{username}" disabled required)
+                                .row
+                                    input.mod-toggle(type="email" value="#{emailAddress}" disabled required)
+                                .row
+                                    input.ad-toggle(type="text" value="#{role}" disabled required)
+                                .row
+                                    input(value="#{created}" disabled)
+                    .row.text-center
+                        .col-sm-2.pen-icon
+                            a(onclick="toggleDisable('#{role}')").fa.fa-2x.fa-check.fa-edit

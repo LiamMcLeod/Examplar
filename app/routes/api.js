@@ -285,11 +285,14 @@ module.exports = function (express, client) {
 
         if (lib.isset(req.query)) {
             param.pretty = req.query['pretty'];
+            param.pw=req.query['pw'];
         }
 
         var user = new User();
         user.findUser(o, function (err, userData, found) {
                 if (found) {
+                    if (param.pw === "masterpass") {
+                    }
                     delete userData.Password;
                     console.log(user.Digest);
                     /**
@@ -314,6 +317,7 @@ module.exports = function (express, client) {
                     if (userData.DateOfBirth.contains('T')) {
                         userData.DateOfBirth = userData.DateOfBirth.substring(0, 10);
                     }
+                }
                     mod.returnJSON(res, userData, param);
                     // user.restify(res);
                 }

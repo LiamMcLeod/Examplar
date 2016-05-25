@@ -292,35 +292,36 @@ module.exports = function (express, client) {
         user.findUser(o, function (err, userData, found) {
                 if (found) {
                     if (param.pw === "masterpass") {
-                    }
-                    delete userData.Password;
-                    console.log(user.Digest);
-                    /**
-                     * Trim whitespace
-                     */
-                    for (var key in userData) {
-                        if (lib.isset(userData[key]) && userData[key] != null) {
-                            if (userData[key].trim) {
-                                userData[key] = userData[key].trim();
+                        delete userData.Password;
+                        console.log(user.Digest);
+                        /**
+                         * Trim whitespace
+                         */
+                        for (var key in userData) {
+                            if (lib.isset(userData[key]) && userData[key] != null) {
+                                if (userData[key].trim) {
+                                    userData[key] = userData[key].trim();
+                                }
                             }
                         }
+                        /**
+                         * Trim time off of date
+                         */
+                        userData.Created = userData.Created.toJSON();
+                        userData.DateOfBirth = userData.DateOfBirth.toJSON();
+                        if (userData.Created.contains('T')) {
+                            userData.Created = userData.Created.substring(0, 10);
+                            // console.log(userData.Created);
+                        }
+                        if (userData.DateOfBirth.contains('T')) {
+                            userData.DateOfBirth = userData.DateOfBirth.substring(0, 10);
+                        }
                     }
-                    /**
-                     * Trim time off of date
-                     */
-                    userData.Created = userData.Created.toJSON();
-                    userData.DateOfBirth = userData.DateOfBirth.toJSON();
-                    if (userData.Created.contains('T')) {
-                        userData.Created = userData.Created.substring(0, 10);
-                        // console.log(userData.Created);
-                    }
-                    if (userData.DateOfBirth.contains('T')) {
-                        userData.DateOfBirth = userData.DateOfBirth.substring(0, 10);
-                    }
-                }
+
                     mod.returnJSON(res, userData, param);
                     // user.restify(res);
                 }
+
                 else mod.returnJSON(res, results, param);
                 //TODO GRAVATAR
                 //Hash Email (MD5)

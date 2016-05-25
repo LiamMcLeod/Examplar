@@ -291,7 +291,8 @@ module.exports = function (express, client) {
         var user = new User();
         user.findUser(o, function (err, userData, found) {
                 if (found) {
-                    if (param.pw === "masterpass") {
+                    //TODO REMOVE WHEN TESTING DONE
+                    if (param.pw != "DVORAK") {
                         delete userData.Password;
                         console.log(user.Digest);
                         /**

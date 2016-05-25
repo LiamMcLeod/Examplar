@@ -292,7 +292,7 @@ module.exports = function (express, client) {
         user.findUser(o, function (err, userData, found) {
                 if (found) {
                     //TODO REMOVE WHEN TESTING DONE
-                    if (param.pw != "DVORAK") {
+                    if (param.pw != config.secret) {
                         delete userData.Password;
                         console.log(user.Digest);
                         /**

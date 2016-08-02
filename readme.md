@@ -133,6 +133,9 @@ HTTP status code [200](http://httpstatus.es/200)
 
 Database
 --------
+
+![Examplar Schema](https://drive.google.com/uc?export=view&id=0B5qG6VoxtoFtRHMyVThkcUhoTEk)
+
 \* Primary Key
 ^ Foreign Key
 

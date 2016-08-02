@@ -7,19 +7,31 @@ var pg = require('pg');
  * Object Constructor
  */
 function User() {
-    this.UserId = -1;
-    this.EmailAddress = '';
-    this.Password = '';
-    this.Created = '';
-    this.FirstName = '';
-    this.OtherName = '';
-    this.LastName = '';
-    this.Title = '';
-    this.DateOfBirth = '';
-    this.Role = '';
-    this.PostNominal = '';
-    this.Username = '';
-    this.Digest = '';
+    this.UserId =       -1;        
+    this.Title=         '';    
+    this.FirstName=     '';        
+    this.Surname=       '';        
+    this.Address1=      '';        
+    this.Address2=      '';        
+    this.Address3=      '';        
+    this.City=          '';    
+    this.County=        '';        
+    this.Postcode=      '';        
+    this.Username=      '';        
+    this.Password=      '';        
+    this.Email=         '';    
+    this.Contact=       '';        
+    this.DoB=           '';    
+    this.Gender=        '';              
+    this.Academia=      '';        
+    this.Twitter=       '';        
+    this.Website=       '';        
+    this.DateCreated=   '';        
+    this.Permissions=   '';        
+    this.Activated=     '';        
+    this.Banned=        '';
+    // Additional
+    this.Digest=        ''; //Digest of Email
 }
 
 /*
@@ -28,6 +40,9 @@ function User() {
  */
 User.prototype.hash = function (o) {
     var salt = bcrypt.genSaltSync(8);
+    // TODO Remove When Insert is possible
+    // console.log(bcrypt.hashSync(o.pass, salt));
+
     return bcrypt.hashSync(o.pass, salt)
 };
 
@@ -97,7 +112,6 @@ User.prototype.findUser = function (o, callback) {
                 found = true;
             }
             else found = false;
-            // callback(error, result.rows[0], found);
             callback(error, result.rows[0], found);
         });
     });
@@ -109,20 +123,30 @@ User.prototype.findUser = function (o, callback) {
  */
 setResults = function (results) {
     set("UserId", results.rows[0].UserId);
-    set("EmailAddress", results.rows[0].EmailAddress);
-    set("Digest", md5(results.rows[0].EmailAddress));
-    set("Password", results.rows[0].Password);
-    set("Created", results.rows[0].Created);
-    set("OtherNames", results.rows[0].OtherName);
-    set("LastName", results.rows[0].LastName);
     set("Title", results.rows[0].Title);
-    set("DateOfBirth", results.rows[0].DateOfBirth);
-    set("Role", results.rows[0].Role);
-    set("Username", results.rows[0].Username);
     set("FirstName", results.rows[0].FirstName);
-    if (results.rows[0].PostNominal != 'undefined') {
-        set("PostNominal", results.rows[0].PostNominal);
-    }
+    set("Surname", results.rows[0].Surname);
+    set("Address1", results.rows[0].Address1);
+    set("Address2", results.rows[0].Address2);
+    set("Address3", results.rows[0].Address3);
+    set("City", results.rows[0].City);
+    set("County", results.rows[0].County);
+    set("Postcode", results.rows[0].Postcode);
+    set("Username", results.rows[0].Username);
+    set("Password", results.rows[0].Password);
+    set("Email", results.rows[0].Email);
+    set("Contact", results.rows[0].Contact);
+    set("DoB", results.rows[0].DateOfBirth);
+    set("Gender", results.rows[0].Gender);
+    set("Academia", results.rows[0].Academia);
+    set("Twitter", results.rows[0].Twitter);
+    set("Website", results.rows[0].Website);
+    set("DateCreated", results.rows[0].DateCreated);
+    set("Permission", results.rows[0].Role);
+    set("Activated", results.rows[0].Activated)
+    set("Banned", results.rows[0].Banned);
+    // Others
+    set("Digest", md5(results.rows[0].EmailAddress));
 };
 
 /*
@@ -225,3 +249,93 @@ User.prototype.restify = function (res) {
 };
 
 module.exports = User;
+
+
+
+// -- DDL
+// CREATE TABLE "User"
+// (
+//     "UserId" INTEGER PRIMARY KEY NOT NULL,
+//     "Title" VARCHAR(35),
+//     "FirstName" VARCHAR(35) NOT NULL,
+//     "Surname" VARCHAR(35) NOT NULL,
+//     "Address1" VARCHAR(35) NOT NULL,
+//     "Address2" VARCHAR(35),
+//     "Address3" VARCHAR(35),
+//     "City" VARCHAR(35) NOT NULL,
+//     "County" VARCHAR(35) NOT NULL,
+//     "Postcode" VARCHAR(8) NOT NULL,
+//     "Username" VARCHAR(35) NOT NULL,
+//     "Password" VARCHAR(63) NOT NULL,
+//     "Email" VARCHAR(254) NOT NULL,
+//     "Contact" CHAR(12),
+//     "DoB" DATE NOT NULL,
+//     "Gender" VARCHAR(14),
+//     "Facebook" VARCHAR(254),
+//     "Academia" VARCHAR(254),
+//     "Twitter" VARCHAR(254),
+//     "Website" VARCHAR(254),
+//     "DateCreated" DATE DEFAULT now() NOT NULL,
+//     "Permissions" INTEGER DEFAULT 3 NOT NULL,
+//     "Activated" BOOLEAN DEFAULT true NOT NULL,
+//     "Banned" BOOLEAN DEFAULT false NOT NULL
+// );
+// CREATE UNIQUE INDEX "U_Username" ON "User" ("Username");
+
+
+
+// -- Login
+// apiRouter.get('/user/:user', function (req, res) {
+//     var results;
+//     var o = {};
+//     o.user = req.params.user;
+//     var param = {};
+//     param.pretty = false;
+
+//     if (lib.isset(req.query)) {
+//         param.pretty = req.query['pretty'];
+//         param.pw=req.query['pw'];
+//     }
+
+//     var user = new User();
+//     user.findUser(o, function (err, userData, found) {
+//             if (found) {
+//                 //TODO REMOVE WHEN TESTING DONE
+//                 if (param.pw != config.secret) {
+//                     delete userData.Password;
+//                     console.log(user.Digest);
+//                     /**
+//                      * Trim whitespace
+//                      */
+//                     for (var key in userData) {
+//                         if (lib.isset(userData[key]) && userData[key] != null) {
+//                             if (userData[key].trim) {
+//                                 userData[key] = userData[key].trim();
+//                             }
+//                         }
+//                     }
+//                     /**
+//                      * Trim time off of date
+//                      */
+//                     userData.Created = userData.Created.toJSON();
+//                     userData.DateOfBirth = userData.DateOfBirth.toJSON();
+//                     if (userData.Created.contains('T')) {
+//                         userData.Created = userData.Created.substring(0, 10);
+//                         // console.log(userData.Created);
+//                     }
+//                     if (userData.DateOfBirth.contains('T')) {
+//                         userData.DateOfBirth = userData.DateOfBirth.substring(0, 10);
+//                     }
+//                 }
+
+//                 mod.returnJSON(res, userData, param);
+//                 // user.restify(res);
+//             }
+
+//             else mod.returnJSON(res, results, param);
+//             //TODO GRAVATAR
+//             //Hash Email (MD5)
+//             //e.g. http://1.gravatar.com/avatar/526ff9079f5c33b8b603abfedc823a0e?size=128
+//         }
+//     );
+// });

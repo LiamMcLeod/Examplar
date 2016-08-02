@@ -1,4 +1,4 @@
-var mod = require('../modules/routeModules');
+var mod = require('../modules/rm');
 var lib = require('../modules/lib');
 var User = require('../models/User');
 

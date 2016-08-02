@@ -53,7 +53,7 @@ app.set('view engine', 'jade');
 app.use('/public', express.static(config.dir.public));
 
 // ====================== Routes ======================#
-var mod = require('./app/modules/routeModules');
+var mod = require('./app/modules/rm');
 var lib = require('./app/modules/lib');
 app.get('/:file', function (req, res) {
     var file = req.params.file;

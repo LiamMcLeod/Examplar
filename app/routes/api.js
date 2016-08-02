@@ -1,6 +1,7 @@
-var mod = require('../modules/routeModules');
+var mod = require('../modules/rm');
 var lib = require('../modules/lib');
 var User = require('../models/User');
+var lg = require('../modules/lg');
 // DEBUG STRING     console.log(req.method +" " + req.url + " from address " + req.connection.remoteAddress);
 
 module.exports = function (express, client) {
@@ -271,6 +272,24 @@ module.exports = function (express, client) {
 
     /**
      * GET
+     * /api+ TEST ROUTES
+     * Hash Test
+     */
+    apiRouter.get('/hash', function (req, res) {
+        // res.send('Hello World');
+        if (lib.isset(req.query['pw'])){
+            var user = new User();
+            var o = {};
+            o.pass = req.query['pw'];
+            mod.returnJSON(res,user.hash(o), req.query);
+        }
+        else
+            res.send('no pw parameter.')
+    });
+
+
+    /**
+     * GET
      * /api+'/user'
      * Returns User JSON DATA
      *  TODO Finish or scrap
@@ -308,14 +327,14 @@ module.exports = function (express, client) {
                         /**
                          * Trim time off of date
                          */
-                        userData.Created = userData.Created.toJSON();
-                        userData.DateOfBirth = userData.DateOfBirth.toJSON();
-                        if (userData.Created.contains('T')) {
-                            userData.Created = userData.Created.substring(0, 10);
+                        userData.DateCreated = userData.DateCreated.toJSON();
+                        userData.DoB = userData.DoB.toJSON();
+                        if (userData.DateCreated.contains('T')) {
+                            userData.DateCreated = userData.DateCreated.substring(0, 10);
                             // console.log(userData.Created);
                         }
-                        if (userData.DateOfBirth.contains('T')) {
-                            userData.DateOfBirth = userData.DateOfBirth.substring(0, 10);
+                        if (userData.DoB.contains('T')) {
+                            userData.DoB = userData.DoB.substring(0, 10);
                         }
                     }
 
@@ -380,13 +399,17 @@ module.exports = function (express, client) {
          */
         user.findUser(o, function (err, userData, found) {
             if (err) throw err;
+            lg.logdb(req, 0, req.session.id, "A user attempted to log in as "+o.user);
             if (found) {
+                console.log(o.user+' found.');
                 /**
                  * Validate password with data posted
                  * against data in the user model.
                  */
                 user.validate(o, function (valid) {
                     if (valid) {
+                        //TODO LOG THIS
+                        console.log(o.user+' validated.');
                         var obj = {};
                         /**
                          * Trim whitespace
@@ -401,8 +424,8 @@ module.exports = function (express, client) {
                         /**
                          * Trim time off of date
                          */
-                        userData.Created = userData.Created.toString();
-                        userData.DateOfBirth = userData.DateOfBirth.toString();
+                        userData.DateCreated = userData.DateCreated.toString();
+                        userData.DoB = userData.DoB.toString();
                         /**
                          * Populate session var
                          */

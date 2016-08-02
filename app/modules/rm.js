@@ -1,4 +1,5 @@
 var lib = require('./lib');
+//TODO FIX Session Vars FOR NEW USER TABLE
 
 /**
  * Return for query {query} results {results} as {res} JSON (REST)

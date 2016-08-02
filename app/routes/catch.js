@@ -1,6 +1,6 @@
 //REDUNDANT
 module.exports = function (app) {
-  var mod = require('../modules/routeModules');
+  var mod = require('../modules/rm');
 
   // Misc Errors
   app.get('/500', function (req, res) {

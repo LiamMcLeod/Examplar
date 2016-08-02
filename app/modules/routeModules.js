@@ -117,7 +117,13 @@ function renderLoggedIn(req, res, file) {
         file = "index";
         if (!lib.isset(req.query)) {
             getReq = req.query['q'];
+            getReq=lib.checkXSS(req.query['q']);
         }
+        if (lib.checkXSS(req.query['q'])){
+                console.log("XSS Warning");
+        }
+       
+
         console.log(getReq);
         res.render(file, {
             getReq: getReq,
@@ -214,9 +220,15 @@ function renderLoggedOut(req, res, file) {
     file = file.toLowerCase();
     if (file === "home" || file === "index") {
         file = "index";
-        if (lib.isset(req.query)) {
+        if (lib.isset(req.query)){
             getReq = req.query['q'];
+            if (lib.isset(req.query['q'])) {
+                getReq = lib.checkXSS(req.query['q']);
+            }
         }
+
+
+
         res.render(file, {
             getReq: getReq,
             session: $,

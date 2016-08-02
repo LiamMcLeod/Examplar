@@ -26,6 +26,7 @@
     "node-uuid": "^1.4.7",
     "pg": "^4.5.1",
     "psql-api": "^0.9.11",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "xss-filters": "^1.2.6"
   }
 }

@@ -25,11 +25,16 @@ var uuid = require('node-uuid');
 
 var flash = require('connect-flash');
 
+
+// TODO profile page
+// TODO Restify User
 // TODO
+// TODO strip html
 // TODO WHERE CURLY BRACE OMIT FROM SEARCH TEXT
 // TODO Paginate results
 // TODO Finish Filter
-//TODO Option to generate exam paper
+// TODO LOGIN
+// TODO FIX XSS Vulnerabilities with server queries
 
 if (process.env.NODE_ENV != "college") {
     var env = require('dotenv').config();
@@ -71,7 +76,7 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(favicon(config.dir.favicon + '/favicon.ico'));
 
 // ======================  Logging, Debugging & Errors ======================
-// app.use(morgan('dev'));                                             // Log HTTP Requests
+app.use(morgan('dev'));                                             // Log HTTP Requests
 
 // ======================  Dirs r ======================
 app.set('view engine', 'jade');
@@ -79,6 +84,7 @@ app.use('/public', express.static(config.dir.public));
 // app.use('/', express.static(config.dir.views));
 
 // ====================== Routes ======================
+
 //Back-End
 var apiRouter = require('./app/routes/api')(express, client);
 app.use('/api', apiRouter);

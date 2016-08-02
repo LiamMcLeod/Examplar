@@ -49,7 +49,7 @@ if (process.env.NODE_ENV) {
 
     config.port = {};
     // Default ports
-    config.port.default = process.env.PORT || 8080 || 80;
+    config.port.default = process.env.PORT || 8000 || 8080 || 80;
     config.port.alternate = 3000;
 
     config.secret = 'dvorak';

@@ -115,14 +115,13 @@ function renderLoggedIn(req, res, file) {
 
     if (file === "home" || file === "Home" || file == "index" || file === "index") {
         file = "index";
-        if (!lib.isset(req.query)) {
+        if (lib.isset(req.query)) {
             getReq = req.query['q'];
-            getReq=lib.checkXSS(req.query['q']);
+            if (lib.isset(req.query['q'])) {
+                getReq = lib.checkXSS(req.query['q']);
+            }
         }
-        if (lib.checkXSS(req.query['q'])){
-                console.log("XSS Warning");
-        }
-       
+
 
         console.log(getReq);
         res.render(file, {
@@ -220,13 +219,12 @@ function renderLoggedOut(req, res, file) {
     file = file.toLowerCase();
     if (file === "home" || file === "index") {
         file = "index";
-        if (lib.isset(req.query)){
+        if (lib.isset(req.query)) {
             getReq = req.query['q'];
             if (lib.isset(req.query['q'])) {
                 getReq = lib.checkXSS(req.query['q']);
             }
         }
-
 
 
         res.render(file, {

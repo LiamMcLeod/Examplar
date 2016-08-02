@@ -277,14 +277,30 @@ module.exports = function (express, client) {
      */
     apiRouter.get('/hash', function (req, res) {
         // res.send('Hello World');
-        if (lib.isset(req.query['pw'])){
+        if (lib.isset(req.query['pw'])) {
             var user = new User();
             var o = {};
             o.pass = req.query['pw'];
-            mod.returnJSON(res,user.hash(o), req.query);
+            mod.returnJSON(res, user.hash(o), req.query);
         }
         else
             res.send('no pw parameter.')
+    });
+    /**
+     * GET
+     * /api+ TEST ROUTES
+     * IP Test
+     */
+    apiRouter.get('/ip', function (req, res) {
+        var ip = req.connection.remoteAddress;
+        var test = ip.substring(0, 7);
+        if (test === '::ffff:') {
+            mod.returnJSON(res, ip.substring(7, ip.length), req.query);
+
+        } else {
+            ip = req.connection.remoteAddress;
+        }
+
     });
 
 
@@ -304,7 +320,7 @@ module.exports = function (express, client) {
 
         if (lib.isset(req.query)) {
             param.pretty = req.query['pretty'];
-            param.pw=req.query['pw'];
+            param.pw = req.query['pw'];
         }
 
         var user = new User();
@@ -399,9 +415,9 @@ module.exports = function (express, client) {
          */
         user.findUser(o, function (err, userData, found) {
             if (err) throw err;
-            lg.logdb(req, 0, req.session.id, "A user attempted to log in as "+o.user);
+            lg.logdb(req, 0, req.session.id, "A user attempted to log in as " + o.user);
             if (found) {
-                console.log(o.user+' found.');
+                console.log(o.user + ' found.');
                 /**
                  * Validate password with data posted
                  * against data in the user model.
@@ -409,7 +425,7 @@ module.exports = function (express, client) {
                 user.validate(o, function (valid) {
                     if (valid) {
                         //TODO LOG THIS
-                        console.log(o.user+' validated.');
+                        console.log(o.user + ' validated.');
                         var obj = {};
                         /**
                          * Trim whitespace

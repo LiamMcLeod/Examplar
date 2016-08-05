@@ -294,13 +294,10 @@ module.exports = function (express, client) {
     apiRouter.get('/ip', function (req, res) {
         var ip = req.connection.remoteAddress;
         var test = ip.substring(0, 7);
-        if (test === '::ffff:') {
+        if (test === '::ffff:')
             mod.returnJSON(res, ip.substring(7, ip.length), req.query);
-
-        } else {
+        else
             ip = req.connection.remoteAddress;
-        }
-
     });
 
 
@@ -326,10 +323,12 @@ module.exports = function (express, client) {
         var user = new User();
         user.findUser(o, function (err, userData, found) {
                 if (found) {
+                    //TODO MESS WITH THE DATES SO THEY DISPLAY IN UK
                     //TODO REMOVE WHEN TESTING DONE
+                    // console.log(userData);
+                    console.log(user);
                     if (param.pw != config.secret) {
                         delete userData.Password;
-                        console.log(user.Digest);
                         /**
                          * Trim whitespace
                          */
@@ -343,15 +342,16 @@ module.exports = function (express, client) {
                         /**
                          * Trim time off of date
                          */
-                        userData.DateCreated = userData.DateCreated.toJSON();
-                        userData.DoB = userData.DoB.toJSON();
-                        if (userData.DateCreated.contains('T')) {
-                            userData.DateCreated = userData.DateCreated.substring(0, 10);
-                            // console.log(userData.Created);
-                        }
-                        if (userData.DoB.contains('T')) {
-                            userData.DoB = userData.DoB.substring(0, 10);
-                        }
+                        //TODO FIX THIS
+                        // userData.DateCreated = userData.DateCreated.toJSON();
+                        // userData.DoB = userData.DoB.toJSON();
+                        // if (userData.DateCreated.contains('T')) {
+                        //     userData.DateCreated = userData.DateCreated.substring(0, 10);
+                        //     // console.log(userData.Created);
+                        // }
+                        // if (userData.DoB.contains('T')) {
+                        //     userData.DoB = userData.DoB.substring(0, 10);
+                        // }
                     }
 
                     mod.returnJSON(res, userData, param);
@@ -417,7 +417,6 @@ module.exports = function (express, client) {
             if (err) throw err;
             lg.logdb(req, 0, req.session.id, "A user attempted to log in as " + o.user);
             if (found) {
-                console.log(o.user + ' found.');
                 /**
                  * Validate password with data posted
                  * against data in the user model.
@@ -425,8 +424,7 @@ module.exports = function (express, client) {
                 user.validate(o, function (valid) {
                     if (valid) {
                         //TODO LOG THIS
-                        console.log(o.user + ' validated.');
-                        var obj = {};
+                        lg.logdb(req, 0, req.session.id, "A user validated as " + o.user);
                         /**
                          * Trim whitespace
                          */
@@ -437,6 +435,9 @@ module.exports = function (express, client) {
                                 }
                             }
                         }
+                        // TODO REMOVE
+                        console.log(userData);
+                        // TODO BANNED / ACTIVATE CODE
                         /**
                          * Trim time off of date
                          */
@@ -448,6 +449,9 @@ module.exports = function (express, client) {
                         req.session.loggedIn = true;
                         req.session.user = userData;
                         req.flash('status', 'Success!');
+                        if (req.session.loggedIn) {
+                            lg.logdb(req, 0, req.session.id, "A user logged in as " + o.user);
+                        }
                         res.redirect(302, '/user');
                     } else {
                         /**

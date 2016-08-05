@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    console.log(location.pathname);
+    // console.log(location.pathname);
     var path = location.pathname;
     switch(path){
         case '/':

@@ -79,6 +79,45 @@ module.exports = function (express) {
         }
     });
 
+      /**
+     * GET
+     * '/s/'+username
+     * Server-Side User profile page
+     * //TODO generate from restful api
+     */
+    appRouter.get('/s/:user', function (req, res) {
+        // console.log(req.params.user);
+        var $ = req.session;
+        var file = "sprofile";
+
+        if ($.loggedIn) {
+            mod.renderLoggedIn(req, res, file);
+        }
+        else {
+            mod.renderLoggedOut(req, res, file);
+        }
+    });
+
+
+    /**
+     * GET
+     * '/p/'+paper
+     * User paper page
+     * //TODO generate from restful api
+     */
+    appRouter.get('/p/:paper', function (req, res) {
+        // req.params.user;
+        var $ = req.session;
+        var file = "paper";
+
+        if ($.loggedIn) {
+            mod.renderLoggedIn(req, res, file);
+        }
+        else {
+            mod.renderLoggedOut(req, res, file);
+        }
+    });
+
     appRouter.get('/sitemap.xml', function (req, res){
 		 res.header('Content-Type', 'application/xml');
 	  	 res.sendFile(appRoot+'/views/sitemap.xml');
@@ -89,16 +128,16 @@ module.exports = function (express) {
         var $ = req.session;
         var file = req.params.file;
 
-        if ($.user) {
-            if ($.user.Created.contains('T')) {
-                $.user.Created = $.user.Created.substring(4, 15);
-                // console.log($.user.Created);
-            }
-            if ($.user.DateOfBirth.contains('T')) {
-                $.user.DateOfBirth = $.user.DateOfBirth.substring(4, 15);
-                // console.log($.user.DateOfBirth);
-            }
-        }
+        // if ($.user) {
+        //     if ($.user.Created.contains('T')) {
+        //         $.user.Created = $.user.Created.substring(4, 15);
+        //         // console.log($.user.Created);
+        //     }
+        //     if ($.user.DateOfBirth.contains('T')) {
+        //         $.user.DateOfBirth = $.user.DateOfBirth.substring(4, 15);
+        //         // console.log($.user.DateOfBirth);
+        //     }
+        // }
 
         if ($.loggedIn) {
             mod.renderLoggedIn(req, res, file);

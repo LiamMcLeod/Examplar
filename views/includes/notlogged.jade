@@ -1,0 +1,22 @@
+form(action="/api/login" method="POST" )
+    .panel.panel-default
+        .panel-heading.text-center.textmuted Log In
+        .panel-body.text-center
+            .row
+                .col-sm-6
+                    label Username:
+                    br
+                    input#email(type="username" name="username" title="username" autofocus required)
+                .col-sm-6
+                    label Password:
+                    br
+                    input#password(type="password" name="password" title="password" required)
+            if status != 'Success!'
+                span.text-danger #{status}
+        .panel-footer
+            .row
+                .col-xs-6.text-left
+                    input(type="checkbox" name="remember")
+                    span &nbsp;Remember?
+                .col-xs-6.text-right
+                    input.btn.btn-default(type="submit" value="Submit")

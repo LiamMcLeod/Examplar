@@ -11,19 +11,18 @@ main.bg-light
                     span iPhone Ad
             .user
                 .row(v-if="exists===true")
-                    if !loggedIn
+                    //if !loggedIn
                         h1 You are not authorised to access this content
-                    else
-                        img(src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
-                        //img(v-bind:src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
-                            //TODO REFER TO THE CORRECT NEW NAMES
-                        h1 {{user.Username}}
-                        p  {{user.Title}}
-                        p  {{user.FirstName}}
-                        p  {{user.Surame}}
-                        p  {{user.EmailAddress}}
-                        p  {{user.DoB}}
-                        p  {{user.DateCreated}}
-                        p  {{user.Permissions}}
+                    //else
+                    img(src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
+                    //img(v-bind:src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
+                        TODO FINISH THIS
+                    h1 #{username}
+                    p  #{title}
+                    p  #{firstName}
+                    p  #{surname}
+                    p  #{emailAddress}
+                    p  #{doB}
+                    p  #{created}
                 .row(v-else)
                      h1 User not found

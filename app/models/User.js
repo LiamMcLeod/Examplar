@@ -34,19 +34,16 @@ function User() {
     this.Digest=        ''; //Digest of Email
 }
 
-/*
+/**
  * Hash password in pass property of object {o}
  * @param o Object
  */
 User.prototype.hash = function (o) {
     var salt = bcrypt.genSaltSync(8);
-    // TODO Remove When Insert is possible
-    // console.log(bcrypt.hashSync(o.pass, salt));
-
     return bcrypt.hashSync(o.pass, salt)
 };
 
-/*
+/**
  * validate pass property of object {o}
  * against user password property
  * @param o Object
@@ -63,7 +60,7 @@ User.prototype.findOne = function (o) {
 
 };
 
-/*
+/**
  * Find user in database with object from form {object}
  * populate object with user data for later interrogation
  * @param o Object
@@ -85,7 +82,6 @@ User.prototype.findUser = function (o, callback) {
             values: [o.user]
         };
     }
-
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
         /* if Connection Callback Error */
         if (err) {
@@ -108,16 +104,18 @@ User.prototype.findUser = function (o, callback) {
             var found = false;
             if (result.rows[0] != undefined) {
                 setResults(result);
-                result.rows[0].Digest=User.Digest;
                 found = true;
+                // TODO FIX DIGEST
+                result.rows[0].Digest=User.Digest;
             }
             else found = false;
+            // callback(error, result.rows[0], found);
             callback(error, result.rows[0], found);
         });
     });
 };
 
-/*
+/**
  * populate User object with query data {results}
  * @param results Object
  */
@@ -143,20 +141,20 @@ setResults = function (results) {
     set("Website", results.rows[0].Website);
     set("DateCreated", results.rows[0].DateCreated);
     set("Permission", results.rows[0].Role);
-    set("Activated", results.rows[0].Activated)
+    set("Activated", results.rows[0].Activated);
     set("Banned", results.rows[0].Banned);
     // Others
     set("Digest", md5(results.rows[0].EmailAddress));
 };
 
-/*
+/**
  * Returns the data in
  * current instance of user
  */
 User.prototype.getResults = function () {
     return User;
 };
-/*
+/**
  * find by Id function
  * TODO FINISH
  * @param o Object
@@ -167,7 +165,7 @@ User.prototype.findbyId = function (id) {
         values: [id]
     };
 };
-/*
+/**
  * find by {what} function
  * TODO FINISH
  * @param o Object
@@ -179,7 +177,7 @@ User.prototype.find = function (where, op, what) {
     };
 };
 
-/*
+/**
  * sets {property} of user
  * to {values} provided
  * @param prop String
@@ -188,8 +186,17 @@ User.prototype.find = function (where, op, what) {
 function set(prop, val) {
     User[prop] = val;
 }
+/**
+ * sets {property} of user
+ * to {values} provided
+ * @param prop String
+ * @param val Type
+ */
+function setOther(prop, val) {
+    this[prop] = val;
+}
 
-/*
+/**
  * gets {property} of user
  * to {values} provided
  * @param prop String
@@ -198,7 +205,7 @@ function get(prop) {
     return User[prop];
 }
 
-/*
+/**
  * get {user} and populate object with user
  * for rendering of their profile
  * @param o Object

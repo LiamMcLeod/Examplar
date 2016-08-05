@@ -1,4 +1,5 @@
 var lib = require('./lib');
+var User = require('../models/User');
 //TODO FIX Session Vars FOR NEW USER TABLE
 
 /**
@@ -122,9 +123,7 @@ function renderLoggedIn(req, res, file) {
                 getReq = lib.checkXSS(req.query['q']);
             }
         }
-
-
-        console.log(getReq);
+        // console.log(getReq);
         res.render(file, {
             getReq: getReq,
             session: $,
@@ -132,13 +131,7 @@ function renderLoggedIn(req, res, file) {
             loggedIn: $.loggedIn,
             userId: $.user.UserId,
             username: $.user.Username,
-            title: $.user.Title,
-            firstName: $.user.FirstName,
-            lastName: $.user.LastName,
-            emailAddress: $.user.EmailAddress,
-            doB: $.user.DateOfBirth,
-            created: $.user.Created,
-            role: $.user.Role
+            permissions: $.user.Role
         }, function (err, result) {
             if (err) error(req, res, err);
             else res.send(result); // send rendered HTML back to client
@@ -153,13 +146,7 @@ function renderLoggedIn(req, res, file) {
             loggedIn: $.loggedIn,
             userId: $.user.UserId,
             username: $.user.Username,
-            title: $.user.Title,
-            firstName: $.user.FirstName,
-            lastName: $.user.LastName,
-            emailAddress: $.user.EmailAddress,
-            doB: $.user.DateOfBirth,
-            created: $.user.Created,
-            role: $.user.Role
+            permissions: $.user.Permissions
         }, function (err, result) {
             if (err) error(req, res, err);
             else res.send(result); // send rendered HTML back to client
@@ -167,20 +154,131 @@ function renderLoggedIn(req, res, file) {
     }
     else if (file === "profile") {
         userReq = req.params.user;
+        //TODO USER REG ISN@T PARSING.
+        console.log(req.params.user);
         res.render(file, {
             userReq: userReq,
             session: $,
             status: req.flash('status'),
+            // Client Vars
             loggedIn: $.loggedIn,
             userId: $.user.UserId,
             username: $.user.Username,
+            permissions: $.user.Permissions
+            // Template Vars
+
+        }, function (err, result) {
+            if (err) error(req, res, err);
+            else res.send(result); // send rendered HTML back to client
+        });
+    }
+    else if (file === "sprofile") {
+        userReq = req.params.user;
+        // console.log(req.params.user);
+        //FIND USER
+        var user = new User();
+        user.findUser(req.params, function (err, userData, found) {
+                if (found) {
+                    //TODO REMOVE WHEN TESTING DONE
+                    // console.log(userData);
+                    delete userData.Password;
+                    /**
+                     * Trim whitespace
+                     */
+                    for (var key in userData) {
+                        if (lib.isset(userData[key]) && userData[key] != null) {
+                            if (userData[key].trim) {
+                                userData[key] = userData[key].trim();
+                            }
+                        }
+                    }
+                    /**
+                     * Trim time off of date
+                     */
+                    userData.DateCreated = userData.DateCreated.toJSON();
+                    userData.DoB = userData.DoB.toJSON();
+                    if (userData.DateCreated.contains('T')) {
+                        userData.DateCreated = userData.DateCreated.substring(0, 10);
+                        // console.log(userData.Created);
+                    }
+                    if (userData.DoB.contains('T')) {
+                        userData.DoB = userData.DoB.substring(0, 10);
+                    }
+                    $.profile = userData;
+                    $.profile.found = true;
+
+                }
+                else {
+                    $.profile.found = false;
+                }
+            }
+        );
+        // TODO FIX ASYNC RENDERING WITHOUT USER
+        res.render(file, {
+            userReq: userReq,
+            session: $,
+            status: req.flash('status'),
+            // Client Vars
+            loggedIn: $.loggedIn,
+            userId: $.user.UserId,
+            username: $.user.Username,
+            permissions: $.user.Permissions,
+            // Template Vars
+            //TODO FINISH HERE FOR SS PROFILE RENDERING
+            prof: $.profile,
+            // ptitle: $.profile.Title,
+            // pfirstName: $.profile.FirstName,
+            // psurname: $.profile.Surname,
+            // pemailAddress: $.profile.EmailAddress,
+            // pdoB: $.profile.DoB,
+            // pcreated: $.profile.DateCreated,
+            // pwebsite: $.profile.Website,
+            // ptwitter: $.profile.Twitter
+
+        }, function (err, result) {
+            if (err) error(req, res, err);
+            else res.send(result); // send rendered HTML back to client
+        });
+    }
+    else if (file === "user") {
+        res.render(file, {
+            userReq: userReq,
+            session: $,
+            status: req.flash('status'),
+            // Client Vars
+            loggedIn: $.loggedIn,
+            userId: $.user.UserId,
+            username: $.user.Username,
+            permissions: $.user.Permissions,
+            // Template Vars
             title: $.user.Title,
             firstName: $.user.FirstName,
-            lastName: $.user.LastName,
+            surname: $.user.Surname,
             emailAddress: $.user.EmailAddress,
-            doB: $.user.DateOfBirth,
-            created: $.user.Created,
-            role: $.user.Role
+            doB: $.user.DoB,
+            created: $.user.DateCreated,
+            website: $.user.Website,
+            twitter: $.user.Twitter
+
+            //TODO ADDRESS and other STUFF
+
+        }, function (err, result) {
+            if (err) error(req, res, err);
+            else res.send(result); // send rendered HTML back to client
+        });
+
+    }
+    else if (file === "paper") {
+        userReq = req.params.user;
+        res.render(file, {
+            userReq: userReq,
+            session: $,
+            status: req.flash('status'),
+            // Client Vars
+            loggedIn: $.loggedIn,
+            userId: $.user.UserId,
+            username: $.user.Username,
+            permissions: $.user.Permissions
         }, function (err, result) {
             if (err) error(req, res, err);
             else res.send(result); // send rendered HTML back to client
@@ -193,13 +291,7 @@ function renderLoggedIn(req, res, file) {
             loggedIn: $.loggedIn,
             userId: $.user.UserId,
             username: $.user.Username,
-            title: $.user.Title,
-            firstName: $.user.FirstName,
-            lastName: $.user.LastName,
-            emailAddress: $.user.EmailAddress,
-            doB: $.user.DateOfBirth,
-            created: $.user.Created,
-            role: $.user.Role
+            permissions: $.user.Permissions
         }, function (err, result) {
             if (err) error(req, res, err);
             else res.send(result)
@@ -311,7 +403,7 @@ exports.renderFile = renderFile;
 //         emailAddress: $.user.EmailAddress,
 //         doB: $.user.DateOfBirth,
 //         created: $.user.Created,
-//         role: $.user.Role,
+//         permissions: $.user.Permissions,
 //         pUsername: $.profile.User,
 //         pTitle: $.profile.Title,
 //         pFirstName: $.profile.FirstName,
@@ -319,7 +411,7 @@ exports.renderFile = renderFile;
 //         pEmailAddress: $.profile.EmailAddress,
 //         pDoB: $.profile.DateOfBirth,
 //         pCreated: $.profile.Created,
-//         pRole: $.profile.Role
+//         pPermissions: $.profile.Permissions
 //     }, function (err, result) {
 //         if (err) error(req, res, err);
 //         else res.send(result)

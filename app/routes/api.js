@@ -321,21 +321,19 @@ module.exports = function (express, client) {
         }
 
         var user = new User();
-        user.findUser(o, function (err, userData, found) {
+        user.findUser(o, function (err, user, found) {
                 if (found) {
                     //TODO MESS WITH THE DATES SO THEY DISPLAY IN UK
                     //TODO REMOVE WHEN TESTING DONE
-                    // console.log(userData);
-                    console.log(user);
                     if (param.pw != config.secret) {
-                        delete userData.Password;
+                        delete user.Password;
                         /**
                          * Trim whitespace
                          */
-                        for (var key in userData) {
-                            if (lib.isset(userData[key]) && userData[key] != null) {
-                                if (userData[key].trim) {
-                                    userData[key] = userData[key].trim();
+                        for (var key in user) {
+                            if (lib.isset(user[key]) && user[key] != null) {
+                                if (user[key].trim) {
+                                    user[key] = user[key].trim();
                                 }
                             }
                         }
@@ -343,18 +341,17 @@ module.exports = function (express, client) {
                          * Trim time off of date
                          */
                         //TODO FIX THIS
-                        // userData.DateCreated = userData.DateCreated.toJSON();
-                        // userData.DoB = userData.DoB.toJSON();
-                        // if (userData.DateCreated.contains('T')) {
-                        //     userData.DateCreated = userData.DateCreated.substring(0, 10);
-                        //     // console.log(userData.Created);
-                        // }
-                        // if (userData.DoB.contains('T')) {
-                        //     userData.DoB = userData.DoB.substring(0, 10);
-                        // }
+                        user.DateCreated = user.DateCreated.toJSON();
+                        user.DoB = user.DoB.toJSON();
+                        if (user.DateCreated.contains('T')) {
+                            user.DateCreated = user.DateCreated.substring(0, 10);
+                            // console.log(userData.Created);
+                        }
+                        if (user.DoB.contains('T')) {
+                            user.DoB = user.DoB.substring(0, 10);
+                        }
                     }
-
-                    mod.returnJSON(res, userData, param);
+                    mod.returnJSON(res, user, param);
                     // user.restify(res);
                 }
 
@@ -413,7 +410,7 @@ module.exports = function (express, client) {
          * the user returns a boolean for if existing.
          * Populating the model.
          */
-        user.findUser(o, function (err, userData, found) {
+        user.findUser(o, function (err, user, found) {
             if (err) throw err;
             lg.logdb(req, 0, req.session.id, "A user attempted to log in as " + o.user);
             if (found) {
@@ -428,29 +425,40 @@ module.exports = function (express, client) {
                         /**
                          * Trim whitespace
                          */
-                        for (var key in userData) {
-                            if (lib.isset(userData[key]) && userData[key] != null) {
-                                if (userData[key].trim) {
-                                    userData[key] = userData[key].trim();
+                        for (var key in user) {
+                            if (lib.isset(user[key]) && user[key] != null) {
+                                if (user[key].trim) {
+                                    user[key] = user[key].trim();
                                 }
                             }
                         }
-                        // TODO REMOVE
-                        console.log(userData);
-                        // TODO BANNED / ACTIVATE CODE
+                        if (user.Banned) {
+                            req.session.loggedIn = false;
+                            lg.logdb(req, user.UserId, req.session.id, "A user logged in as " + o.user + " but is banned");
+                            req.session.destroy();
+                            req.flash('status', 'You have been banned.');
+                            res.redirect(303, '/user');
+                        }
+                        if (!user.Activated) {
+                            req.session.loggedIn = false;
+                            lg.logdb(req, user.UserId, req.session.id, "A user logged in as " + o.user + " but the account is inactive");
+                            req.session.destroy();
+                            req.flash('status', 'Your account is not yet active.');
+                            res.redirect(303, '/user');
+                        }
                         /**
                          * Trim time off of date
                          */
-                        userData.DateCreated = userData.DateCreated.toString();
-                        userData.DoB = userData.DoB.toString();
+                        user.DateCreated = user.DateCreated.toString();
+                        user.DoB = user.DoB.toString();
                         /**
                          * Populate session var
                          */
                         req.session.loggedIn = true;
-                        req.session.user = userData;
+                        req.session.user = user;
                         req.flash('status', 'Success!');
                         if (req.session.loggedIn) {
-                            lg.logdb(req, 0, req.session.id, "A user logged in as " + o.user);
+                            lg.logdb(req, user.UserId, req.session.id, "A user logged in as " + o.user);
                         }
                         res.redirect(302, '/user');
                     } else {
@@ -458,6 +466,7 @@ module.exports = function (express, client) {
                          * Notify user incorrect password
                          */
                         req.session.loggedIn = false;
+                        lg.logdb(req, 0, req.session.id, "User entered the wrong password for." + o.user)
                         req.flash('status', 'Incorrect password.');
                         res.redirect(303, '/user');
                     }

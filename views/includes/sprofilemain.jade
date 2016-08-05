@@ -11,6 +11,7 @@ main.bg-light
                     span iPhone Ad
             .user
                 .row(v-if="exists===true")
+                    //TODO UNCOMMENT
                     //if !loggedIn
                         h1 You are not authorised to access this content
                     //else
@@ -18,6 +19,7 @@ main.bg-light
                     //img(v-bind:src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
                         TODO FINISH THIS
                     h1 #{username}
+                    h2 #{$.profile}
                     p  #{title}
                     p  #{firstName}
                     p  #{surname}

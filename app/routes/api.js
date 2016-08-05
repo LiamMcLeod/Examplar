@@ -438,7 +438,7 @@ module.exports = function (express, client) {
                             req.flash('status', 'You have been banned.');
                             res.redirect(303, '/user');
                         }
-                        if (!user.Activated) {
+                        else if (!user.Activated) {
                             req.session.loggedIn = false;
                             lg.logdb(req, user.UserId, req.session.id, "A user logged in as " + o.user + " but the account is inactive");
                             req.flash('status', 'Your account is not yet active.');

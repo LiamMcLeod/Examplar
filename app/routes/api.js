@@ -435,33 +435,36 @@ module.exports = function (express, client) {
                         if (user.Banned) {
                             req.session.loggedIn = false;
                             lg.logdb(req, user.UserId, req.session.id, "A user logged in as " + o.user + " but is banned");
-                            req.session.destroy();
                             req.flash('status', 'You have been banned.');
                             res.redirect(303, '/user');
+                            req.session.destroy();
                         }
                         if (!user.Activated) {
                             req.session.loggedIn = false;
                             lg.logdb(req, user.UserId, req.session.id, "A user logged in as " + o.user + " but the account is inactive");
-                            req.session.destroy();
                             req.flash('status', 'Your account is not yet active.');
                             res.redirect(303, '/user');
+                            req.session.destroy();
                         }
-                        /**
-                         * Trim time off of date
-                         */
-                        user.DateCreated = user.DateCreated.toString();
-                        user.DoB = user.DoB.toString();
-                        /**
-                         * Populate session var
-                         */
-                        req.session.loggedIn = true;
-                        req.session.user = user;
-                        req.flash('status', 'Success!');
-                        if (req.session.loggedIn) {
-                            lg.logdb(req, user.UserId, req.session.id, "A user logged in as " + o.user);
+                        else {
+                            /**
+                             * Trim time off of date
+                             */
+                            user.DateCreated = user.DateCreated.toString();
+                            user.DoB = user.DoB.toString();
+                            /**
+                             * Populate session var
+                             */
+                            req.session.loggedIn = true;
+                            req.session.user = user;
+                            req.flash('status', 'Success!');
+                            if (req.session.loggedIn) {
+                                lg.logdb(req, user.UserId, req.session.id, "A user logged in as " + o.user);
+                            }
+                            res.redirect(302, '/user');
                         }
-                        res.redirect(302, '/user');
-                    } else {
+                    }
+                    else {
                         /**
                          * Notify user incorrect password
                          */

@@ -299,6 +299,29 @@ module.exports = function (express, client) {
         else
             ip = req.connection.remoteAddress;
     });
+    /**
+     * GET
+     * /api+ TEST ROUTES
+     * Colour Test
+     */
+    apiRouter.get('/colour', function (req, res) {
+        var file = req.query['f'];
+        var getColors = require('get-image-colors');
+        if (lib.isset(file)) {
+            var x = getColors(config.dir.root + '/public/img/' + file, function (err, colors) {
+                if (err)
+                    throw err;
+                else
+                    x = colors[0]._rgb;
+                x = x.splice(0, 3);
+                mod.returnJSON(res, x, req.query);
+            });
+        }
+        else {
+            mod.returnJSON(res, {}, req.query)
+        }
+
+    });
 
 
     /**

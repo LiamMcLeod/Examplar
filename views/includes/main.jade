@@ -67,9 +67,11 @@ main.bg-light
                     img(src="https://storage.googleapis.com/support-kms-prod/SNP_4FF3B90F1F322E328CE191157454F07699AB_2922296_en_v3")
                 .col-sm-12.wire.no-desktop.no-wide
                     span iPhone Ad
-            .noSearch(v-if="searchFlag===false")
+            .noSearch(v-if="searchFlag===0")
                 h1.text-center Search
-            .notFound(v-if="noOfResults === 0 && searchFlag===true")
+            .noSearch(v-if="searchFlag===2")
+                h1.text-center Loading...
+            .notFound(v-if="noOfResults === 0 && searchFlag===1")
                 h1.text-center No Results.
             .searchResult(v-if="filterTerm===''" v-for="result in results | limitBy displayResults | orderBy sortBy sortType")
                 div

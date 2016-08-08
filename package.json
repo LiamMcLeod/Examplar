@@ -17,6 +17,7 @@
     "express": "~4.13.1",
     "express-session": "^1.13.0",
     "express-subdomain": "^1.0.5",
+    "get-image-colors": "^1.5.0",
     "jade": "~1.11.0",
     "letsencrypt-express": "^1.1.5",
     "md5": "^2.1.0",

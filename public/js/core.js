@@ -75,7 +75,7 @@ vm = new Vue({
     data: {
         //Search
         searchTerm: '',
-        searchFlag: false,
+        searchFlag: 0,
         sortBy: 'QuestionNumber',
         sortType: 1,
         sortOptions: sortOptions,
@@ -132,17 +132,19 @@ vm = new Vue({
             }
             //Sanitise searchTerm
             this.$set('error', '');
-            this.$set('searchFlag', true);
+            this.$set('searchFlag', 2);
             if (this.searchTerm != '') {
                 x = this.searchTerm;
             } else {
-                x = q
+                x = q;
             }
             var errorFlag = false;
-            if (this.searchFlag === true) errorFlag = this.checkTerm(x);
+            if (this.searchFlag === 2) errorFlag = this.checkTerm(x);
             //filter = this.getFilter();
             if (errorFlag === false) {
                 this.fetchResults(x, filter);
+            } else {
+                this.$set('searchFlag', 1);
             }
         },
         /************************
@@ -333,6 +335,7 @@ vm = new Vue({
                         this.$set('results[' + i + ']', res.data[i]);
                     }
                     this.$set('noOfResults', this.results.length);
+                    this.$set('searchFlag', 1);
                 })
                 .catch(function (err) {
                     console.log("Error: " + err);

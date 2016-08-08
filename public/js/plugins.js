@@ -10,9 +10,9 @@ $(document).ready(function () {
         break
 
     }
-    if (path=='/'){
-        console.log("boom");
-    }
+    // if (path=='/'){
+    //     // console.log("boom");
+    // }
 
     // var searchPos, navPos;
     //

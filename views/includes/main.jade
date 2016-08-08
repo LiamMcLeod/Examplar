@@ -69,7 +69,7 @@ main.bg-light
                     span iPhone Ad
             .noSearch(v-if="searchFlag===0")
                 h1.text-center Search
-            .noSearch(v-if="searchFlag===2")
+            .searching(v-if="searchFlag===2")
                 h1.text-center Loading...
             .notFound(v-if="noOfResults === 0 && searchFlag===1")
                 h1.text-center No Results.

@@ -98,6 +98,7 @@ body {
   // === Header === //
   header {
     margin-top: 50px;
+    //background: rgb(37,58,71) url('/public/img/headerback.png');
     background: rgb(37,58,71) url('/public/img/headerback.png');
   }
   header .row {
@@ -267,6 +268,9 @@ body {
   .test-ad .col-sm-6 {
     line-height: 50px;
     height: 100%;
+  }
+  .searching{
+    color:#6b6b6b;
   }
   // === Bootstrap Ext ===//
   .navbar-nav > li > a:hover {

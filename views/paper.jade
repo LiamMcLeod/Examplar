@@ -19,7 +19,7 @@ html(lang="en-GB" id="index")
             include includes/papermain
         include includes/footer
         include includes/betawarning
-        script(src='/public/js/core.js')
+        script(src='/public/js/paper.js')
         include includes/js
             script.
-                this.vm.fetchProfile("#{userReq}");
+                this.up.fetchPaper("#{paperId}");

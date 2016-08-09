@@ -77,6 +77,7 @@ module.exports = function (express, client) {
 
         var results = [];
         var result = req.params.id;
+        //todo result view
         var query = {
             text: 'SELECT "Question"."QuestionId", "Question"."ExaminerId", "Question"."ExamPaperId", "Topic"."TopicId", "QuestionNumber", "QuestionText", "QuestionMarks", "QuestionMarkText", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate", "ExamBoardName", "LevelTitle", "SubjectTitle", "TopicTitle", "ExaminerNote", "QuestionImageData", "Question"."QuestionImageId" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId" = "ExamPaper"."ExamPaperId" INNER JOIN "ExamBoard" ON "ExamPaper"."ExamBoardId" = "ExamBoard"."ExamBoardId" INNER JOIN "Level" ON "ExamPaper"."LevelId" = "Level"."LevelId" INNER JOIN "Subject" ON "ExamPaper"."SubjectId" = "Subject"."SubjectId" INNER JOIN "Examiner" ON "Question"."ExaminerId"="Examiner"."ExaminerId" INNER JOIN "QuestionImage" ON "Question"."QuestionImageId"= "QuestionImage"."QuestionImageId" INNER JOIN "QuestionTopic" ON "Question"."QuestionId" = "QuestionTopic"."QuestionId" INNER JOIN "Topic" ON "QuestionTopic"."TopicId"= "Topic"."TopicId" WHERE "Question"."QuestionId"=$1',
             values: [result]
@@ -111,6 +112,7 @@ module.exports = function (express, client) {
 
         var results = [];
         var result = req.params.id;
+        //TODO qmore view
         var query = {
             text: 'SELECT "Question"."QuestionId", "QuestionNumber", "QuestionText", "Topic"."TopicId", "Question"."ExamPaperId" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId"="ExamPaper"."ExamPaperId" INNER JOIN "QuestionTopic" ON "Question"."QuestionId" = "QuestionTopic"."QuestionId" INNER JOIN "Topic" ON "QuestionTopic"."TopicId"= "Topic"."TopicId" WHERE "ExamPaper"."ExamPaperId"=$1 AND "Question"."QuestionId"!=$2 ORDER BY RANDOM() LIMIT 5',
             values: [result, param.qId]
@@ -135,6 +137,7 @@ module.exports = function (express, client) {
 
         var results = [];
         var result = req.params.id;
+        // TODO qrelated view
         var query = {
             text: 'SELECT "Question"."QuestionId", "QuestionNumber", "QuestionText", "Topic"."TopicId", "Question"."ExamPaperId", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId"="ExamPaper"."ExamPaperId" INNER JOIN "QuestionTopic" ON "Question"."QuestionId" = "QuestionTopic"."QuestionId" INNER JOIN "Topic" ON "QuestionTopic"."TopicId"= "Topic"."TopicId" WHERE "Topic"."TopicId"=$1 AND "Question"."QuestionId"!=$2 ORDER BY RANDOM() LIMIT 5',
             values: [result, param.qId]
@@ -159,9 +162,9 @@ module.exports = function (express, client) {
 
         var results = [];
         var id = req.params.id;
-
+        // TODO qimage view
         var query = {
-            text: 'SELECT "QuestionId", "Question"."QuestionImageId", "QuestionImageData" FROM "Question" INNER JOIN "QuestionImage" ON "Question"."QuestionImageId"= "QuestionImage"."QuestionImageId" WHERE "QuestionId"=$1',
+            text: 'SELECT * FROM qimage WHERE "QuestionId"=$1', //'SELECT "QuestionId", "Question"."QuestionImageId", "QuestionImageData" FROM "Question" INNER JOIN "QuestionImage" ON "Question"."QuestionImageId"= "QuestionImage"."QuestionImageId" WHERE "QuestionId"=$1',
             values: [id]
         };
 
@@ -192,7 +195,7 @@ module.exports = function (express, client) {
 
         var results = [];
         var id = req.params.id;
-
+        //todo enotes view
         var query = {
             text: 'SELECT "ExaminerId", "ExaminerNote", "QuestionNo" FROM "Examiner" WHERE "ExaminerId"=$1 ',
             values: [id]
@@ -253,6 +256,88 @@ module.exports = function (express, client) {
         var query = {
             text: 'SELECT * FROM "ExamBoard"'
         };
+
+        var q = client.query(query, function (err, result) {
+        });
+        mod.getResults(res, q, param);
+    });
+
+
+    /**
+     * User Papers
+     */
+    apiRouter.get('/user/:id/papers/', function (req, res) {
+        var param = {};
+        var results = [];
+
+        param.pretty = false;
+        if (req.query != null) {
+            param.pretty = req.query['pretty'];
+        }
+        var id = req.params.id;
+
+
+        var query = {};
+        var $ = req.session;
+        if (lib.isset($.user)) {
+            if ($.user.UserId === id) {
+                query = {
+                    text: 'SELECT * FROM "upaper" WHERE "UserId"=$1',
+                    values: [id]
+                }
+            }
+            else {
+                query = {
+                    text: 'SELECT * FROM "ppaper" WHERE "UserId"=$1',
+                    values: [id]
+                };
+            }
+        } else {
+            query = {
+                text: 'SELECT * FROM "ppaper" WHERE "UserId"=$1',
+                values: [id]
+            };
+        }
+
+        var q = client.query(query, function (err, result) {
+        });
+        // for (var i=0;i<i){
+        //todo loop through for public flag check
+        // }
+        mod.getResults(res, q, param);
+    });
+
+    apiRouter.get('/paper/:id', function (req, res) {
+        var param = {};
+        var results = [];
+
+        param.pretty = false;
+        if (req.query != null) {
+            param.pretty = req.query['pretty'];
+        }
+        var id = req.params.id;
+        var $ = req.session;
+        var query = {};
+        if (lib.isset($.user)) {
+            if ($.user.UserId === id) {
+                query = {
+                    text: 'SELECT * FROM upquestions WHERE "UserExamPaperId"=$1',
+                    values: [id]
+                };
+            }
+            else {
+                query = {
+                    text: 'SELECT * FROM ppquestions WHERE "UserExamPaperId"=$1',
+                    values: [id]
+                };
+            }
+        } else {
+            query = {
+                text: 'SELECT * FROM ppquestions WHERE "UserExamPaperId"=$1',
+                values: [id]
+            };
+        }
+
 
         var q = client.query(query, function (err, result) {
         });

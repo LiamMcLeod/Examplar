@@ -77,7 +77,7 @@ module.exports = function (express, client) {
 
         var results = [];
         var result = req.params.id;
-        //todo result view
+        //todo result view ALSO WON't WORK
         var query = {
             text: 'SELECT "Question"."QuestionId", "Question"."ExaminerId", "Question"."ExamPaperId", "Topic"."TopicId", "QuestionNumber", "QuestionText", "QuestionMarks", "QuestionMarkText", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate", "ExamBoardName", "LevelTitle", "SubjectTitle", "TopicTitle", "ExaminerNote", "QuestionImageData", "Question"."QuestionImageId" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId" = "ExamPaper"."ExamPaperId" INNER JOIN "ExamBoard" ON "ExamPaper"."ExamBoardId" = "ExamBoard"."ExamBoardId" INNER JOIN "Level" ON "ExamPaper"."LevelId" = "Level"."LevelId" INNER JOIN "Subject" ON "ExamPaper"."SubjectId" = "Subject"."SubjectId" INNER JOIN "Examiner" ON "Question"."ExaminerId"="Examiner"."ExaminerId" INNER JOIN "QuestionImage" ON "Question"."QuestionImageId"= "QuestionImage"."QuestionImageId" INNER JOIN "QuestionTopic" ON "Question"."QuestionId" = "QuestionTopic"."QuestionId" INNER JOIN "Topic" ON "QuestionTopic"."TopicId"= "Topic"."TopicId" WHERE "Question"."QuestionId"=$1',
             values: [result]
@@ -112,7 +112,7 @@ module.exports = function (express, client) {
 
         var results = [];
         var result = req.params.id;
-        //TODO qmore view
+        //TODO qmore view STILL DOESN@T WORK
         var query = {
             text: 'SELECT "Question"."QuestionId", "QuestionNumber", "QuestionText", "Topic"."TopicId", "Question"."ExamPaperId" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId"="ExamPaper"."ExamPaperId" INNER JOIN "QuestionTopic" ON "Question"."QuestionId" = "QuestionTopic"."QuestionId" INNER JOIN "Topic" ON "QuestionTopic"."TopicId"= "Topic"."TopicId" WHERE "ExamPaper"."ExamPaperId"=$1 AND "Question"."QuestionId"!=$2 ORDER BY RANDOM() LIMIT 5',
             values: [result, param.qId]
@@ -137,7 +137,7 @@ module.exports = function (express, client) {
 
         var results = [];
         var result = req.params.id;
-        // TODO qrelated view
+        // TODO qrelated view STILL DOESN't WORK
         var query = {
             text: 'SELECT "Question"."QuestionId", "QuestionNumber", "QuestionText", "Topic"."TopicId", "Question"."ExamPaperId", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId"="ExamPaper"."ExamPaperId" INNER JOIN "QuestionTopic" ON "Question"."QuestionId" = "QuestionTopic"."QuestionId" INNER JOIN "Topic" ON "QuestionTopic"."TopicId"= "Topic"."TopicId" WHERE "Topic"."TopicId"=$1 AND "Question"."QuestionId"!=$2 ORDER BY RANDOM() LIMIT 5',
             values: [result, param.qId]
@@ -162,9 +162,8 @@ module.exports = function (express, client) {
 
         var results = [];
         var id = req.params.id;
-        // TODO qimage view
         var query = {
-            text: 'SELECT * FROM qimage WHERE "QuestionId"=$1', //'SELECT "QuestionId", "Question"."QuestionImageId", "QuestionImageData" FROM "Question" INNER JOIN "QuestionImage" ON "Question"."QuestionImageId"= "QuestionImage"."QuestionImageId" WHERE "QuestionId"=$1',
+            text: 'SELECT * FROM qimage WHERE "QuestionId"=$1',
             values: [id]
         };
 
@@ -197,7 +196,7 @@ module.exports = function (express, client) {
         var id = req.params.id;
         //todo enotes view
         var query = {
-            text: 'SELECT "ExaminerId", "ExaminerNote", "QuestionNo" FROM "Examiner" WHERE "ExaminerId"=$1 ',
+            text: 'SELECT * FROM enotes WHERE "ExaminerId"=$1',
             values: [id]
         };
 

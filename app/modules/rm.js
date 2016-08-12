@@ -172,7 +172,7 @@ function renderLoggedIn(req, res, file) {
             else res.send(result); // send rendered HTML back to client
         });
     }
-    else if (file === "sprofile") {
+    else if (file === "prof") {
         userReq = req.params.user;
         // console.log(req.params.user);
         //FIND USER
@@ -180,7 +180,7 @@ function renderLoggedIn(req, res, file) {
         user.findUser(req.params, function (err, userData, found) {
                 if (found) {
                     //TODO REMOVE WHEN TESTING DONE
-                    // console.log(userData);
+                    console.log(userData);
                     delete userData.Password;
                     /**
                      * Trim whitespace
@@ -225,6 +225,7 @@ function renderLoggedIn(req, res, file) {
             permissions: $.user.Permissions,
             // Template Vars
             //TODO FINISH HERE FOR SS PROFILE RENDERING
+            found: $.profile.found,
             prof: $.profile,
             // ptitle: $.profile.Title,
             // pfirstName: $.profile.FirstName,

@@ -70,7 +70,7 @@ main.bg-light
             .noSearch(v-if="searchFlag===0")
                 h1.text-center Search
             .searching(v-if="searchFlag===2")
-                h1.text-center Loading...
+                .loading-pulse
             .notFound(v-if="noOfResults === 0 && searchFlag===1")
                 h1.text-center No Results.
             .searchResult(v-if="filterTerm===''" v-for="result in results | limitBy displayResults | orderBy sortBy sortType")

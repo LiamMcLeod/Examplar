@@ -99,7 +99,7 @@ body {
   header {
     margin-top: 50px;
     //background: rgb(37,58,71) url('/public/img/headerback.png');
-    background: rgb(37,58,71) url('/public/img/headerback.png');
+    background: rgb(37, 58, 71) url('/public/img/headerback.png');
   }
   header .row {
     color: #eee;
@@ -269,8 +269,8 @@ body {
     line-height: 50px;
     height: 100%;
   }
-  .searching{
-    color:#6b6b6b;
+  .searching {
+    color: #6b6b6b;
   }
   // === Bootstrap Ext ===//
   .navbar-nav > li > a:hover {
@@ -369,6 +369,44 @@ body {
     display: none;
   }
 
+  $base-line-height: 24px;
+  $white: #eee;
+  //$off-white: rgba($white, 0.2);
+  $off-white: #3c3c3c;
+  $pulse-duration: 750ms;
+
+  @keyframes pulse {
+    50% {
+      background: $white;
+    }
+  }
+  .loading-pulse {
+    margin: 0 auto;
+    position: relative;
+    width: ($base-line-height / 4);
+    height: $base-line-height;
+    background: $off-white;
+    animation: pulse $pulse-duration infinite;
+    animation-delay: ($pulse-duration / 3);
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      display: block;
+      height: ($base-line-height / 1.5);
+      width: ($base-line-height / 4);
+      background: $off-white;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: pulse $pulse-duration infinite;
+    }
+    &:before {
+      left: -($base-line-height / 2);
+    }
+    &:after {
+      left: ($base-line-height / 2);
+      animation-delay: ($pulse-duration / 1.5);
+    }
+  }
 }
 
 /* Small Devices, Tablets */

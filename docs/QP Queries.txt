@@ -1,0 +1,30 @@
+GET QUESTIONS
+--------------
+SELECT * FROM "UserExamPaper"
+INNER JOIN "QuestionUserPaper" ON "QuestionUserPaper"."UserPaperId"="UserExamPaper"."UserExamPaperId"
+INNER JOIN "Question" ON "QuestionUserPaper"."QuestionId"="Question"."QuestionId"
+WHERE "UserExamPaperId"=ID
+
+GET USER PAPERS
+------------
+SELECT * FROM "UserExamPaper"
+WHERE "UserExamPaperId"=1
+
+
+
+
+CREATE OR REPLACE VIEW upquestions AS
+  SELECT
+    "UserExamPaper"."UserExamPaperId",
+    "Question"."QuestionId",
+    "Question"."QuestionNumber",
+    "Question"."QuestionText",
+    "Question"."QuestionMarks",
+    "ExamBoard"."ExamBoardName"
+  FROM "UserExamPaper"
+    INNER JOIN "QuestionUserPaper" ON "QuestionUserPaper"."UserPaperId" = "UserExamPaper"."UserExamPaperId"
+    INNER JOIN "Question" ON "Question"."QuestionId" = "QuestionUserPaper"."QuestionId"
+    INNER JOIN "ExamPaper" ON "ExamPaper"."ExamBoardId" = "Question"."ExamPaperId"
+    INNER JOIN "ExamBoard" On "ExamBoard"."ExamBoardId" = "ExamPaper"."ExamBoardId";
+
+

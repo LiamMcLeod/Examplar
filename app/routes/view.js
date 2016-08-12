@@ -88,7 +88,7 @@ module.exports = function (express) {
     appRouter.get('/s/:user', function (req, res) {
         // console.log(req.params.user);
         var $ = req.session;
-        var file = "sprofile";
+        var file = "prof";
 
         if ($.loggedIn) {
             mod.renderLoggedIn(req, res, file);

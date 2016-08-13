@@ -10,23 +10,33 @@ main.bg-light
                 .col-sm-12.wire.no-desktop.no-wide
                     span iPhone Ad
             .user
-                if found===true
-                .row
-                    //.row(v-if="exists===true")
-                    //TODO UNCOMMENT
                     //if !loggedIn
-                        h1 You are not authorised to access this content
+                    //    h1 You are not authorised to access this content
                     //else
-                    img(src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
-                    //img(v-bind:src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
-                        TODO FINISH THIS
-                    h1 #{username}
-                    h2 #{$}
-                    p  #{title}
-                    p  #{firstName}
-                    p  #{surname}
-                    p  #{emailAddress}
-                    p  #{doB}
-                    p  #{created}
-                .row
-                     h1 User not found
+                    if found
+                        .row
+                            //else
+                            img(src='http://1.gravatar.com/avatar/#{pDigest}?size=128')
+                            if pTwitter
+                                a(href='#{pTwitter}')
+                            if pWebsite
+                                a(href='#{pWebsite}')
+                            if pAcademia
+                                a(href='#{pAcademia}')
+                            //img(v-bind:src="http://1.gravatar.com/avatar/{{user.Digest}}?size=128")
+                                TODO FINISH THIS
+                            //TODO  LEFT ALIGN IMAGE
+                            //TODO UNDER IMAGE HAVE PERSONAL LINKS
+                            //TODO RIGHT HAND SIDE HAS USER PROFILE INFO
+                            //TODO Bottom will have their exam papers
+
+                            h1 #{pUsername}
+                            p  #{pTitle}
+                            p  #{pFirstName}
+                            p  #{pSurname}
+                            p  #{pEmail}
+                            p  #{pDoB}
+                            p  #{pCreated}
+                    else
+                        .row
+                             h1 User not found

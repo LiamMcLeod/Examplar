@@ -47,9 +47,11 @@ function removeTags(x){return x.replace(/<(?:.|\n)*?>/gm, '');}
 */
 function escapeSquare(x){x = x.replace(new RegExp('\\['), '\\[');x = x.replace(new RegExp('\\]'), '\\]');return x;}
 
+
 /**
-* Rnd function for the selection of header image
-*/
+ * Rnd function for the selection of header image
+ * @returns {number}
+ */
 function rnd(){
     //TODO Adjust for each BG
     var x = Math.floor((Math.random() * 10) + 1);
@@ -60,9 +62,9 @@ function rnd(){
 }
 
 /**
-*Simple array empty check
+ *Simple array empty check
  * @param array Array
-*/
+ */
 function isEmpty(array){
     if(array.length===0) {return true;}else{return false;}
     //if(this.length===0) {return true;}else{return false;}
@@ -107,6 +109,14 @@ function checkXSS(str){
     }
     return str;
 }
+/**
+ * Reverses String {s}
+ * @param s
+ * @returns {string}
+ */
+function reverse(s) {
+  return s.split('').reverse().join('');
+}
 
 exports.emboldenTerm = emboldenTerm;
 exports.shortenString = shortenString;
@@ -118,6 +128,7 @@ exports.contains = contains;
 exports.isset = isset;
 exports.isEmpty = isEmpty;
 exports.checkXSS = checkXSS;
+exports.reverse = reverse;
 // exports.Array =  Array.isEmpty;
 // exports.String = String;
 // exports.Boolean = Boolean;

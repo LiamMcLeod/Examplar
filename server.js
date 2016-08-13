@@ -76,7 +76,7 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(favicon(config.dir.favicon + '/favicon.ico'));
 
 // ======================  Logging, Debugging & Errors ======================
-app.use(morgan('dev'));                                             // Log HTTP Requests
+//app.use(morgan('dev'));                                             // Log HTTP Requests
 
 // ======================  Dirs r ======================
 app.set('view engine', 'jade');

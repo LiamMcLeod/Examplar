@@ -163,8 +163,10 @@ function User() {
     this.setResults = function (results) {
         for (var prop in results) {
             this.set(prop, results[prop]);
+            if (prop='Email'){
+                this.set("Digest", md5(results.Email));
+            }
         }
-        this.set("Digest", md5(results[prop]));
     };
 }
 

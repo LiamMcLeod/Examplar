@@ -115,7 +115,7 @@ function renderLoggedIn(req, res, file) {
     var idReq;
     var userReq;
 
-    if (file === "home" || file === "Home" || file == "index" || file === "index") {
+    if (file.toLowerCase() === "home" || file.toLowerCase() === "index") {
         file = "index";
         if (lib.isset(req.query)) {
             getReq = req.query['q'];
@@ -131,7 +131,7 @@ function renderLoggedIn(req, res, file) {
             loggedIn: $.loggedIn,
             userId: $.user.UserId,
             username: $.user.Username,
-            permissions: $.user.Role
+            permissions: $.user.Permissions
         }, function (err, result) {
             if (err) error(req, res, err);
             else res.send(result); // send rendered HTML back to client
@@ -172,74 +172,93 @@ function renderLoggedIn(req, res, file) {
             else res.send(result); // send rendered HTML back to client
         });
     }
-    else if (file === "prof") {
-        userReq = req.params.user;
-        // console.log(req.params.user);
+    else if (file === "sprof") {
+        console.log(req.params.user);
+        console.log("Server-side profile");
         //FIND USER
         var user = new User();
-        user.findUser(req.params, function (err, userData, found) {
+        user.findUser(req.params, function (err, user, found) {
+                console.log("finding user");
                 if (found) {
                     //TODO REMOVE WHEN TESTING DONE
-                    console.log(userData);
-                    delete userData.Password;
+                    delete user.Password;
                     /**
                      * Trim whitespace
                      */
-                    for (var key in userData) {
-                        if (lib.isset(userData[key]) && userData[key] != null) {
-                            if (userData[key].trim) {
-                                userData[key] = userData[key].trim();
+                    for (var key in user) {
+                        if (lib.isset(user[key]) && user[key] != null) {
+                            if (user[key].trim) {
+                                user[key] = user[key].trim();
                             }
                         }
                     }
                     /**
                      * Trim time off of date
                      */
-                    userData.DateCreated = userData.DateCreated.toJSON();
-                    userData.DoB = userData.DoB.toJSON();
-                    if (userData.DateCreated.contains('T')) {
-                        userData.DateCreated = userData.DateCreated.substring(0, 10);
-                        // console.log(userData.Created);
+                    user.DateCreated = user.DateCreated.toJSON();
+                    user.DoB = user.DoB.toJSON();
+                    if (user.DateCreated.contains('T')) {
+                        user.DateCreated = user.DateCreated.substring(0, 10);
+
+                        // console.log(user.Created);
                     }
-                    if (userData.DoB.contains('T')) {
-                        userData.DoB = userData.DoB.substring(0, 10);
+                    if (user.DoB.contains('T')) {
+                        user.DoB = user.DoB.substring(0, 10);
                     }
-                    $.profile = userData;
+                    $.profile = user;
                     $.profile.found = true;
+
+                    res.render(file, {
+                        userReq: userReq,
+                        session: $,
+                        status: req.flash('status'),
+                        // Client Vars
+                        loggedIn: $.loggedIn,
+                        userId: $.user.UserId,
+                        username: $.user.Username,
+                        permissions: $.user.Permissions,
+                        // Template Vars
+                        //TODO FINISH HERE FOR SS PROFILE RENDERING
+                        found: $.profile.found,
+                        pUsername: $.profile.Username,
+                        pTitle: $.profile.Title,
+                        pFirstName: $.profile.FirstName,
+                        pLastName: $.profile.Surname,
+                        pEmailAddress: $.profile.Email,
+                        pDoB: $.profile.DoB,
+                        pCreated: $.profile.DateCreated,
+                        pWebsite: $.profile.Website,
+                        pTwitter: $.profile.Twitter
+                    }, function (err, result) {
+                        if (err) error(req, res, err);
+                        else res.send(result); // send rendered HTML back to client
+                    });
 
                 }
                 else {
                     $.profile.found = false;
+                    res.render(file, {
+                        userReq: userReq,
+                        session: $,
+                        status: req.flash('status'),
+                        // Client Vars
+                        loggedIn: $.loggedIn,
+                        userId: $.user.UserId,
+                        username: $.user.Username,
+                        permissions: $.user.Permissions,
+                        // Template Vars
+                        found: $.profile.found,
+                    }, function (err, result) {
+                        if (err) error(req, res, err);
+                        else res.send(result); // send rendered HTML back to client
+                    });
+
                 }
+
+                // TODO FIX ASYNC RENDERING WITHOUT USER
+
             }
         );
-        // TODO FIX ASYNC RENDERING WITHOUT USER
-        res.render(file, {
-            userReq: userReq,
-            session: $,
-            status: req.flash('status'),
-            // Client Vars
-            loggedIn: $.loggedIn,
-            userId: $.user.UserId,
-            username: $.user.Username,
-            permissions: $.user.Permissions,
-            // Template Vars
-            //TODO FINISH HERE FOR SS PROFILE RENDERING
-            found: $.profile.found,
-            prof: $.profile,
-            // ptitle: $.profile.Title,
-            // pfirstName: $.profile.FirstName,
-            // psurname: $.profile.Surname,
-            // pemailAddress: $.profile.EmailAddress,
-            // pdoB: $.profile.DoB,
-            // pcreated: $.profile.DateCreated,
-            // pwebsite: $.profile.Website,
-            // ptwitter: $.profile.Twitter
-
-        }, function (err, result) {
-            if (err) error(req, res, err);
-            else res.send(result); // send rendered HTML back to client
-        });
     }
     else if (file === "user") {
         res.render(file, {
@@ -255,7 +274,7 @@ function renderLoggedIn(req, res, file) {
             title: $.user.Title,
             firstName: $.user.FirstName,
             surname: $.user.Surname,
-            emailAddress: $.user.EmailAddress,
+            emailAddress: $.user.Email,
             doB: $.user.DoB,
             created: $.user.DateCreated,
             website: $.user.Website,
@@ -319,8 +338,6 @@ function renderLoggedOut(req, res, file) {
                 getReq = lib.checkXSS(req.query['q']);
             }
         }
-
-
         res.render(file, {
             getReq: getReq,
             session: $,
@@ -344,6 +361,86 @@ function renderLoggedOut(req, res, file) {
             if (err) error(req, res, err);
             else res.send(result); // send rendered HTML back to client
         });
+    }
+    //TODO REMOVE WHEN DONE
+    else if (file === "sprof") {
+        var userReq = '';
+        var user = new User();
+        user.findUser(req.params, function (err, user, found) {
+                if (found) {
+                    //TODO REMOVE WHEN TESTING DONE
+                    delete user.Password;
+                    /**
+                     * Trim whitespace
+                     */
+                    for (var key in user) {
+                        if (lib.isset(user[key]) && user[key] != null) {
+                            if (user[key].trim) {
+                                user[key] = user[key].trim();
+                            }
+                        }
+                    }
+                    /**
+                     * Trim time off of date
+                     */
+                    user.DateCreated = user.DateCreated.toJSON();
+                    user.DoB = user.DoB.toJSON();
+                    if (user.DateCreated.contains('T')) {
+                        user.DateCreated = user.DateCreated.substring(0, 10);
+
+                        // console.log(user.Created);
+                    }
+                    if (user.DoB.contains('T')) {
+                        user.DoB = user.DoB.substring(0, 10);
+                    }
+
+                    $.profile = user;
+                    $.profile.found = true;
+                    res.render(file, {
+                        userReq: userReq,
+                        session: $,
+                        status: req.flash('status'),
+                        // Client Vars
+                        loggedIn: $.loggedIn,
+                        // Template Vars
+                        //TODO FINISH HERE FOR SS PROFILE RENDERING
+                        found: $.profile.found,
+                        pUsername: $.profile.Username,
+                        pTitle: $.profile.Title,
+                        pFirstName: $.profile.FirstName,
+                        pSurname: $.profile.Surname,
+                        pEmail: $.profile.Email,
+                        pDigest: $.profile.Digest,
+                        pDoB: $.profile.DoB,
+                        pCreated: $.profile.DateCreated,
+                        pWebsite: $.profile.Website,
+                        pTwitter: $.profile.Twitter,
+                        pAcademia: $.profile.Academia
+                    }, function (err, result) {
+                        if (err) error(req, res, err);
+                        else res.send(result); // send rendered HTML back to client
+                    });
+                }
+                else {
+                    $.profile.found = false;
+                    res.render(file, {
+                        userReq: userReq,
+                        session: $,
+                        status: req.flash('status'),
+                        // Client Vars
+                        loggedIn: $.loggedIn,
+                        userId: $.user.UserId,
+                        username: $.user.Username,
+                        permissions: $.user.Permissions,
+                        // Template Vars
+                        found: $.profile.found,
+                    }, function (err, result) {
+                        if (err) error(req, res, err);
+                        else res.send(result); // send rendered HTML back to client
+                    });
+                }
+            }
+        )
     }
     else {
         res.render(file, {

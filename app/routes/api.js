@@ -265,6 +265,7 @@ module.exports = function (express, client) {
     /**
      * User Papers
      */
+    //TODO ADJUST QUERY TO SHOW LEVEL AND SUBJECT NAMES
     apiRouter.get('/user/:id/papers/', function (req, res) {
         var param = {};
         var results = [];
@@ -305,7 +306,7 @@ module.exports = function (express, client) {
         // }
         mod.getResults(res, q, param);
     });
-
+    //TODO ADJUST QUERY TO GET PAPER NAME
     apiRouter.get('/paper/:id', function (req, res) {
         var param = {};
         var results = [];

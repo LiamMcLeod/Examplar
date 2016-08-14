@@ -48,7 +48,7 @@ function isset(x) {
  */
 var data = {};
 var results = [];
-var user = []
+var user = [];
 var examId, topicId;
 var filterOptions = [
     {text: '', value: ''},
@@ -75,8 +75,27 @@ up = new Vue({
     el: '#wrapper',
 
     data: {
-        //Search
-      paper:true
+        //sort
+        sortBy: '',
+        sortType: 1,
+        sortOptions: sortOptions,
+        sortOrder: sortOrder, //1 or -1
+        //filter
+        filterOptions: filterOptions,
+        filterTermOptions: [],
+        filterBy: '',
+        filterTerm: '',
+        filterFlag: false,
+        //misc
+        noOfResults: 0,
+        noOfPages: 0,
+        error: '',
+        //Paper
+        papers: [],
+        paperFlag: false,
+        //Questions
+        questions: [],
+
     },
 
     route: {},
@@ -86,104 +105,45 @@ up = new Vue({
     },
 
     methods: {
-        fetchPaper: function (id) {
-
-        },
-        /************************
-         *        Results Page    *
-         ************************/
-        fetchResult: function (id) {
-            // TODO IF ID NOT INT
+        fetchPapers: function (id) {
             if (!isInt(id)) {
                 return
             }
-            this.$set('results', []);               //Purge results
-            this.$set('related', []);
-            this.$set('more', []);
-
-            this.$http.get('/api/result/' + id)
+            this.$set('papers', []);
+            this.$http.get('/api/user/' + id + '/papers/')
                 .then(function (res) {
-                    if (!res.data.isEmpty()) {
-                        this.$set('result', true)
+                    if (isset(res.data[0])) {
+                        this.$set('paperFlag', true);
+                        var noOfResults = res.data.length;
+                        var noOfPages = noOfResults / 5;
+                        this.$set('noOfResults', noOfResults);
+                        this.$set('noOfPages', noOfPages);
+
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.$set('papers[' + i + ']', res.data[i]);
+                        }
+                        this.$set('noOfResults', this.results.length);
                     }
-                    var y = res.data[0].ExamPaperDate;
-                    y = dateToYear(y);
-                    res.data[0].ExamPaperDate = y;
-                    topicId = res.data[0].TopicId;
-                    examId = res.data[0].ExamPaperId;
-                    //TODO ADJUST QUERY FOR IMAGE ID
-                    if (res.data[0].QuestionImageId != 0) {
-                        this.$set('hasImage', true);
-                    }
-                    this.$set('results', res.data[0]);
-                    // Others
-                    this.$http.get('/api/related/' + topicId + '?qId=' + id)
-                        .then(function (res) {
-                            var related = [];
-                            for (var i = 0; i < res.data.length; i++) {
-                                var y = res.data[i].ExamPaperDate;
-                                y = dateToYear(y);
-                                res.data[i].ExamPaperDate = y;
-                                var x = res.data[i].QuestionText;
-                                x = removeTags(x);
-                                x = shortenString(x);
-                                res.data[i].QuestionText = x;
-                                this.$set('related[' + i + ']', res.data[i]);
-                            }
-                        })
-                        .catch(function (err) {
-                            console.log("Error: " + err);
-                            throw err;
-                        });
-                    this.$http.get('/api/more/' + examId + '?qId=' + id)
-                        .then(function (res) {
-                            var more = [];
-                            for (var i = 0; i < res.data.length; i++) {
-                                var x = res.data[i].QuestionText;
-                                x = removeTags(x);
-                                x = shortenString(x);
-                                res.data[i].QuestionText = x;
-                                this.$set('more[' + i + ']', res.data[i]);
-                            }
-                        })
-                        .catch(function (err) {
-                            console.log("Error: " + err);
-                            throw err;
-                        });
                 })
                 .catch(function (err) {
                     console.log("Error: " + err);
                     throw err;
                 });
-        },
 
-        /************************
-         *        Fetch Results    *
-         ************************/
-        fetchResults: function (searchTerm) {
-            this.$set('results', []);               //Purge results
-            if (searchTerm.contains('[') || searchTerm.contains(']')) {
-                searchTerm = escapeSquare(searchTerm);
-                console.log(searchTerm);
-            }
-            this.$http.get('/api/search/' + searchTerm)
+        },
+        fetchPaper: function (id) {
+            this.$http.get('/api/paper/' + id)
                 .then(function (res) {
-                    var i = 0;
-                    var j = 0;
-                    var results = [];
+                    if (isset(res.data[0].QuestionId)) {
+                        this.$set('questionFlag', true)
+                    }
+                    var questions = [];
                     var noOfResults = res.data.length;
                     var noOfPages = noOfResults / 15;
                     this.$set('noOfResults', noOfResults);
                     this.$set('noOfPages', noOfPages);
-                    for (i = 0; i < res.data.length; i++) {
-                        var y = res.data[i].ExamPaperDate;
-                        var x = res.data[i].QuestionText;
-                        y = dateToYear(y);
-                        x = removeTags(x);
-                        x = updateString(x, searchTerm);
-                        res.data[i].ExamPaperDate = y;
-                        res.data[i].QuestionText = x;
-                        this.$set('results[' + i + ']', res.data[i]);
+                    for (var i = 0; i < res.data.length; i++) {
+                        this.$set('questions[' + i + ']', res.data[i]);
                     }
                     this.$set('noOfResults', this.results.length);
                     this.$set('searchFlag', 1);
@@ -192,30 +152,9 @@ up = new Vue({
                     console.log("Error: " + err);
                     throw err;
                 });
-        },
-        /************************
-         *        Fetch Profile    *
-         ************************/
-        fetchProfile: function (user) {
-            if (!isset(user)) {
-                return;
-            }
-            this.$http.get('/api/user/' + user)
-                .then(function (res) {
-                    if (isset(res.data)) {
-                        this.$set('exists', true);
-                        this.$set('user', res.data);
-                    }
-                })
-                .catch(function (err) {
-                    console.log("Error: " + err);
-                    throw err;
-                });
         }
-
     }
 });
-
 var router = new VueRouter();
 router.map({});
 window.vue = up;

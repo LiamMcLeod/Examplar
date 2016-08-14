@@ -22,3 +22,15 @@ main.bg-light
                         h2.text-success #{status}
                 .row
                     h1 PAPER NAME
+                    .notFound(v-if="noOfResults === 0 && searchFlag===1")
+                        h1.text-center No Results.
+                    .searchResult(v-if="filterTerm===''" v-for="question in questions | limitBy displayResults | orderBy sortBy sortType")
+                        div
+                            h4
+                                a(href="../result?id={{question.QuestionId}}") {{question.QuestionNumber}} - {{question.ExamBoardName}} {{question.ExamPaperSeason}} {{question.ExamPaperDate}}
+                        p {{{ question.QuestionText }}}
+                    .searchResult(v-if="filterTerm!=''" v-for="question in questions  | limitBy displayResults | orderBy sortBy sortType | filterBy filterTerm in filterBy")
+                        div
+                            h4
+                                a(href="../result?id={{question.QuestionId}}") {{question.QuestionNumber}} - {{question.ExamBoardName}} {{question.ExamPaperSeason}} {{question.ExamPaperDate}}
+                        p {{{ question.QuestionText }}}

@@ -289,7 +289,7 @@ function renderLoggedIn(req, res, file) {
 
     }
     else if (file === "paper") {
-        userReq = req.params.user;
+        userReq = req.params.paper;
         res.render(file, {
             userReq: userReq,
             session: $,
@@ -303,6 +303,89 @@ function renderLoggedIn(req, res, file) {
             if (err) error(req, res, err);
             else res.send(result); // send rendered HTML back to client
         });
+    }
+    else if (file === "sprof") {
+        var userReq = '';
+        var user = new User();
+        user.findUser(req.params, function (err, user, found) {
+                if (found) {
+                    //TODO REMOVE WHEN TESTING DONE
+                    delete user.Password;
+                    /**
+                     * Trim whitespace
+                     */
+                    for (var key in user) {
+                        if (lib.isset(user[key]) && user[key] != null) {
+                            if (user[key].trim) {
+                                user[key] = user[key].trim();
+                            }
+                        }
+                    }
+                    /**
+                     * Trim time off of date
+                     */
+                    user.DateCreated = user.DateCreated.toJSON();
+                    user.DoB = user.DoB.toJSON();
+                    if (user.DateCreated.contains('T')) {
+                        user.DateCreated = user.DateCreated.substring(0, 10);
+
+                        // console.log(user.Created);
+                    }
+                    if (user.DoB.contains('T')) {
+                        user.DoB = user.DoB.substring(0, 10);
+                    }
+
+                    $.profile = user;
+                    $.profile.found = true;
+                    res.render(file, {
+                        userReq: userReq,
+                        session: $,
+                        status: req.flash('status'),
+                        // Client Vars
+                        loggedIn: $.loggedIn,
+                        userId: $.user.UserId,
+                        username: $.user.Username,
+                        permissions: $.user.Permissions,
+                        // Template Vars
+                        //TODO FINISH HERE FOR SS PROFILE RENDERING
+                        found: $.profile.found,
+                        pUserId: $.profile.UserId,
+                        pUsername: $.profile.Username,
+                        pTitle: $.profile.Title,
+                        pFirstName: $.profile.FirstName,
+                        pSurname: $.profile.Surname,
+                        pEmail: $.profile.Email,
+                        pDigest: $.profile.Digest,
+                        pDoB: $.profile.DoB,
+                        pCreated: $.profile.DateCreated,
+                        pWebsite: $.profile.Website,
+                        pTwitter: $.profile.Twitter,
+                        pAcademia: $.profile.Academia
+                    }, function (err, result) {
+                        if (err) error(req, res, err);
+                        else res.send(result); // send rendered HTML back to client
+                    });
+                }
+                else {
+                    $.profile.found = false;
+                    res.render(file, {
+                        userReq: userReq,
+                        session: $,
+                        status: req.flash('status'),
+                        // Client Vars
+                        loggedIn: $.loggedIn,
+                        userId: $.user.UserId,
+                        username: $.user.Username,
+                        permissions: $.user.Permissions,
+                        // Template Vars
+                        found: $.profile.found,
+                    }, function (err, result) {
+                        if (err) error(req, res, err);
+                        else res.send(result); // send rendered HTML back to client
+                    });
+                }
+            }
+        )
     }
     else {
         res.render(file, {
@@ -405,6 +488,7 @@ function renderLoggedOut(req, res, file) {
                         // Template Vars
                         //TODO FINISH HERE FOR SS PROFILE RENDERING
                         found: $.profile.found,
+                        pUserId: $.profile.UserId,
                         pUsername: $.profile.Username,
                         pTitle: $.profile.Title,
                         pFirstName: $.profile.FirstName,
@@ -441,6 +525,19 @@ function renderLoggedOut(req, res, file) {
                 }
             }
         )
+    }
+    else if (file === "paper") {
+        userReq = req.params.paper;
+        res.render(file, {
+            userReq: userReq,
+            session: $,
+            status: req.flash('status'),
+            // Client Vars
+            loggedIn: $.loggedIn,
+        }, function (err, result) {
+            if (err) error(req, res, err);
+            else res.send(result); // send rendered HTML back to client
+        });
     }
     else {
         res.render(file, {

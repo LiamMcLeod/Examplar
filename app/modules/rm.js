@@ -305,6 +305,7 @@ function renderLoggedIn(req, res, file) {
         });
     }
     else if (file === "sprof") {
+        //Todo fix $found falseproblem
         var userReq = '';
         var user = new User();
         user.findUser(req.params, function (err, user, found) {
@@ -528,12 +529,15 @@ function renderLoggedOut(req, res, file) {
     }
     else if (file === "paper") {
         userReq = req.params.paper;
+        //Query for paper here.
         res.render(file, {
             userReq: userReq,
             session: $,
             status: req.flash('status'),
             // Client Vars
             loggedIn: $.loggedIn,
+            //Template
+            // paperName: $.paper.name,
         }, function (err, result) {
             if (err) error(req, res, err);
             else res.send(result); // send rendered HTML back to client

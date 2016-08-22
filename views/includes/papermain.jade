@@ -21,9 +21,10 @@ main.bg-light
                     #login-status.row.jumbotron.text-success.alert-success.border-success.text-center(onclick="toggleHide(this)")
                         h2.text-success #{status}
                 .row
-                    h1 PAPER NAME
                     .notFound(v-if="noOfResults === 0 && searchFlag===1")
                         h1.text-center No Results.
+                    div(v-else)
+                        h1 {{paperName}}
                     .searchResult(v-if="filterTerm===''" v-for="question in questions | limitBy displayResults | orderBy sortBy sortType")
                         div
                             h4

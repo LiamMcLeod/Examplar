@@ -112,9 +112,10 @@ module.exports = function (express, client) {
 
         var results = [];
         var result = req.params.id;
-        //TODO qmore view STILL DOESN@T WORK
+        //SELECT * FROM qmore WHERE "ExamPaperId" = $1 AND "QuestionId" != $2 ORDER BY RANDOM() LIMIT 5
+
         var query = {
-            text: 'SELECT "Question"."QuestionId", "QuestionNumber", "QuestionText", "Topic"."TopicId", "Question"."ExamPaperId" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId"="ExamPaper"."ExamPaperId" INNER JOIN "QuestionTopic" ON "Question"."QuestionId" = "QuestionTopic"."QuestionId" INNER JOIN "Topic" ON "QuestionTopic"."TopicId"= "Topic"."TopicId" WHERE "ExamPaper"."ExamPaperId"=$1 AND "Question"."QuestionId"!=$2 ORDER BY RANDOM() LIMIT 5',
+            text: 'SELECT * FROM qmore WHERE "ExamPaperId" = $1 AND "QuestionId" != $2 ORDER BY RANDOM() LIMIT 5',
             values: [result, param.qId]
         };
 
@@ -137,9 +138,9 @@ module.exports = function (express, client) {
 
         var results = [];
         var result = req.params.id;
-        // TODO qrelated view STILL DOESN't WORK
+        //SELECT * FROM qRelated WHERE "TopicId" = $1 AND "QuestionId" != $2 ORDER BY RANDOM()  LIMIT 5
         var query = {
-            text: 'SELECT "Question"."QuestionId", "QuestionNumber", "QuestionText", "Topic"."TopicId", "Question"."ExamPaperId", "ExamPaperUnit", "ExamPaperSeason", "ExamPaperDate" FROM "Question" INNER JOIN "ExamPaper" ON "Question"."ExamPaperId"="ExamPaper"."ExamPaperId" INNER JOIN "QuestionTopic" ON "Question"."QuestionId" = "QuestionTopic"."QuestionId" INNER JOIN "Topic" ON "QuestionTopic"."TopicId"= "Topic"."TopicId" WHERE "Topic"."TopicId"=$1 AND "Question"."QuestionId"!=$2 ORDER BY RANDOM() LIMIT 5',
+            text: 'SELECT * FROM qRelated WHERE "TopicId" = $1 AND "QuestionId" != $2 ORDER BY RANDOM()  LIMIT 5',
             values: [result, param.qId]
         };
         var q = client.query(query, function (err, result) {
@@ -266,6 +267,7 @@ module.exports = function (express, client) {
      * User Papers
      */
     //TODO ADJUST QUERY TO SHOW LEVEL AND SUBJECT NAMES
+    //TODO Trim Date to year
     apiRouter.get('/user/:id/papers/', function (req, res) {
         var param = {};
         var results = [];
@@ -304,6 +306,8 @@ module.exports = function (express, client) {
         // for (var i=0;i<i){
         //todo loop through for public flag check
         // }
+
+
         mod.getResults(res, q, param);
     });
     //TODO ADJUST QUERY TO GET PAPER NAME
@@ -331,7 +335,8 @@ module.exports = function (express, client) {
                     values: [id]
                 };
             }
-        } else {
+        }
+        else {
             query = {
                 text: 'SELECT * FROM ppquestions WHERE "UserExamPaperId"=$1',
                 values: [id]

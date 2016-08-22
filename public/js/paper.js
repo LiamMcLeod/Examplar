@@ -143,6 +143,7 @@ up = new Vue({
                     this.$set('noOfResults', noOfResults);
                     this.$set('noOfPages', noOfPages);
                     for (var i = 0; i < res.data.length; i++) {
+                        this.$set('paperName', res.data[0].UserExamPaperName);
                         this.$set('questions[' + i + ']', res.data[i]);
                     }
                     this.$set('noOfResults', this.results.length);

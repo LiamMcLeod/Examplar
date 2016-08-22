@@ -42,8 +42,25 @@ module.exports = function (express, client) {
             values: [regexTerm, likeTerm]
         };
         var q = client.query(query, function (err, result) {
+            var results = [];
+            q.on('err', function () {
+                console.log(err);
+            });
+            q.on('row', function (row, result) {
+                result.addRow(row);
+                results.push(row);
+            });
+            q.on('end', function (result) {
+                    for (var i = 0; i < result.rows.length; i++) {
+                        result.rows[i].ExamPaperDate = result.rows[i].ExamPaperDate.toJSON();
+                        if (result.rows[i].ExamPaperDate.contains('T')) {
+                            result.rows[i].ExamPaperDate = result.rows[i].ExamPaperDate.substring(0, 4);
+                        }
+                    }
+                    mod.returnJSON(res, result.rows, param);
+                }
+            );
         });
-        mod.getResults(res, q, param);
     });
 
     apiRouter.get('/match/:term', function (req, res) {
@@ -343,10 +360,25 @@ module.exports = function (express, client) {
             };
         }
 
-
         var q = client.query(query, function (err, result) {
+            var results = [];
+            q.on('err', function () {
+                console.log(err);
+            });
+            q.on('row', function (row, result) {
+                result.addRow(row);
+                results.push(row);
+            });
+            q.on('end', function (result) {
+                for (var i = 0; i < result.rows.length; i++) {
+                    result.rows[i].ExamPaperDate = result.rows[i].ExamPaperDate.toJSON();
+                    if (result.rows[i].ExamPaperDate.contains('T')) {
+                        result.rows[i].ExamPaperDate = result.rows[i].ExamPaperDate.substring(0, 4);
+                    }
+                }
+                mod.returnJSON(res, result.rows, param);
+            });
         });
-        mod.getResults(res, q, param);
     });
 
 

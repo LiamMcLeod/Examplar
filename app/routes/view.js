@@ -66,7 +66,7 @@ module.exports = function (express) {
      * User profile page
      * //TODO generate from restful api
      */
-    appRouter.get('/u/:user', function (req, res) {
+    appRouter.get('/o/:user', function (req, res) {
          // req.params.user;
         var $ = req.session;
         var file = "profile";
@@ -81,11 +81,11 @@ module.exports = function (express) {
 
       /**
      * GET
-     * '/s/'+username
+     * '/u/'+username
      * Server-Side User profile page
      * //TODO generate from restful api
      */
-    appRouter.get('/s/:user', function (req, res) {
+    appRouter.get('/u/:user', function (req, res) {
         // console.log(req.params.user);
         var $ = req.session;
         var file = "sprof";

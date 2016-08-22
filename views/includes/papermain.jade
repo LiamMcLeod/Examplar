@@ -28,10 +28,10 @@ main.bg-light
                     .searchResult(v-if="filterTerm===''" v-for="question in questions | limitBy displayResults | orderBy sortBy sortType")
                         div
                             h4
-                                a(href="../result?id={{question.QuestionId}}") {{question.QuestionNumber}} - {{question.ExamBoardName}} {{question.ExamPaperSeason}} {{question.ExamPaperDate}}
+                                a(href="../result?id={{question.QuestionId}}") {{question.QuestionOrder}}) Question {{question.QuestionNumber}} {{question.ExamBoardName}} {{question.ExamPaperSeason}} {{question.ExamPaperDate}}
                         p {{{ question.QuestionText }}}
                     .searchResult(v-if="filterTerm!=''" v-for="question in questions  | limitBy displayResults | orderBy sortBy sortType | filterBy filterTerm in filterBy")
                         div
                             h4
-                                a(href="../result?id={{question.QuestionId}}") {{question.QuestionNumber}} - {{question.ExamBoardName}} {{question.ExamPaperSeason}} {{question.ExamPaperDate}}
+                                a(href="../result?id={{question.QuestionId}}") {{question.QuestionOrder}}) Question {{question.QuestionNumber}} {{question.ExamBoardName}} {{question.ExamPaperSeason}} {{question.ExamPaperDate}}
                         p {{{ question.QuestionText }}}

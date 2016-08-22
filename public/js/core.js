@@ -46,7 +46,7 @@ function isset(x){return ((typeof x) != 'undefined');}
  */
 var data = {};
 var results = [];
-var user = []
+var user = [];
 var examId, topicId;
 var filterOptions = [
     {text: '', value: ''},
@@ -179,9 +179,6 @@ vm = new Vue({
                     if (!res.data.isEmpty()) {
                         this.$set('result', true)
                     }
-                    var y = res.data[0].ExamPaperDate;
-                    y = dateToYear(y);
-                    res.data[0].ExamPaperDate = y;
                     topicId = res.data[0].TopicId;
                     examId = res.data[0].ExamPaperId;
                     //TODO ADJUST QUERY FOR IMAGE ID
@@ -194,9 +191,6 @@ vm = new Vue({
                         .then(function (res) {
                             var related = [];
                             for (var i = 0; i < res.data.length; i++) {
-                                var y = res.data[i].ExamPaperDate;
-                                y = dateToYear(y);
-                                res.data[i].ExamPaperDate = y;
                                 var x = res.data[i].QuestionText;
                                 x = removeTags(x);
                                 x = shortenString(x);

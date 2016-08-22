@@ -110,7 +110,13 @@ module.exports = function (express, client) {
             row.QuestionImageData = b.toString();
             results.push(row);
         });
-        q.on('end', function () {
+        q.on('end', function (result) {
+            for (var i = 0; i < result.rows.length; i++) {
+                result.rows[i].ExamPaperDate = result.rows[i].ExamPaperDate.toJSON();
+                if (result.rows[i].ExamPaperDate.contains('T')) {
+                    result.rows[i].ExamPaperDate = result.rows[i].ExamPaperDate.substring(0, 4);
+                }
+            }
             mod.returnJSON(res, results, param);
         })
     });
@@ -119,6 +125,7 @@ module.exports = function (express, client) {
      *		More From		*
      ************************/
     apiRouter.get('/more/:id', function (req, res) {
+        //todo remove timestamp here
         var param = {};
         param.pretty = false;
 

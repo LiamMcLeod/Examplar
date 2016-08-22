@@ -220,15 +220,18 @@ function renderLoggedIn(req, res, file) {
                         // Template Vars
                         //TODO FINISH HERE FOR SS PROFILE RENDERING
                         found: $.profile.found,
+                        pUserId: $.profile.UserId,
                         pUsername: $.profile.Username,
                         pTitle: $.profile.Title,
                         pFirstName: $.profile.FirstName,
-                        pLastName: $.profile.Surname,
-                        pEmailAddress: $.profile.Email,
+                        pSurname: $.profile.Surname,
+                        pEmail: $.profile.Email,
+                        pDigest: $.profile.Digest,
                         pDoB: $.profile.DoB,
                         pCreated: $.profile.DateCreated,
                         pWebsite: $.profile.Website,
-                        pTwitter: $.profile.Twitter
+                        pTwitter: $.profile.Twitter,
+                        pAcademia: $.profile.Academia
                     }, function (err, result) {
                         if (err) error(req, res, err);
                         else res.send(result); // send rendered HTML back to client

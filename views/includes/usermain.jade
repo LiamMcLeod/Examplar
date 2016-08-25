@@ -16,7 +16,7 @@ main.bg-light
                     if status != 'Success!'
                         .row
                     else
-                        alert(:show.sync='showRight', placement='top-right', duration='3000', type='success', width='400px', dismissable='')
+                        alert(placement='top-right', duration='3000', type='success', width='400px', dismissable='')
                             span.icon-ok-circled.alert-icon-float-left
                             strong #{status}
                             p You successfully logged in.

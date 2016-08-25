@@ -34,7 +34,9 @@ function escapeSquare(x) {
     x = x.replace(new RegExp('\\]'), '\\]');
     return x;
 }
-function isset(x){return ((typeof x) != 'undefined');}
+function isset(x) {
+    return ((typeof x) != 'undefined');
+}
 /*
  *TODO Sanitise input
  *TODO Figure hover image
@@ -44,6 +46,8 @@ function isset(x){return ((typeof x) != 'undefined');}
  * TODO TAGGING / Categories
  * TODO profile
  */
+
+
 var data = {};
 var results = [];
 var user = [];
@@ -68,6 +72,9 @@ var sortOrder = [
 
 var vm;
 vm = new Vue({
+    components: {
+        alert: VueStrap.alert
+    },
 
     // Element
     el: '#wrapper',

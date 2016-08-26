@@ -174,7 +174,5 @@ qr = new Vue({
         }
     }
 });
-var router = new VueRouter();
-router.map({});
 window.vue = qr;
 Vue.config.debug = true;

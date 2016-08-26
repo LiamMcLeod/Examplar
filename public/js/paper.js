@@ -113,7 +113,5 @@ up = new Vue({
         }
     }
 });
-var router = new VueRouter();
-router.map({});
 window.vue = up;
 Vue.config.debug = true;

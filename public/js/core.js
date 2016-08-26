@@ -41,6 +41,7 @@ function isset(x) {
  *TODO Sanitise input
  *TODO CLEAN TODOS
  * //Random Question Function
+
  */
 
 
@@ -249,8 +250,5 @@ vm = new Vue({
         }
     }
 });
-
-var router = new VueRouter();
-router.map({});
 window.vue = vm;
 Vue.config.debug = true;

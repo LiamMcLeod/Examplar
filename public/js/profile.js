@@ -106,7 +106,5 @@ fp = new Vue({
         }
     }
 });
-var router = new VueRouter();
-router.map({});
 window.vue = fp;
 Vue.config.debug = true;

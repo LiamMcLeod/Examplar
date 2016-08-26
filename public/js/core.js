@@ -8,7 +8,6 @@ Array.prototype.isEmpty = function () {
         return false;
     }
 };
-
 function updateString(input, term) {
     return input.replace(new RegExp('(^|\)(' + term + ')(\|$)', 'ig'), '$1<strong>$2</strong>$3');
 }
@@ -37,21 +36,17 @@ function escapeSquare(x) {
 function isset(x) {
     return ((typeof x) != 'undefined');
 }
+
 /*
  *TODO Sanitise input
- *TODO Figure hover image
  *TODO CLEAN TODOS
  * //Random Question Function
- * // More questions comes up with itself
- * TODO TAGGING / Categories
- * TODO profile
  */
 
 
 var data = {};
 var results = [];
 var user = [];
-var examId, topicId;
 var filterOptions = [
     {text: '', value: ''},
     {text: 'Unit', value: 'ExamPaperUnit'},
@@ -75,8 +70,7 @@ vm = new Vue({
     components: {
         alert: VueStrap.alert
     },
-
-    // Element
+    
     el: '#wrapper',
 
     data: {
@@ -94,24 +88,14 @@ vm = new Vue({
         filterTerm: '',
         filterFlag: false,
         //Result
-        hasImage: false,
-        codeAnswer: false,
-        result: false,
         results: [],
-        more: [],
-        related: [],
         // Pagination
         noOfResults: 0,
         displayResults: 15,
         noOfPages: 1,
-        //https://yuche.github.io/vue-strap/#modal
+        // TODO Look into https://yuche.github.io/vue-strap/#modal
         // Error
         error: '',
-
-        // User
-        exists: false,
-        user: []
-
     },
 
     route: {},
@@ -168,86 +152,6 @@ vm = new Vue({
                 return true;
             }
             else return false;
-        },
-        /************************
-         *        Results Page    *
-         ************************/
-        fetchResult: function (id) {
-            // TODO IF ID NOT INT
-            if (!isInt(id)) {
-                return
-            }
-            this.$set('results', []);               //Purge results
-            this.$set('related', []);
-            this.$set('more', []);
-
-            this.$http.get('/api/result/' + id)
-                .then(function (res) {
-                    if (!res.data.isEmpty()) {
-                        this.$set('result', true)
-                    }
-                    topicId = res.data[0].TopicId;
-                    examId = res.data[0].ExamPaperId;
-                    //TODO ADJUST QUERY FOR IMAGE ID
-                    if (res.data[0].QuestionImageId != 0) {
-                        this.$set('hasImage', true);
-                    }
-                    this.$set('results', res.data[0]);
-                    // Others
-                    this.$http.get('/api/related/' + topicId + '?qId=' + id)
-                        .then(function (res) {
-                            var related = [];
-                            for (var i = 0; i < res.data.length; i++) {
-                                var x = res.data[i].QuestionText;
-                                x = removeTags(x);
-                                x = shortenString(x);
-                                res.data[i].QuestionText = x;
-                                this.$set('related[' + i + ']', res.data[i]);
-                            }
-                        })
-                        .catch(function (err) {
-                            console.log("Error: " + err);
-                            throw err;
-                        });
-                    this.$http.get('/api/more/' + examId + '?qId=' + id)
-                        .then(function (res) {
-                            var more = [];
-                            for (var i = 0; i < res.data.length; i++) {
-                                var x = res.data[i].QuestionText;
-                                x = removeTags(x);
-                                x = shortenString(x);
-                                res.data[i].QuestionText = x;
-                                this.$set('more[' + i + ']', res.data[i]);
-                            }
-                        })
-                        .catch(function (err) {
-                            console.log("Error: " + err);
-                            throw err;
-                        });
-                })
-                .catch(function (err) {
-                    console.log("Error: " + err);
-                    throw err;
-                });
-        },
-        /************************
-         *        Fetch ExamNote    *
-         ************************/
-        fetchExamNote: function (id) {
-            if (!isInt(id)) {
-                return
-            }
-            this.$http.get('/api/examiner/' + id)
-                .then(function (res) {
-                    if (!res.data.isEmpty()) {
-                        this.$set('result', true)
-                    }
-                    this.$set('results', res.data[0]);
-                })
-                .catch(function (err) {
-                    console.log("Error: " + err);
-                    throw err;
-                });
         },
         /************************
          *        Fetch filter    *
@@ -342,27 +246,7 @@ vm = new Vue({
                     console.log("Error: " + err);
                     throw err;
                 });
-        },
-        /************************
-         *        Fetch Profile    *
-         ************************/
-        fetchProfile: function (user) {
-            if (!isset(user)) {
-                return;
-            }
-            this.$http.get('/api/user/' + user)
-                .then(function (res) {
-                    if (isset(res.data)) {
-                        this.$set('exists', true);
-                        this.$set('user', res.data);
-                    }
-                })
-                .catch(function (err) {
-                    console.log("Error: " + err);
-                    throw err;
-                });
         }
-
     }
 });
 

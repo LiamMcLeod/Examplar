@@ -18,7 +18,7 @@ html(lang="en-GB" id="index")
             include includes/resultmain
             include includes/betawarning
             include includes/footer
-            script(src='/public/js/core.js')
+            script(src='/public/js/result.js')
             include includes/js
                 script.
-                    this.vm.fetchResult(#{idReq});
+                    this.qr.fetchResult(#{idReq});
